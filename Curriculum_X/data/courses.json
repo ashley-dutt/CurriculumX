@@ -1,0 +1,485 @@
+{
+ "CSE408 · Design and Analysis of Algorithms": {
+  "n": "Design and Analysis of Algorithms",
+  "ltp": "3-0-2",
+  "u": [
+   {
+    "t": "Analysis & Divide-and-Conquer",
+    "x": [
+     "Time and space complexity",
+     "Insertion and merge sort analysis",
+     "Iterative algorithm analysis",
+     "Recursive analysis (substitution, recursion tree, master)",
+     "Strassen's matrix multiplication",
+     "Quick select and order statistics"
+    ],
+    "g": []
+   },
+   {
+    "t": "String Matching & Computational Geometry",
+    "x": [
+     "Sequential search and brute-force matching",
+     "Naive pattern matching",
+     "Rabin-Karp",
+     "Knuth-Morris-Pratt",
+     "Trie (prefix tree)",
+     "Closest-pair problem",
+     "Convex hull"
+    ],
+    "g": []
+   },
+   {
+    "t": "Dynamic Programming",
+    "x": [
+     "Introduction to dynamic programming",
+     "Binomial coefficient",
+     "Memory functions",
+     "Knapsack problem",
+     "Matrix-chain multiplication",
+     "Longest common subsequence",
+     "Optimal binary search trees"
+    ],
+    "g": []
+   },
+   {
+    "t": "Graph Algorithms & Greedy",
+    "x": [
+     "Introduction to graphs",
+     "Breadth-first search",
+     "Depth-first search",
+     "Topological sort",
+     "Greedy approach",
+     "Minimum spanning trees",
+     "Prim's algorithm",
+     "Kruskal's algorithm",
+     "Single-source shortest paths",
+     "All-pairs shortest paths"
+    ],
+    "g": []
+   },
+   {
+    "t": "Transform-and-Conquer & Advanced Techniques",
+    "x": [
+     "Balanced search trees",
+     "Counting sort",
+     "Radix sort",
+     "Bucket sort",
+     "Monotonic stack",
+     "Monotonic queue",
+     "Two pointers technique"
+    ],
+    "g": []
+   },
+   {
+    "t": "Backtracking, Approximation & Complexity",
+    "x": [
+     "n-Queens problem",
+     "Hamiltonian circuit",
+     "Subset-sum problem",
+     "Branch and bound: assignment, knapsack, TSP",
+     "Approximation: vertex cover, set covering, bin packing",
+     "P, NP, NP-hard, NP-complete"
+    ],
+    "g": []
+   }
+  ]
+ },
+ "INT373 · Agile Driven Development and Project Management": {
+  "n": "Agile Driven Development and Project Management",
+  "ltp": "2-0-2",
+  "u": [
+   {
+    "t": "Introduction to Agile & Scrum",
+    "x": [
+     "Agile principles and values",
+     "Roles, ceremonies, artifacts",
+     "Agile vs traditional project management",
+     "Scrum board and backlog (Jira, Trello)",
+     "Daily standup and retrospective"
+    ],
+    "g": []
+   },
+   {
+    "t": "Agile Team Dynamics & Product Manager",
+    "x": [
+     "Cross-functional teams",
+     "Product Owner and Scrum Master",
+     "Communication and conflict resolution",
+     "Team collaboration exercises",
+     "Role-playing exercises"
+    ],
+    "g": []
+   },
+   {
+    "t": "Agile Project Management & Backlog",
+    "x": [
+     "Product Manager in Agile",
+     "Project life cycle and roadmap",
+     "Customer-centric development",
+     "MoSCoW and WSJF",
+     "Backlog prioritization",
+     "Customer-centric case studies"
+    ],
+    "g": []
+   },
+   {
+    "t": "Agile Engineering & Metrics",
+    "x": [
+     "Test-driven development (TDD)",
+     "Behavior-driven development (BDD)",
+     "Pair programming",
+     "Continuous integration",
+     "Velocity, burndown, cycle time",
+     "Metrics in project tools"
+    ],
+    "g": []
+   },
+   {
+    "t": "Scaling Agile",
+    "x": [
+     "Scaling frameworks",
+     "SAFe",
+     "LeSS",
+     "Scrum@Scale",
+     "Distributed and large teams",
+     "Enterprise scaling challenges",
+     "Scaled Agile setup using tools"
+    ],
+    "g": []
+   },
+   {
+    "t": "Advanced Product Management",
+    "x": [
+     "Product strategy and market fit",
+     "Data-driven decisions and A/B testing",
+     "Managing technical debt",
+     "Market fit case studies",
+     "A/B testing simulations",
+     "Refactoring strategies"
+    ],
+    "g": []
+   }
+  ]
+ },
+ "INT395 · Supervised Learning": {
+  "n": "Supervised Learning",
+  "ltp": "2-0-2",
+  "u": [
+   {
+    "t": "Introduction & Data Preprocessing",
+    "x": [
+     "Overview of supervised learning",
+     "Python and scikit-learn setup",
+     "Data exploration (Pandas, matplotlib, seaborn)",
+     "Missing values and outliers",
+     "Class imbalance",
+     "Scaling and encoding",
+     "Feature engineering and selection",
+     "Dimensionality reduction"
+    ],
+    "g": []
+   },
+   {
+    "t": "Classification",
+    "x": [
+     "Evaluation metrics (accuracy, precision, recall, F1, ROC-AUC)",
+     "Confusion matrix",
+     "Perceptron",
+     "Logistic regression",
+     "k-Nearest Neighbors",
+     "Decision tree",
+     "Support vector machine",
+     "Naive Bayes"
+    ],
+    "g": []
+   },
+   {
+    "t": "Ensembles, Tuning & Explainable AI",
+    "x": [
+     "Bagging",
+     "Boosting",
+     "Stacking",
+     "Grid search",
+     "Random search",
+     "Bayesian optimization",
+     "Global vs local interpretability",
+     "Feature importance",
+     "LIME",
+     "SHAP",
+     "Model transparency"
+    ],
+    "g": []
+   },
+   {
+    "t": "Regression",
+    "x": [
+     "Regression workflow and EDA",
+     "Regression evaluation metrics",
+     "Linear regression",
+     "RANSAC",
+     "Polynomial regression",
+     "Regularized regression",
+     "Support vector regression",
+     "Decision tree and random forest regression"
+    ],
+    "g": []
+   },
+   {
+    "t": "Time Series Regression",
+    "x": [
+     "Time series characteristics",
+     "Univariate vs multivariate",
+     "Preparing time series data",
+     "Data splitting strategies",
+     "Autoregressive models",
+     "Moving average models",
+     "ARIMA",
+     "SARIMA"
+    ],
+    "g": []
+   },
+   {
+    "t": "Pipelines, Evaluation & Deployment",
+    "x": [
+     "Scikit-learn pipelines",
+     "Cross validation strategies",
+     "Learning and validation curves",
+     "Model serialization",
+     "Local and web service deployment",
+     "Serverless options",
+     "GitHub-based deployment"
+    ],
+    "g": []
+   }
+  ]
+ },
+ "INT396 · Unsupervised Learning": {
+  "n": "Unsupervised Learning",
+  "ltp": "2-0-2",
+  "u": [
+   {
+    "t": "Foundations of Unsupervised Learning",
+    "x": [
+     "Supervised vs unsupervised vs semi-supervised",
+     "Problem formulation",
+     "Real-life use cases",
+     "Euclidean, Manhattan, cosine similarity"
+    ],
+    "g": []
+   },
+   {
+    "t": "Partition-Based Clustering",
+    "x": [
+     "Hard vs soft clustering",
+     "k-Means and k-Means++",
+     "k-Medoids (PAM)",
+     "Scaling impact",
+     "MiniBatch k-Means",
+     "Inertia, silhouette, Davies-Bouldin",
+     "Elbow method pitfalls"
+    ],
+    "g": []
+   },
+   {
+    "t": "Hierarchical & Density-Based Clustering",
+    "x": [
+     "Agglomerative vs divisive",
+     "Linkage methods",
+     "Dendrograms",
+     "DBSCAN",
+     "Noise and border points",
+     "k-Means vs hierarchical vs DBSCAN"
+    ],
+    "g": []
+   },
+   {
+    "t": "Dimensionality Reduction",
+    "x": [
+     "Need for dimensionality reduction",
+     "PCA",
+     "Manifold learning",
+     "t-SNE",
+     "UMAP (conceptual)",
+     "Autoencoder intuition"
+    ],
+    "g": []
+   },
+   {
+    "t": "Association Rules & Anomaly Detection",
+    "x": [
+     "Support, confidence, lift, conviction",
+     "Apriori",
+     "FP-Growth",
+     "Market basket analysis",
+     "Anomaly vs novelty detection",
+     "Isolation Forest",
+     "Local Outlier Factor"
+    ],
+    "g": []
+   },
+   {
+    "t": "Evaluation & Applications",
+    "x": [
+     "Internal and external validation metrics",
+     "Stability-based evaluation",
+     "Interpretability challenges",
+     "Real-world case studies",
+     "Ethical considerations",
+     "Case study: MNIST or customer segmentation"
+    ],
+    "g": []
+   }
+  ]
+ },
+ "PEA306 · Analytical Skills-II": {
+  "n": "Analytical Skills-II",
+  "ltp": "2-1-0",
+  "u": [
+   {
+    "t": "Time & Work, Pipes & Cisterns",
+    "x": [
+     "Time and work formulae",
+     "Efficiency problems",
+     "Men, women, children problems",
+     "Wages-based problems",
+     "Pipes and cisterns (inlet-outlet)",
+     "Part of tank filled",
+     "Time-based problems"
+    ],
+    "g": []
+   },
+   {
+    "t": "Syllogism & Number Ranking",
+    "x": [
+     "Logical Venn diagrams",
+     "Relating groups diagrammatically",
+     "Possibility-based questions",
+     "Number and ranking tests"
+    ],
+    "g": []
+   },
+   {
+    "t": "Mensuration, Calendar & Clocks",
+    "x": [
+     "Cube and cuboid",
+     "Sphere and hemisphere",
+     "Cone and cylinder",
+     "Calendar: dates and days",
+     "Finding the exact day",
+     "Clock concepts and formulae"
+    ],
+    "g": []
+   },
+   {
+    "t": "Time, Speed & Distance",
+    "x": [
+     "Time, speed and distance",
+     "Unit conversion and proportionality",
+     "Average speed",
+     "Problems on trains",
+     "Boats and streams"
+    ],
+    "g": []
+   },
+   {
+    "t": "Height & Distance, Analytical Reasoning",
+    "x": [
+     "Height and distance",
+     "Linear seating arrangement",
+     "Circular seating arrangement"
+    ],
+    "g": []
+   },
+   {
+    "t": "Data Interpretation & Sufficiency",
+    "x": [
+     "Basics of data interpretation",
+     "Tabulation",
+     "Bar graph",
+     "Pie chart",
+     "Line graph",
+     "Data sufficiency"
+    ],
+    "g": []
+   }
+  ]
+ },
+ "PES390 · Soft Skills": {
+  "n": "Soft Skills",
+  "ltp": "2-2-0",
+  "u": [
+   {
+    "t": "Error Correction & Text Sequencing",
+    "x": [
+     "Para-jumbles (fixed, movable)",
+     "Verbal clues",
+     "Sentence completion (single, double blanks)",
+     "Elimination techniques"
+    ],
+    "g": []
+   },
+   {
+    "t": "CV Customization & Digital Profile",
+    "x": [
+     "Resume customisation and personal branding",
+     "Resume drafting pitfalls",
+     "ATS optimisation",
+     "Action verbs",
+     "Profile-specific resumes",
+     "LinkedIn optimisation",
+     "AI-driven growth tools",
+     "GitHub repository curation"
+    ],
+    "g": []
+   },
+   {
+    "t": "Content Creation Skills",
+    "x": [
+     "Video CV elements and script",
+     "Technical setup and delivery",
+     "Editing and feedback",
+     "AI tools (HireVue, Vmock, Reziai)",
+     "Portfolio design",
+     "Portfolio tools (Netlify, Vercel, WordPress, Wix)",
+     "Portfolio link verification"
+    ],
+    "g": []
+   },
+   {
+    "t": "Voice Modulation & Intonation",
+    "x": [
+     "Commonly mispronounced words",
+     "Word and syllable stress",
+     "Pitch, volume, pace, pause, tone",
+     "Voice modulation vs intonation",
+     "Rising and falling intonation patterns"
+    ],
+    "g": []
+   },
+   {
+    "t": "Interview Practice",
+    "x": [
+     "Competency-based interviews",
+     "Situational case responses",
+     "Sales interview questions (rebuttal, FAB, need analysis)",
+     "STAR+ methodology",
+     "Cultural intelligence",
+     "AI interview simulators"
+    ],
+    "g": []
+   },
+   {
+    "t": "Group Discussion Practice",
+    "x": [
+     "AI-powered ideation (KWA, SPELT, POPBEANS, VAP, SCAMPER)",
+     "Mock GD on current affairs",
+     "Social issues analysis",
+     "Abstract topic argumentation",
+     "Technical GDs",
+     "Avoiding GD pitfalls"
+    ],
+    "g": []
+   }
+  ]
+ }
+}

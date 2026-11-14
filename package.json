@@ -1,0 +1,18 @@
+{
+  "name": "curriculum-x",
+  "version": "1.0.0",
+  "description": "Curriculum Development and Revision (CDR) Automation System with Benchmarking and Database Persistence",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "curriculum",
+    "education",
+    "benchmarking",
+    "academic",
+    "automation"
+  ],
+  "author": "Ashley",
+  "license": "ISC"
+}

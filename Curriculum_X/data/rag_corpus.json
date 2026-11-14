@@ -1,0 +1,357 @@
+[
+ {
+  "course": "CSE408",
+  "part": "Unit 1",
+  "text": "CSE408 Unit 1 Analysis & Divide-and-Conquer"
+ },
+ {
+  "course": "CSE408",
+  "part": "Unit 2",
+  "text": "CSE408 Unit 2 String Matching & Computational Geometry"
+ },
+ {
+  "course": "CSE408",
+  "part": "Unit 3",
+  "text": "CSE408 Unit 3 Dynamic Programming"
+ },
+ {
+  "course": "CSE408",
+  "part": "Unit 4",
+  "text": "CSE408 Unit 4 Graph Algorithms & Greedy"
+ },
+ {
+  "course": "CSE408",
+  "part": "Unit 5",
+  "text": "CSE408 Unit 5 Transform-and-Conquer & Advanced Techniques"
+ },
+ {
+  "course": "CSE408",
+  "part": "Unit 6",
+  "text": "CSE408 Unit 6 Backtracking, Approximation & Complexity"
+ },
+ {
+  "course": "CSE408",
+  "part": "course outcomes",
+  "text": "CSE408 course outcomes"
+ },
+ {
+  "course": "CSE408",
+  "part": "practicals",
+  "text": "CSE408 practicals"
+ },
+ {
+  "course": "CSE408",
+  "part": "lecture plan 1",
+  "text": "CSE408 lecture plan 1"
+ },
+ {
+  "course": "CSE408",
+  "part": "lecture plan 2",
+  "text": "CSE408 lecture plan 2"
+ },
+ {
+  "course": "CSE408",
+  "part": "lecture plan 3",
+  "text": "CSE408 lecture plan 3"
+ },
+ {
+  "course": "CSE408",
+  "part": "lecture plan 4",
+  "text": "CSE408 lecture plan 4"
+ },
+ {
+  "course": "CSE408",
+  "part": "lecture plan 5",
+  "text": "CSE408 lecture plan 5"
+ },
+ {
+  "course": "INT373",
+  "part": "Unit 1",
+  "text": "INT373 Unit 1 Introduction to Agile & Scrum"
+ },
+ {
+  "course": "INT373",
+  "part": "Unit 2",
+  "text": "INT373 Unit 2 Agile Team Dynamics & Product Manager"
+ },
+ {
+  "course": "INT373",
+  "part": "Unit 3",
+  "text": "INT373 Unit 3 Agile Project Management & Backlog"
+ },
+ {
+  "course": "INT373",
+  "part": "Unit 4",
+  "text": "INT373 Unit 4 Agile Engineering & Metrics"
+ },
+ {
+  "course": "INT373",
+  "part": "Unit 5",
+  "text": "INT373 Unit 5 Scaling Agile"
+ },
+ {
+  "course": "INT373",
+  "part": "Unit 6",
+  "text": "INT373 Unit 6 Advanced Product Management"
+ },
+ {
+  "course": "INT373",
+  "part": "course outcomes",
+  "text": "INT373 course outcomes"
+ },
+ {
+  "course": "INT373",
+  "part": "practicals",
+  "text": "INT373 practicals"
+ },
+ {
+  "course": "INT373",
+  "part": "lecture plan 1",
+  "text": "INT373 lecture plan 1"
+ },
+ {
+  "course": "INT373",
+  "part": "lecture plan 2",
+  "text": "INT373 lecture plan 2"
+ },
+ {
+  "course": "INT373",
+  "part": "lecture plan 3",
+  "text": "INT373 lecture plan 3"
+ },
+ {
+  "course": "INT373",
+  "part": "lecture plan 4",
+  "text": "INT373 lecture plan 4"
+ },
+ {
+  "course": "INT373",
+  "part": "lecture plan 5",
+  "text": "INT373 lecture plan 5"
+ },
+ {
+  "course": "INT395",
+  "part": "Unit 1",
+  "text": "INT395 Unit 1 Introduction & Data Preprocessing"
+ },
+ {
+  "course": "INT395",
+  "part": "Unit 2",
+  "text": "INT395 Unit 2 Classification"
+ },
+ {
+  "course": "INT395",
+  "part": "Unit 3",
+  "text": "INT395 Unit 3 Ensembles, Tuning & Explainable AI"
+ },
+ {
+  "course": "INT395",
+  "part": "Unit 4",
+  "text": "INT395 Unit 4 Regression"
+ },
+ {
+  "course": "INT395",
+  "part": "Unit 5",
+  "text": "INT395 Unit 5 Time Series Regression"
+ },
+ {
+  "course": "INT395",
+  "part": "Unit 6",
+  "text": "INT395 Unit 6 Pipelines, Evaluation & Deployment"
+ },
+ {
+  "course": "INT395",
+  "part": "course outcomes",
+  "text": "INT395 course outcomes"
+ },
+ {
+  "course": "INT395",
+  "part": "practicals",
+  "text": "INT395 practicals"
+ },
+ {
+  "course": "INT395",
+  "part": "lecture plan 1",
+  "text": "INT395 lecture plan 1"
+ },
+ {
+  "course": "INT395",
+  "part": "lecture plan 2",
+  "text": "INT395 lecture plan 2"
+ },
+ {
+  "course": "INT395",
+  "part": "lecture plan 3",
+  "text": "INT395 lecture plan 3"
+ },
+ {
+  "course": "INT395",
+  "part": "lecture plan 4",
+  "text": "INT395 lecture plan 4"
+ },
+ {
+  "course": "INT395",
+  "part": "lecture plan 5",
+  "text": "INT395 lecture plan 5"
+ },
+ {
+  "course": "INT395",
+  "part": "lecture plan 6",
+  "text": "INT395 lecture plan 6"
+ },
+ {
+  "course": "INT395",
+  "part": "lecture plan 7",
+  "text": "INT395 lecture plan 7"
+ },
+ {
+  "course": "INT396",
+  "part": "Unit 1",
+  "text": "INT396 Unit 1 Foundations of Unsupervised Learning"
+ },
+ {
+  "course": "INT396",
+  "part": "Unit 2",
+  "text": "INT396 Unit 2 Partition-Based Clustering"
+ },
+ {
+  "course": "INT396",
+  "part": "Unit 3",
+  "text": "INT396 Unit 3 Hierarchical & Density-Based Clustering"
+ },
+ {
+  "course": "INT396",
+  "part": "Unit 4",
+  "text": "INT396 Unit 4 Dimensionality Reduction"
+ },
+ {
+  "course": "INT396",
+  "part": "Unit 5",
+  "text": "INT396 Unit 5 Association Rules & Anomaly Detection"
+ },
+ {
+  "course": "INT396",
+  "part": "Unit 6",
+  "text": "INT396 Unit 6 Evaluation & Applications"
+ },
+ {
+  "course": "INT396",
+  "part": "course outcomes",
+  "text": "INT396 course outcomes"
+ },
+ {
+  "course": "INT396",
+  "part": "practicals",
+  "text": "INT396 practicals"
+ },
+ {
+  "course": "INT396",
+  "part": "lecture plan 1",
+  "text": "INT396 lecture plan 1"
+ },
+ {
+  "course": "INT396",
+  "part": "lecture plan 2",
+  "text": "INT396 lecture plan 2"
+ },
+ {
+  "course": "INT396",
+  "part": "lecture plan 3",
+  "text": "INT396 lecture plan 3"
+ },
+ {
+  "course": "INT396",
+  "part": "lecture plan 4",
+  "text": "INT396 lecture plan 4"
+ },
+ {
+  "course": "PEA306",
+  "part": "Unit 1",
+  "text": "PEA306 Unit 1 Time & Work, Pipes & Cisterns"
+ },
+ {
+  "course": "PEA306",
+  "part": "Unit 2",
+  "text": "PEA306 Unit 2 Syllogism & Number Ranking"
+ },
+ {
+  "course": "PEA306",
+  "part": "Unit 3",
+  "text": "PEA306 Unit 3 Mensuration, Calendar & Clocks"
+ },
+ {
+  "course": "PEA306",
+  "part": "Unit 4",
+  "text": "PEA306 Unit 4 Time, Speed & Distance"
+ },
+ {
+  "course": "PEA306",
+  "part": "Unit 5",
+  "text": "PEA306 Unit 5 Height & Distance, Analytical Reasoning"
+ },
+ {
+  "course": "PEA306",
+  "part": "Unit 6",
+  "text": "PEA306 Unit 6 Data Interpretation & Sufficiency"
+ },
+ {
+  "course": "PEA306",
+  "part": "course outcomes",
+  "text": "PEA306 course outcomes"
+ },
+ {
+  "course": "PEA306",
+  "part": "lecture plan 1",
+  "text": "PEA306 lecture plan 1"
+ },
+ {
+  "course": "PEA306",
+  "part": "lecture plan 2",
+  "text": "PEA306 lecture plan 2"
+ },
+ {
+  "course": "PEA306",
+  "part": "lecture plan 3",
+  "text": "PEA306 lecture plan 3"
+ },
+ {
+  "course": "PES390",
+  "part": "Unit 1",
+  "text": "PES390 Unit 1 Error Correction & Text Sequencing"
+ },
+ {
+  "course": "PES390",
+  "part": "Unit 2",
+  "text": "PES390 Unit 2 CV Customization & Digital Profile"
+ },
+ {
+  "course": "PES390",
+  "part": "Unit 3",
+  "text": "PES390 Unit 3 Content Creation Skills"
+ },
+ {
+  "course": "PES390",
+  "part": "Unit 4",
+  "text": "PES390 Unit 4 Voice Modulation & Intonation"
+ },
+ {
+  "course": "PES390",
+  "part": "Unit 5",
+  "text": "PES390 Unit 5 Interview Practice"
+ },
+ {
+  "course": "PES390",
+  "part": "Unit 6",
+  "text": "PES390 Unit 6 Group Discussion Practice"
+ },
+ {
+  "course": "PES390",
+  "part": "course outcomes",
+  "text": "PES390 course outcomes"
+ },
+ {
+  "course": "PES390",
+  "part": "lecture plan 1",
+  "text": "PES390 lecture plan 1"
+ }
+]
