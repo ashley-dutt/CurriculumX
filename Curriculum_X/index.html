@@ -1566,15 +1566,329 @@ ${c.u.map((u,i)=>{if(!u.g||!u.g.length)return"";return`<div style="background:va
 </div>
 </div>
 `)};
-function rev(){const c=cur();let i=Math.min(S.ui,c.u.length-1);const u=c.u[i],f=S.frozen.includes(i),last=i==c.u.length-1;
-page("Review syllabus","",`<div class="two" style="grid-template-columns:1.2fr 1fr;align-items:start"><div class="card"><h3>Unit ${i+1}: ${u.t}</h3><p style="color:var(--mut);margin:-6px 0 14px">Topics missing in LPU · ${i+1} of ${c.u.length}</p>
-${u.g.map((g,k)=>{const d=S.dec[i+"-"+k];return`<div class="row ${d?"done":""}"><div><b>${g[0]}</b><br><small style="color:var(--mut)">Replaces: ${g[1]}</small><br><small style="color:var(--pu)">${g[2]}${g[3]?" · "+g[3]:""}${g[4]?" · "+g[4]:""}</small></div>${d?`<span class="chip p">${d}</span>`:`<div class="acts"><button class="btn sm tl" onclick="dec(${i},${k},'Added')">Add</button><button class="btn sm lt" onclick="dec(${i},${k},'Replaced')">Replace</button><button class="btn sm dk" style="background:var(--soft);color:var(--mut)" onclick="dec(${i},${k},'Ignored')">Ignore</button></div>`}</div>`}).join("")}
-<button class="btn" style="margin-top:10px" ${f?"disabled":""} onclick="freeze(${i})">${last?"Freeze unit "+(i+1):"Freeze and move to unit "+(i+2)}</button>${S.frozen.length>=c.u.length?`<div class="magic"><p>✓ All ${c.u.length} units are frozen. Your new syllabus is ready to build.</p><button class="btn mg" onclick="go(5)">✦ Magic display</button></div>`:""}</div>
-<div class="card prev"><h3>Live preview</h3>${c.u.map((u,k)=>`<h4>Unit ${k+1}: ${u.t} ${S.frozen.includes(k)?'<span class="chip a">frozen</span>':""}</h4><ul>${nu(k).map(x=>`<li class="${x.c}">${x.t}</li>`).join("")}</ul>`).join("")}</div></div>`,false)}
-function nu(i){const u=cur().u[i];let t=u.x.map(x=>({t:x,c:""}));u.g.forEach((g,k)=>{const d=S.dec[i+"-"+k];if(d=="Added")t.push({t:g[0],c:"add"});if(d=="Replaced"){const j=t.findIndex(a=>a.t==g[1]);j>-1?t[j]={t:g[0],c:"rep"}:t.push({t:g[0],c:"rep"})}});return t}
-function dec(i,k,v){S.dec[i+"-"+k]=v;rev();toast(v+" · preview updated");saveToBackend();}
-function freeze(i){const n=cur().u.length;if(!S.frozen.includes(i))S.frozen.push(i);cur().u[i].g.forEach((g,k)=>{if(!S.dec[i+"-"+k])S.dec[i+"-"+k]="Ignored"});if(i<n-1){S.ui=i+1;toast("Unit "+(i+1)+" frozen")}else toast("All units frozen · Magic display unlocked");nav();rev();saveToBackend();if(S.frozen.length>=n)setTimeout(()=>document.querySelector(".magic")&&document.querySelector(".magic").scrollIntoView({behavior:"smooth",block:"center"}),120)}
-function mag(){S.magic=true;page("Magic display",nx("Submit for HOD approval",6),`<div class="hero"><div><h3>New syllabus is ready ✦</h3><p>Aligned with Top 10 Worldwide & Indian Universities (MIT, Stanford, IIT Bombay, IIT Delhi, CMU, etc.). Alignment score ${bench()}%.</p></div>${art()}</div><div class="card"><h3>${cur().n} · updated syllabus</h3>${cur().u.map((u,i)=>`<div class="unit"><div class="n">${i+1}</div><div><h4>${u.t}</h4><div class="chips">${nu(i).map(t=>`<span class="chip ${t.c=="add"?"a":t.c=="rep"?"r":""}">${t.t}</span>`).join("")}</div></div></div>`).join("")}</div>`)}
+function rev(){
+  const c = cur();
+  let i = Math.min(S.ui, c.u.length - 1);
+  const u = c.u[i], f = S.frozen.includes(i), last = i == c.u.length - 1;
+
+  page("Review syllabus", "", `
+    <div class="two" style="grid-template-columns:1.2fr 1fr;align-items:start">
+      <div class="card">
+        <!-- Quick Unit Switcher Bar -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+          <span style="font-size:12px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.03em">Select Unit to Review:</span>
+          <div class="seg" style="display:flex;flex-wrap:wrap;gap:4px">
+            ${c.u.map((unit, k) => `
+              <button type="button" class="${k === i ? 'on' : ''}" style="padding:4px 10px;font-size:11.5px;font-weight:600" onclick="S.ui=${k};rev()">
+                U${k + 1} ${S.frozen.includes(k) ? '✓' : ''}
+              </button>
+            `).join("")}
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <h3 style="margin:0">Unit ${i + 1}: ${u.t}</h3>
+          ${f ? '<span class="chip a">Unit Frozen</span>' : ''}
+        </div>
+        <p style="color:var(--mut);margin:0 0 14px;font-size:12.5px">Topics missing in LPU · Unit ${i + 1} of ${c.u.length}</p>
+
+        ${u.g.length === 0 ? '<p style="font-size:13px;color:var(--mut);padding:10px 0">No benchmark gap topics detected for this unit.</p>' : ''}
+        ${u.g.map((g, k) => {
+          const d = S.dec[i + "-" + k];
+          return `
+            <div class="row ${d ? 'done' : ''}" style="margin-bottom:10px">
+              <div>
+                <b>${g[0]}</b><br>
+                <small style="color:var(--mut)">Replaces: ${g[1]}</small><br>
+                <small style="color:var(--pu)">${g[2]}${g[3] ? ' · ' + g[3] : ''}${g[4] ? ' · ' + g[4] : ''}</small>
+              </div>
+              <div class="acts" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+                <button type="button" class="btn sm tl ${d === 'Added' ? 'on' : ''}" style="${d === 'Added' ? 'background:var(--tl);color:#fff;font-weight:700' : ''}" onclick="dec(${i},${k},'Added')">
+                  ${d === 'Added' ? '✓ Added' : 'Add'}
+                </button>
+                <button type="button" class="btn sm lt ${d === 'Replaced' ? 'on' : ''}" style="${d === 'Replaced' ? 'background:var(--or);color:#fff;font-weight:700' : ''}" onclick="dec(${i},${k},'Replaced')">
+                  ${d === 'Replaced' ? '✓ Replaced' : 'Replace'}
+                </button>
+                <button type="button" class="btn sm dk ${d === 'Ignored' ? 'on' : ''}" style="${d === 'Ignored' ? 'background:var(--rd2);color:var(--rd);font-weight:700' : 'background:var(--soft);color:var(--mut)'}" onclick="dec(${i},${k},'Ignored')">
+                  ${d === 'Ignored' ? '✕ Ignored' : 'Ignore'}
+                </button>
+              </div>
+            </div>
+          `;
+        }).join("")}
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;flex-wrap:wrap;gap:10px">
+          <div>
+            ${f 
+              ? `<button type="button" class="btn lt sm" onclick="unfreeze(${i})">🔓 Unfreeze to edit</button>`
+              : `<button type="button" class="btn" onclick="freeze(${i})">${last ? "Freeze unit " + (i + 1) : "Freeze and move to unit " + (i + 2)}</button>`
+            }
+          </div>
+          <button type="button" class="btn lt sm" onclick="go(5)">Preview updated syllabus →</button>
+        </div>
+
+        ${S.frozen.length >= c.u.length ? `
+          <div class="magic" style="margin-top:14px">
+            <p>✓ All ${c.u.length} units are frozen. Your new syllabus is ready to build.</p>
+            <button class="btn mg" onclick="go(5)">✦ Magic display (Preview)</button>
+          </div>
+        ` : ''}
+      </div>
+
+      <div class="card prev">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <h3 style="margin:0">Live preview</h3>
+          <button class="btn sm lt" onclick="go(5)">Full Preview ↗</button>
+        </div>
+        ${c.u.map((u, k) => `
+          <div style="margin-bottom:12px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+              <h4 style="margin:0">Unit ${k + 1}: ${u.t}</h4>
+              <span style="display:flex;gap:4px;align-items:center">
+                ${S.frozen.includes(k) ? '<span class="chip a" style="font-size:10px;padding:1px 6px">frozen</span>' : ''}
+                <button type="button" class="btn sm lt" style="padding:1px 6px;font-size:10px" onclick="S.ui=${k};rev()">Edit</button>
+              </span>
+            </div>
+            <ul>${nu(k).map(x => `<li class="${x.c}">${x.t}</li>`).join("")}</ul>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `, false);
+}
+
+function unfreeze(i){
+  S.frozen = S.frozen.filter(x => x !== i);
+  toast("Unit " + (i + 1) + " unfrozen for editing");
+  rev();
+  saveToBackend();
+}
+
+function nu(i){
+  const u = cur().u[i];
+  let t = u.x.map(x => ({ t: x, c: "" }));
+  u.g.forEach((g, k) => {
+    const d = S.dec[i + "-" + k];
+    if(d == "Added") t.push({ t: g[0], c: "add" });
+    if(d == "Replaced"){
+      const j = t.findIndex(a => a.t == g[1]);
+      j > -1 ? t[j] = { t: g[0], c: "rep" } : t.push({ t: g[0], c: "rep" });
+    }
+  });
+  return t;
+}
+
+function dec(i, k, v){
+  S.dec[i + "-" + k] = v;
+  rev();
+  toast(v + " · preview updated");
+  saveToBackend();
+}
+
+function freeze(i){
+  const n = cur().u.length;
+  if(!S.frozen.includes(i)) S.frozen.push(i);
+  cur().u[i].g.forEach((g, k) => {
+    if(!S.dec[i + "-" + k]) S.dec[i + "-" + k] = "Ignored";
+  });
+  if(i < n - 1){
+    S.ui = i + 1;
+    toast("Unit " + (i + 1) + " frozen");
+  } else {
+    toast("All units frozen · Magic display unlocked");
+  }
+  nav();
+  rev();
+  saveToBackend();
+  if(S.frozen.length >= n){
+    setTimeout(() => document.querySelector(".magic") && document.querySelector(".magic").scrollIntoView({ behavior: "smooth", block: "center" }), 120);
+  }
+}
+
+let currentEditModalUnit = 0;
+
+function openEditModal(unitIdx = 0){
+  currentEditModalUnit = unitIdx;
+  const c = cur();
+  const o = document.createElement("div");
+  o.className = "mdl";
+  o.id = "editTopicModal";
+
+  function renderModalContent(){
+    const u = c.u[currentEditModalUnit];
+    const uIdx = currentEditModalUnit;
+
+    o.innerHTML = `
+      <div class="mbox" style="max-width:680px;width:95%;max-height:88vh;overflow-y:auto;position:relative">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div>
+            <h3 style="margin:0 0 2px">Edit Unit Topics & Decisions</h3>
+            <p style="font-size:12px;color:var(--mut);margin:0">Customize benchmark decisions or ignore any topic</p>
+          </div>
+          <button class="uni-modal-close" id="btnCloseEditModal" style="font-size:22px;cursor:pointer;background:none;border:none;color:var(--mut)">&times;</button>
+        </div>
+
+        <!-- Unit Selector Tabs -->
+        <div class="seg" style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:14px">
+          ${c.u.map((unit, k) => `
+            <button type="button" class="${k === currentEditModalUnit ? 'on' : ''}" style="padding:6px 12px;font-size:12px;font-weight:600" onclick="switchEditModalUnit(${k})">
+              Unit ${k + 1}
+            </button>
+          `).join("")}
+        </div>
+
+        <div style="background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <h4 style="margin:0;font-size:14px">Unit ${uIdx + 1}: ${u.t}</h4>
+            <span class="chip p" style="font-size:11px">${u.g.length} Benchmark Gap${u.g.length === 1 ? '' : 's'}</span>
+          </div>
+          <div style="font-size:12px;color:var(--mut);margin-bottom:6px">Active unit topics:</div>
+          <div class="chips">
+            ${nu(uIdx).map(t => `<span class="chip ${t.c == 'add' ? 'a' : t.c == 'rep' ? 'r' : ''}">${t.t}</span>`).join("")}
+          </div>
+        </div>
+
+        <h4 style="font-size:13px;margin:0 0 10px;text-transform:uppercase;letter-spacing:.03em;color:var(--ink)">
+          Benchmark Topics & Decision Toggles:
+        </h4>
+
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px">
+          ${u.g.length === 0 ? '<p style="font-size:13px;color:var(--mut);padding:8px 0">No benchmark gap topics for this unit.</p>' : ''}
+          ${u.g.map((g, k) => {
+            const curDec = S.dec[uIdx + "-" + k] || "Pending";
+            return `
+              <div style="border:1.5px solid ${curDec === 'Added' ? 'var(--tl)' : curDec === 'Replaced' ? 'var(--or)' : curDec === 'Ignored' ? 'var(--line)' : 'var(--line)'};
+                          background:${curDec === 'Added' ? 'var(--tl2)' : curDec === 'Replaced' ? 'var(--or2)' : 'var(--bg)'};
+                          border-radius:10px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+                <div style="flex:1;min-width:220px">
+                  <b style="font-size:13.5px;color:var(--ink)">${g[0]}</b>
+                  <div style="font-size:11.5px;color:var(--mut);margin-top:2px">
+                    Replaces: <i>${g[1]}</i> · <span style="color:var(--pu)">${g[2]}</span>
+                  </div>
+                </div>
+                <div style="display:flex;gap:6px;align-items:center">
+                  <button type="button" class="btn sm ${curDec === 'Added' ? 'tl' : 'lt'}" 
+                          style="padding:4px 10px;font-size:11.5px;font-weight:700" 
+                          onclick="setModalDecision(${uIdx}, ${k}, 'Added')">
+                    ${curDec === 'Added' ? '✓ Added' : 'Add'}
+                  </button>
+                  <button type="button" class="btn sm ${curDec === 'Replaced' ? 'or' : 'lt'}" 
+                          style="padding:4px 10px;font-size:11.5px;font-weight:700" 
+                          onclick="setModalDecision(${uIdx}, ${k}, 'Replaced')">
+                    ${curDec === 'Replaced' ? '✓ Replaced' : 'Replace'}
+                  </button>
+                  <button type="button" class="btn sm" 
+                          style="padding:4px 10px;font-size:11.5px;background:${curDec === 'Ignored' ? 'var(--rd2)' : 'var(--soft)'};color:${curDec === 'Ignored' ? 'var(--rd)' : 'var(--mut)'};border:1px solid var(--line);font-weight:${curDec === 'Ignored' ? '700' : '500'}" 
+                          onclick="setModalDecision(${uIdx}, ${k}, 'Ignored')">
+                    ${curDec === 'Ignored' ? '✕ Ignored' : 'Ignore'}
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);flex-wrap:wrap;gap:10px">
+          <button type="button" class="btn sm lt" onclick="openReviewScreenFromModal(${uIdx})">
+            Open full Review Screen for Unit ${uIdx + 1} →
+          </button>
+          <button type="button" class="btn" id="btnDoneEditModal">Done · Update preview</button>
+        </div>
+      </div>
+    `;
+
+    const closeBtn = o.querySelector("#btnCloseEditModal");
+    if(closeBtn) closeBtn.onclick = () => { o.remove(); mag(); };
+    const doneBtn = o.querySelector("#btnDoneEditModal");
+    if(doneBtn) doneBtn.onclick = () => { o.remove(); mag(); toast("Preview updated with changes"); };
+  }
+
+  window.switchEditModalUnit = function(k){
+    currentEditModalUnit = k;
+    renderModalContent();
+  };
+
+  window.setModalDecision = function(uIdx, k, decVal){
+    S.dec[uIdx + "-" + k] = decVal;
+    saveToBackend();
+    renderModalContent();
+    toast("Unit " + (uIdx + 1) + ": " + decVal);
+  };
+
+  window.openReviewScreenFromModal = function(uIdx){
+    o.remove();
+    editUnitFromPreview(uIdx);
+  };
+
+  renderModalContent();
+  document.body.appendChild(o);
+}
+
+function editUnitFromPreview(unitIdx){
+  S.ui = unitIdx;
+  S.frozen = S.frozen.filter(x => x !== unitIdx);
+  go(4);
+  toast("Editing Unit " + (unitIdx + 1) + ": modify decisions or ignore topics");
+}
+
+function editFromPreview(){
+  openEditModal(S.ui || 0);
+}
+
+function mag(){
+  S.magic = true;
+  const c = cur();
+  page("Magic display", nx("Submit for HOD approval", 6), `
+    <div class="hero">
+      <div>
+        <h3>New syllabus is ready ✦</h3>
+        <p>Aligned with Top 10 Worldwide & Indian Universities (MIT, Stanford, IIT Bombay, IIT Delhi, CMU, etc.). Alignment score ${bench()}%. You can edit decisions, ignore topics, or revise any unit below.</p>
+        <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+          <button type="button" class="btn lt" onclick="editFromPreview()" style="font-size:13px;padding:6px 14px">✏️ Edit topics & decisions</button>
+          ${nx("Submit for HOD approval", 6)}
+        </div>
+      </div>
+      ${art()}
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+        <div>
+          <h3 style="margin:0 0 4px">${c.n} · updated syllabus</h3>
+          <p style="font-size:12.5px;color:var(--mut);margin:0">Review approved changes across all ${c.u.length} units. Green = Added, Orange = Replaced.</p>
+        </div>
+        <button type="button" class="btn sm lt" onclick="editFromPreview()">✏️ Edit all units</button>
+      </div>
+
+      ${c.u.map((u, i) => `
+        <div class="unit">
+          <div class="n">${i + 1}</div>
+          <div style="flex:1">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:6px">
+              <h4 style="margin:0">${u.t}</h4>
+              <button type="button" class="btn sm lt" style="padding:2px 8px;font-size:11px" onclick="editUnitFromPreview(${i})" title="Edit or ignore topics in Unit ${i + 1}">✏️ Edit Unit ${i + 1}</button>
+            </div>
+            <div class="chips">
+              ${nu(i).map(t => `<span class="chip ${t.c == 'add' ? 'a' : t.c == 'rep' ? 'r' : ''}">${t.t}</span>`).join("")}
+            </div>
+          </div>
+        </div>
+      `).join("")}
+
+      <!-- Edit action bar at end of preview window -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:22px;padding-top:16px;border-top:1px solid var(--line);flex-wrap:wrap;gap:12px">
+        <div>
+          <span style="font-size:13px;color:var(--mut)">Need to change or ignore topics? You can customize decisions for any unit.</span>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button type="button" class="btn lt" onclick="editFromPreview()">✏️ Edit topics & decisions</button>
+          <button type="button" class="btn" onclick="go(6)">Submit for HOD approval →</button>
+        </div>
+      </div>
+    </div>
+  `);
+}
+
 function sub(){page("Submit for approval","",`<div class="card" style="max-width:560px"><h3>${cur().n} · ${$("#st").value}</h3><p style="color:var(--mut);margin-bottom:6px">Alignment with top universities</p><div class="pb"><span style="width:${bench()}%"></span></div><p style="margin-bottom:16px"><b>${bench()}%</b> aligned</p>${["Draft","Correction requested"].includes(S.status)?`<button class="btn" onclick="send()">Submit for approval by HOD</button>`:`<span class="chip a">${S.status}</span>`}${S.remarks?`<p style="margin-top:14px"><span class="chip r">HOD remarks</span><br>${S.remarks}</p>`:""}</div>`)}
 function send(){S.status="Pending HOD review";sub();toast("Sent to HOD");saveToBackend();}
 function rep(){const c=cur();let tot=0,cv0=0,cv1=0,A=0,Rp=0,I=0;
