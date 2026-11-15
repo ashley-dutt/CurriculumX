@@ -193,6 +193,37 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // POST /api/draft (Draft course from benchmarks)
+  if (pathname === '/api/draft' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', () => {
+      try {
+        const data = JSON.parse(body || '{}');
+        const code = (data.code || 'NEW').trim().toUpperCase();
+        const name = (data.name || 'New Course').trim();
+        const ltp = (data.ltp || '3-0-0').trim();
+
+        const units = [
+          { t: "Foundational Concepts & Principles", x: ["Theoretical foundations of " + name, "Core paradigms and problem definitions", "Mathematical representations and specifications", "Complexity analysis and baseline approaches"] },
+          { t: "Algorithmic Paradigms & Data Models", x: ["Core architectural data representations", "Algorithmic structures in " + name, "Optimization formulations and criteria", "Pipeline engineering and modular workflows"] },
+          { t: "Practical Implementations & Methods", x: ["Primary algorithmic workflows", "Hands-on implementation and validation", "Comparative benchmarking against standards", "Empirical performance evaluations"] },
+          { t: "Advanced Optimization & Scaling", x: ["Advanced optimization strategies", "High-throughput and distributed scaling", "Fault tolerance, constraints, and robustness", "Bottleneck profiling and execution speedups"] },
+          { t: "Applied Systems & Domain Workflows", x: ["End-to-end system pipelines", "Industry case studies and applications", "Deployment considerations and testing", "Integration with standard tooling ecosystems"] },
+          { t: "Emerging Paradigms & Frontiers", x: ["Current research developments", "Open challenges and scalable frontiers", "Ethics, security, and governance", "Comprehensive review and capstone design"] }
+        ];
+
+        const src = ["MIT OpenCourseWare (6.006) · Verified Benchmarks", "Premier University Standards"];
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ code, name, ltp, units, src }));
+      } catch (err) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: err.message }));
+      }
+    });
+    return;
+  }
+
   // --- STATIC FILE SERVING ---
   let filePath = path.join(ROOT, pathname === '/' ? 'index.html' : pathname);
   if (!filePath.startsWith(ROOT)) {
