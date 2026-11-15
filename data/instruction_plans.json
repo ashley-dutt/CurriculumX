@@ -1,0 +1,1186 @@
+{
+  "INT396 · Unsupervised Learning": {
+    "code": "INT396",
+    "eliteCode": "INT395",
+    "title": "UNSUPERVISED LEARNING",
+    "ltp": "2-0-2",
+    "credits": 3,
+    "examCategory": "X3 (Regular) / X7R (Elite)",
+    "weightage": {
+      "att": 5,
+      "ca": 45,
+      "ett": 50
+    },
+    "distribution": {
+      "beforeMidTermWeeks": 7,
+      "beforeMidTermLec": 14,
+      "afterMidTermWeeks": 7,
+      "afterMidTermLec": 13,
+      "spillOverLec": 3,
+      "totalLec": 30
+    },
+    "books": {
+      "textbooks": [
+        {
+          "id": "T-1",
+          "title": "Hands-On Unsupervised Learning Using Python",
+          "author": "Ankur A. Patel",
+          "publisher": "O'Reilly Media",
+          "edition": "1st Edition, 2019"
+        }
+      ],
+      "references": [
+        {
+          "id": "R-1",
+          "title": "Practical Machine Learning with Python",
+          "author": "Vaibhav Verdhan",
+          "publisher": "Manning Publications",
+          "edition": "2021"
+        },
+        {
+          "id": "R-2",
+          "title": "Applied Unsupervised Learning with Python",
+          "author": "Dr. Nimrita Koul",
+          "publisher": "AVA Publishing",
+          "edition": "2020"
+        }
+      ],
+      "onlineReadings": [
+        {
+          "id": "OR-1",
+          "title": "Scikit-learn User Guide: Clustering & Unsupervised Algorithms",
+          "url": "https://scikit-learn.org/stable/modules/clustering.html"
+        },
+        {
+          "id": "OR-2",
+          "title": "Scikit-learn Manifold Learning & Dimensionality Reduction Documentation",
+          "url": "https://scikit-learn.org/stable/modules/manifold.html"
+        },
+        {
+          "id": "OR-3",
+          "title": "Yellowbrick Machine Learning Visualizers for Cluster Evaluation",
+          "url": "https://www.scikit-yb.org/en/latest/api/cluster/index.html"
+        },
+        {
+          "id": "OR-4",
+          "title": "Kaggle Curated Datasets for Unsupervised Clustering and Anomaly Detection",
+          "url": "https://www.kaggle.com/datasets"
+        }
+      ]
+    },
+    "cos": [
+      {
+        "code": "CO1",
+        "level": "Understand (Level 2)",
+        "desc": "Explain the principles, paradigms, and real-world applications of unsupervised learning for exploratory data analysis and knowledge discovery."
+      },
+      {
+        "code": "CO2",
+        "level": "Apply (Level 3)",
+        "desc": "Apply clustering, similarity measures, and dimensionality reduction techniques to identify hidden structures in unlabeled datasets."
+      },
+      {
+        "code": "CO3",
+        "level": "Analyze (Level 4)",
+        "desc": "Analyze partition-based, hierarchical, density-based, and probabilistic learning techniques to select appropriate unsupervised models for diverse problem domains."
+      },
+      {
+        "code": "CO4",
+        "level": "Evaluate (Level 5)",
+        "desc": "Evaluate clustering, association rule mining, anomaly detection, and representation learning outcomes using appropriate validation metrics and visualization techniques."
+      },
+      {
+        "code": "CO5",
+        "level": "Evaluate (Level 5)",
+        "desc": "Evaluate the effectiveness of multiple unsupervised learning techniques in solving real-world pattern discovery, customer analytics, and anomaly detection problems."
+      },
+      {
+        "code": "CO6",
+        "level": "Apply / Create (Level 6)",
+        "desc": "Apply end-to-end unsupervised learning workflows involving data preprocessing, model development, visualization, interpretation, and deployment to solve complex domain-specific challenges."
+      }
+    ],
+    "caScheme": {
+      "category": "C010102",
+      "totalMarks": 45,
+      "summary": "Project (Compulsory, 77.78% weightage = 35 marks) + Best 1 of 2 Tests (22.22% weightage = 10 marks)",
+      "tasks": [
+        {
+          "task": "Project (Capstone Assignment)",
+          "weightage": "77.78% (Compulsory)",
+          "marks": 30,
+          "allotmentWeek": "Week 2",
+          "submissionWeek": "Week 11",
+          "mode": "Team/Individual Code Repository + Live Viva + Technical Documentation",
+          "cos": "CO2, CO4, CO5, CO6",
+          "nature": "End-to-end unsupervised problem formulation, data scraping/curation, clustering/manifold reduction, model validation, and deployment dashboard."
+        },
+        {
+          "task": "Test 1 (Objective / Subjective)",
+          "weightage": "22.22% (Shared Best-of-2)",
+          "marks": 30,
+          "allotmentWeek": "Week 5",
+          "submissionWeek": "Week 7 (Lecture 11)",
+          "mode": "In-class LMS / Written Test",
+          "cos": "CO1, CO2, CO3",
+          "nature": "Foundations of unsupervised learning, similarity metrics, k-Means, k-Medoids, and hierarchical clustering mechanics."
+        },
+        {
+          "task": "Test 2 (Objective / Subjective)",
+          "weightage": "22.22% (Shared Best-of-2)",
+          "marks": 30,
+          "allotmentWeek": "Week 8",
+          "submissionWeek": "Week 10 (Lecture 20)",
+          "mode": "In-class LMS / Written Test",
+          "cos": "CO3, CO4, CO5",
+          "nature": "Density-based clustering (DBSCAN), PCA, t-SNE, UMAP, Market Basket Analysis, and Anomaly Detection algorithms."
+        }
+      ]
+    },
+    "moocs": [
+      {
+        "platform": "NPTEL / SWAYAM",
+        "title": "Machine Learning (Prof. Balaraman Ravindran, IIT Madras)",
+        "duration": "12 Weeks",
+        "mappedCOs": "CO1, CO2, CO3, CO4"
+      },
+      {
+        "platform": "Coursera / DeepLearning.AI",
+        "title": "Unsupervised Learning, Recommenders, Reinforcement Learning (Andrew Ng)",
+        "duration": "4 Weeks",
+        "mappedCOs": "CO2, CO4, CO5"
+      }
+    ],
+    "practicals": [
+      {
+        "p": 1,
+        "title": "Exploratory Data Analysis & Similarity Metrics",
+        "tools": "Python, NumPy, SciPy",
+        "desc": "Analyze customer behavior patterns by performing exploratory data analysis and evaluating Euclidean, Manhattan, and Cosine similarity measures on multi-attribute customer profiles.",
+        "co": "CO1, CO2"
+      },
+      {
+        "p": 2,
+        "title": "k-Means & k-Medoids Segmentation",
+        "tools": "Python, Scikit-learn",
+        "desc": "Develop a customer segmentation solution by implementing and comparing k-Means and k-Medoids (PAM) clustering techniques on retail transaction datasets.",
+        "co": "CO2, CO3"
+      },
+      {
+        "p": 3,
+        "title": "Scalable k-Means From Scratch",
+        "tools": "Python, NumPy",
+        "desc": "Design a scalable clustering model by implementing k-Means from scratch, analyzing initialization strategies, vectorizing distance calculations, and validating convergence.",
+        "co": "CO2"
+      },
+      {
+        "p": 4,
+        "title": "Impact of Preprocessing & Scaling",
+        "tools": "Python, Pandas, Scikit-learn",
+        "desc": "Investigate the influence of feature scaling (StandardScaler vs MinMaxScaler vs RobustScaler) and missing value handling on cluster geometry and separation boundaries.",
+        "co": "CO2, CO3"
+      },
+      {
+        "p": 5,
+        "title": "Clustering Validation & Optimization",
+        "tools": "Python, Yellowbrick, Scikit-learn",
+        "desc": "Determine optimal cluster configurations by computing Elbow Method (Inertia/WCSS), Silhouette Coefficients, and Davies–Bouldin Index across synthetic and empirical datasets.",
+        "co": "CO3, CO4"
+      },
+      {
+        "p": 6,
+        "title": "Agglomerative Hierarchical Clustering",
+        "tools": "Python, SciPy, Matplotlib",
+        "desc": "Analyze hierarchical relationships in unlabeled data by constructing dendrograms and benchmarking single, complete, average, and Ward linkage strategies.",
+        "co": "CO3"
+      },
+      {
+        "p": 7,
+        "title": "DBSCAN Density-Based Clustering",
+        "tools": "Python, Scikit-learn",
+        "desc": "Develop a density-based spatial clustering solution using DBSCAN, analyzing the sensitivity of epsilon (ε) and MinPts, and isolating spatial noise/outlier samples.",
+        "co": "CO3, CO4"
+      },
+      {
+        "p": 8,
+        "title": "Comparative Clustering Benchmarks",
+        "tools": "Python, Matplotlib, Scikit-learn",
+        "desc": "Evaluate partition-based, hierarchical, and density-based clustering models against non-spherical geometric distributions (concentric rings, crescent moons, anisotropic blobs).",
+        "co": "CO3, CO4"
+      },
+      {
+        "p": 9,
+        "title": "Principal Component Analysis (PCA)",
+        "tools": "Python, Scikit-learn",
+        "desc": "Develop an efficient feature representation model by applying PCA to reduce dimensionality, computing explained variance ratios, scree plots, and eigenvalue decomposition.",
+        "co": "CO2, CO4"
+      },
+      {
+        "p": 10,
+        "title": "Non-Linear Manifold Learning (t-SNE & UMAP)",
+        "tools": "Python, openTSNE, UMAP-learn",
+        "desc": "Compare non-linear dimensionality reduction algorithms by projecting high-dimensional datasets (MNIST digits, Fashion-MNIST) into 2D/3D latent visual embeddings.",
+        "co": "CO2, CO4"
+      },
+      {
+        "p": 11,
+        "title": "Market Basket Analysis with Apriori & FP-Growth",
+        "tools": "Python, MLxtend",
+        "desc": "Extract actionable association rules from retail supermarket transaction logs by configuring Support, Confidence, Lift, and Conviction thresholds.",
+        "co": "CO4, CO5"
+      },
+      {
+        "p": 12,
+        "title": "Anomaly Detection Frameworks",
+        "tools": "Python, PyOD, Scikit-learn",
+        "desc": "Develop an anomaly detection pipeline comparing Isolation Forest, Local Outlier Factor (LOF), and One-Class SVM on skewed credit card fraud and network intrusion logs.",
+        "co": "CO4, CO5"
+      },
+      {
+        "p": 13,
+        "title": "Gaussian Mixture Models (GMM) & Soft Clustering",
+        "tools": "Python, Scikit-learn",
+        "desc": "Implement soft clustering with Gaussian Mixture Models, estimating covariance types (spherical, tied, diag, full) and optimizing BIC/AIC criteria via EM.",
+        "co": "CO3, CO4"
+      },
+      {
+        "p": 14,
+        "title": "End-to-End Capstone Project Pipeline",
+        "tools": "Python, Streamlit, Scikit-learn",
+        "desc": "Synthesize an end-to-end unsupervised pipeline incorporating raw data ingestion, preprocessing, dimensionality reduction, model clustering, evaluation metrics, and interactive dashboarding.",
+        "co": "CO5, CO6"
+      },
+      {
+        "p": 15,
+        "title": "Practical Spill-Over, Project Viva & Code Review",
+        "tools": "Python, Git, Jupyter",
+        "desc": "Conduct capstone code review, rubric-based technical viva voce, model deployment verification, and comprehensive practical evaluation.",
+        "co": "CO1–CO6"
+      }
+    ],
+    "lectures": [
+      {
+        "week": 1,
+        "lec": 1,
+        "topic": "Foundations of Unsupervised Learning & Core Paradigms",
+        "ref": "T-1 Ch 1, R-1 Ch 1",
+        "or": "OR-1 (Overview)",
+        "desc": "Introduction to unsupervised learning principles; Comparison between Supervised, Unsupervised, and Semi-Supervised learning paradigms; Unlabeled data challenges and value extraction in modern AI.",
+        "outcome": "Understand core unsupervised paradigms and differentiate unsupervised workflows from supervised regression and classification.",
+        "pedagogy": "Venn diagrams comparing ML paradigms, interactive taxonomy whiteboard session.",
+        "example": "Customer segmentation in Amazon and Netflix user personalization."
+      },
+      {
+        "week": 1,
+        "lec": 2,
+        "topic": "Problem Formulation & Real-World Industry Use Cases",
+        "ref": "T-1 Ch 1, R-2 Ch 1",
+        "or": "OR-4 (Kaggle Datasets)",
+        "desc": "Formulating business problems into unsupervised learning tasks; Exploratory Data Analysis (EDA) for structure discovery; Use cases across finance, healthcare, and retail.",
+        "outcome": "Formulate unstructured business problems as clustering, dimensionality reduction, or anomaly detection tasks.",
+        "pedagogy": "Case study analysis of fintech and e-commerce transaction workflows.",
+        "example": "Credit card transaction fraud identification and customer churn clustering."
+      },
+      {
+        "week": 2,
+        "lec": 3,
+        "topic": "Distance & Geometric Similarity Metrics",
+        "ref": "T-1 Ch 2, R-1 Ch 2",
+        "or": "OR-1 (Distance Metrics)",
+        "desc": "Mathematical formulations and properties of distance metrics: Euclidean (L2 norm), Manhattan (L1 city block), Minkowski, and Cosine similarity for high-dimensional vectors.",
+        "outcome": "Calculate and select appropriate distance/similarity metrics tailored to feature scales and vector geometries.",
+        "pedagogy": "Geometric intuition board work; 'As the crow flies vs city grid' analogy.",
+        "example": "Text document similarity in search engines and GPS routing distance computations."
+      },
+      {
+        "week": 2,
+        "lec": 4,
+        "topic": "Partition-Based Clustering: k-Means Mechanics",
+        "ref": "T-1 Ch 2, R-1 Ch 3",
+        "or": "OR-1 (k-Means)",
+        "desc": "Concept of hard vs soft clustering; k-Means algorithm formulation; Centroid initialization methods; Standard Lloyd's algorithm iteration and convergence criteria.",
+        "outcome": "Explain k-Means algorithmic mechanics and implement iterative centroid convergence.",
+        "pedagogy": "Step-by-step dry-run on 2D scatter plots; Colored magnets on magnetic board.",
+        "example": "Grouping retail customers based on annual income and spending score."
+      },
+      {
+        "week": 3,
+        "lec": 5,
+        "topic": "Advanced k-Means: k-Means++ Initialization & Pitfalls",
+        "ref": "T-1 Ch 2, R-2 Ch 2",
+        "or": "OR-1 (k-Means++)",
+        "desc": "Vulnerability of standard k-Means to poor local minima; k-Means++ probabilistic initialization proof and behavior; Convergence guarantees and computational complexity.",
+        "outcome": "Apply k-Means++ to safeguard against suboptimal centroid initialization traps.",
+        "pedagogy": "Live Jupyter Notebook simulation comparing random seeds against k-Means++.",
+        "example": "Clustering geographical weather station readings across national grid sensors."
+      },
+      {
+        "week": 3,
+        "lec": 6,
+        "topic": "Robust Partitioning: k-Medoids (PAM) & Preprocessing",
+        "ref": "T-1 Ch 2, R-1 Ch 3",
+        "or": "OR-1 (k-Medoids)",
+        "desc": "Partitioning Around Medoids (PAM) algorithm; Contrast between artificial mean centroids and actual exemplar medoids; Sensitivity to outliers; Impact of feature scaling and standardization.",
+        "outcome": "Select k-Medoids over k-Means when dataset contains heavy outliers and explain scaling prerequisites.",
+        "pedagogy": "Interactive comparative demonstration with and without extreme outlier injection.",
+        "example": "Hospital patient length-of-stay clustering with anomalous critical care outliers."
+      },
+      {
+        "week": 4,
+        "lec": 7,
+        "topic": "Scalable Clustering: MiniBatch k-Means",
+        "ref": "T-1 Ch 2, R-2 Ch 2",
+        "or": "OR-1 (MiniBatch)",
+        "desc": "Big Data clustering limitations; MiniBatch k-Means stochastic gradient descent updates; Memory footprint reduction and convergence speedup trade-offs.",
+        "outcome": "Deploy MiniBatch k-Means on massive streaming datasets that exceed system RAM.",
+        "pedagogy": "Algorithmic complexity profiling (Big-O time and memory comparisons).",
+        "example": "Large-scale web clickstream event clustering for digital advertising platforms."
+      },
+      {
+        "week": 4,
+        "lec": 8,
+        "topic": "Cluster Validation: Internal Metrics & Elbow Method",
+        "ref": "T-1 Ch 3, R-1 Ch 4",
+        "or": "OR-3 (Yellowbrick Elbow)",
+        "desc": "Within-Cluster Sum of Squares (WCSS / Inertia); Elbow Method mechanics and ambiguity pitfalls; Between-Cluster Sum of Squares (BCSS); Davies–Bouldin Index.",
+        "outcome": "Evaluate clustering compactness and separation using inertia curves and Davies–Bouldin indices.",
+        "pedagogy": "Graphical curvature analysis; Live interactive parameter tuning slider.",
+        "example": "Optimal product category tier determination in an e-commerce catalog."
+      },
+      {
+        "week": 5,
+        "lec": 9,
+        "topic": "Advanced Validation: Silhouette Analysis & Visualizers",
+        "ref": "T-1 Ch 3, R-2 Ch 3",
+        "or": "OR-3 (Silhouette Visualizer)",
+        "desc": "Silhouette Coefficient mathematical formulation: intra-cluster distance a(i) vs nearest-cluster distance b(i); Interpreting negative and near-zero silhouette values; Yellowbrick silhouette plots.",
+        "outcome": "Interpret silhouette plots to identify misclassified border points and determine optimal k.",
+        "pedagogy": "Knife-blade silhouette distribution visualizations and heatmaps.",
+        "example": "Telecom customer contract plan grouping and churn risk tiering."
+      },
+      {
+        "week": 5,
+        "lec": 10,
+        "topic": "Hierarchical Clustering: Agglomerative Mechanics",
+        "ref": "T-1 Ch 4, R-1 Ch 5",
+        "or": "OR-1 (Hierarchical)",
+        "desc": "Bottom-up agglomerative vs top-down divisive clustering; Proximity matrix computation; Linkage criteria: Single (minimum distance), Complete (maximum distance), Average, and Ward's minimum variance.",
+        "outcome": "Construct agglomerative cluster trees and evaluate linkage behaviors on elongated vs spherical shapes.",
+        "pedagogy": "Step-by-step matrix reduction board exercise.",
+        "example": "Phylogenetic biological tree synthesis and evolutionary gene family mapping."
+      },
+      {
+        "week": 6,
+        "lec": 11,
+        "topic": "Academic Task: Test 1 / Continuous Assessment Mid-Review",
+        "ref": "Curriculum Assessment",
+        "or": "LMS Portal",
+        "desc": "Objective and Subjective In-Class Assessment (CA Test 1) covering Foundations, Partition-Based Clustering, Distance Metrics, and Hierarchical Clustering Theory.",
+        "outcome": "Demonstrate conceptual mastery and problem-solving skills across Units 1 & 2.",
+        "pedagogy": "Formal structured written/LMS assessment test.",
+        "example": "Evaluation of algorithmic time complexity, distance derivations, and linkage matrices."
+      },
+      {
+        "week": 6,
+        "lec": 12,
+        "topic": "Dendrogram Interpretation & Tree Pruning",
+        "ref": "T-1 Ch 4, R-2 Ch 3",
+        "or": "OR-1 (Dendrograms)",
+        "desc": "Reading and interpreting dendrogram heights; Horizontal cut line placement; Determining natural cluster boundaries; Cophenetic correlation coefficient for tree fidelity.",
+        "outcome": "Determine optimal cluster partitions by pruning dendrograms at statistically defensible heights.",
+        "pedagogy": "Interactive dendrogram cutting tool in Python/SciPy.",
+        "example": "Document taxonomy generation and news article topical hierarchy creation."
+      },
+      {
+        "week": 7,
+        "lec": 13,
+        "topic": "Density-Based Clustering: DBSCAN Fundamentals",
+        "ref": "T-1 Ch 5, R-1 Ch 6",
+        "or": "OR-1 (DBSCAN)",
+        "desc": "Limitations of centroid and hierarchical clustering on irregular topologies; DBSCAN core concepts: Epsilon (ε) neighborhood, MinPts; Core points, Border points, and Noise points.",
+        "outcome": "Explain density reachability and connectivity; Isolate non-convex clusters with noise filtering.",
+        "pedagogy": "Visual animation of density wave propagation across arbitrary shaped point clouds.",
+        "example": "Urban traffic bottleneck detection and GPS taxi drop-off hotspot identification."
+      },
+      {
+        "week": 7,
+        "lec": 14,
+        "topic": "Mid-Term Spill Over & Clustering Algorithmic Review",
+        "ref": "T-1, R-1, R-2",
+        "or": "OR-1 (Clustering Comparison)",
+        "desc": "Buffer lecture for complex topics: Benchmarking k-Means vs Hierarchical vs DBSCAN across time complexity, memory, shape flexibility, and noise resilience; Mid-term doubt clearing.",
+        "outcome": "Synthesize comparative trade-offs among all partition, hierarchical, and density-based clustering models.",
+        "pedagogy": "Comprehensive matrix comparison and live benchmark shootout on non-convex datasets.",
+        "example": "Selecting suitable clustering paradigms for astronomical galaxy survey data."
+      },
+      {
+        "week": 8,
+        "lec": 15,
+        "topic": "Curse of Dimensionality & Dimensionality Reduction Intro",
+        "ref": "T-1 Ch 6, R-1 Ch 7",
+        "or": "OR-4 (High-dim Datasets)",
+        "desc": "Geometric phenomena in high dimensions: volume concentration, distance homogenization; Need for dimensionality reduction: noise suppression, visualization, and compute efficiency.",
+        "outcome": "Analyze the curse of dimensionality and justify dimensional compression for downstream ML.",
+        "pedagogy": "Geometric hypercube vs hypersphere volume ratio thought experiment.",
+        "example": "Processing genomic microarray data with 20,000 genes over 100 patient samples."
+      },
+      {
+        "week": 8,
+        "lec": 16,
+        "topic": "Principal Component Analysis (PCA): Geometric Intuition",
+        "ref": "T-1 Ch 6, R-1 Ch 7",
+        "or": "OR-2 (PCA Guide)",
+        "desc": "Linear dimensionality reduction; Direction of maximum variance; Orthogonal projection axes; Covariance matrix computation; Eigenvalues, eigenvectors, and principal components.",
+        "outcome": "Derive principal components geometrically and interpret variance preservation.",
+        "pedagogy": "2D/3D dynamic projection rotations; Ellipsoid variance axis animation.",
+        "example": "Facial recognition eigenfaces (AT&T Cambridge face database)."
+      },
+      {
+        "week": 9,
+        "lec": 17,
+        "topic": "PCA Practical Implementation: Scree Plots & Explained Variance",
+        "ref": "T-1 Ch 6, R-2 Ch 4",
+        "or": "OR-2 (PCA Variance)",
+        "desc": "Cumulative explained variance ratio calculation; Scree plot construction; Kaiser criterion for component retention; Reconstruction error and lossy compression analysis.",
+        "outcome": "Select the optimal number of principal components balancing compression ratio with information loss.",
+        "pedagogy": "Hands-on coding walkthrough on biomedical datasets using Scikit-learn PCA.",
+        "example": "Image compression and noise reduction in MRI and CT scans."
+      },
+      {
+        "week": 9,
+        "lec": 18,
+        "topic": "Non-Linear Manifold Learning: t-SNE",
+        "ref": "T-1 Ch 7, R-1 Ch 8",
+        "or": "OR-2 (t-SNE)",
+        "desc": "Limitations of linear PCA on curved manifolds; t-Distributed Stochastic Neighbor Embedding (t-SNE); Probability distributions over pairs; Perplexity parameter tuning; Local vs global preservation.",
+        "outcome": "Apply t-SNE to visualize high-dimensional data in 2D/3D and configure perplexity effectively.",
+        "pedagogy": "Interactive distortion visualization; Misreading t-SNE plots guide.",
+        "example": "Visualizing high-dimensional single-cell RNA sequencing (scRNA-seq) cell clusters."
+      },
+      {
+        "week": 10,
+        "lec": 19,
+        "topic": "Scalable Manifold Learning: UMAP & Autoencoders Intuition",
+        "ref": "T-1 Ch 7, R-2 Ch 5",
+        "or": "OR-2 (UMAP)",
+        "desc": "Uniform Manifold Approximation and Projection (UMAP) Riemannian geometry principles; Global structure preservation comparison (t-SNE vs UMAP); Conceptual introduction to Deep Autoencoders.",
+        "outcome": "Contrast UMAP and t-SNE in scalability and global structure fidelity; Understand latent bottleneck autoencoders.",
+        "pedagogy": "Side-by-side run on MNIST 70,000 digits benchmarking execution time and visual clustering.",
+        "example": "Visualizing 100,000 word embeddings in Natural Language Processing (Word2Vec / BERT)."
+      },
+      {
+        "week": 10,
+        "lec": 20,
+        "topic": "Academic Task: Test 2 / Continuous Assessment Review",
+        "ref": "Curriculum Assessment",
+        "or": "LMS Portal",
+        "desc": "Objective and Subjective In-Class Assessment (CA Test 2) covering DBSCAN, Dimensionality Reduction (PCA, t-SNE, UMAP), and Feature Representation Learning.",
+        "outcome": "Demonstrate rigorous theoretical and practical problem-solving across Units 3 & 4.",
+        "pedagogy": "Formal structured written/LMS assessment test.",
+        "example": "Evaluation of covariance matrices, eigenvector calculations, and manifold hyperparameters."
+      },
+      {
+        "week": 11,
+        "lec": 21,
+        "topic": "Association Rule Mining: Apriori Algorithm Mechanics",
+        "ref": "T-1 Ch 8, R-1 Ch 9",
+        "or": "OR-1 (Association Rules)",
+        "desc": "Market Basket Analysis foundations; Itemsets, transactions, and rule formats (A -> B); Key metrics: Support, Confidence, Lift, and Conviction; Apriori downward-closure property.",
+        "outcome": "Extract strong association rules and interpret Lift to discard coincidental item correlations.",
+        "pedagogy": "Supermarket shopping cart board game with transaction frequency tables.",
+        "example": "Amazon 'Frequently Bought Together' cross-sell recommendation engines."
+      },
+      {
+        "week": 11,
+        "lec": 22,
+        "topic": "Capstone Project Review: Phase-1 Architecture Evaluation",
+        "ref": "Project Rubric",
+        "or": "GitHub Repository",
+        "desc": "Formal evaluation of Continuous Assessment Capstone Project: Problem definition, EDA, data pipeline, and initial model benchmarking presented by student groups.",
+        "outcome": "Defend end-to-end unsupervised design choices, baseline models, and code architecture.",
+        "pedagogy": "Interactive peer critique and rubric-based faculty technical viva.",
+        "example": "Live code walkthrough of end-to-end industry analytics repositories."
+      },
+      {
+        "week": 12,
+        "lec": 23,
+        "topic": "Scalable Rule Mining: FP-Growth (Frequent Pattern Tree)",
+        "ref": "T-1 Ch 8, R-2 Ch 6",
+        "or": "OR-1 (FP-Growth)",
+        "desc": "Computational bottlenecks of candidate generation in Apriori; FP-Tree compact data structure construction; Mining frequent itemsets without candidate generation.",
+        "outcome": "Deploy FP-Growth algorithm for orders-of-magnitude faster association mining on sparse datasets.",
+        "pedagogy": "Interactive FP-tree building walkthrough with prefix path mining.",
+        "example": "Healthcare adverse drug reaction combination mining from prescription databases."
+      },
+      {
+        "week": 12,
+        "lec": 24,
+        "topic": "Anomaly & Outlier Detection: Statistical & Distance Methods",
+        "ref": "T-1 Ch 9, R-1 Ch 10",
+        "or": "OR-1 (Outlier Detection)",
+        "desc": "Defining anomalies: point, contextual, and collective outliers; Z-score and IQR bounds; Distance-based k-NN outlier scores; Local Outlier Factor (LOF) local density estimation.",
+        "outcome": "Differentiate global and local outliers and apply LOF to non-uniform density datasets.",
+        "pedagogy": "2D scatter visual highlighting isolated outliers vs local cluster-edge outliers.",
+        "example": "Network intrusion detection identifying malicious port-scanning patterns."
+      },
+      {
+        "week": 13,
+        "lec": 25,
+        "topic": "Tree-Based Anomaly Detection: Isolation Forest",
+        "ref": "T-1 Ch 9, R-2 Ch 7",
+        "or": "OR-1 (Isolation Forest)",
+        "desc": "Isolation Forest core philosophy: isolating anomalies rather than profiling normal points; Recursive random partitioning; Average path length in isolation trees; Anomaly score computation.",
+        "outcome": "Implement Isolation Forest for high-dimensional anomaly detection with linear time complexity.",
+        "pedagogy": "Tree partitioning animation illustrating rapid isolation of rare anomalous points.",
+        "example": "Financial banking transaction fraud screening and automated anti-money laundering (AML)."
+      },
+      {
+        "week": 13,
+        "lec": 26,
+        "topic": "Probabilistic Clustering: Gaussian Mixture Models (GMM)",
+        "ref": "T-1 Ch 10, R-1 Ch 11",
+        "or": "OR-1 (Gaussian Mixtures)",
+        "desc": "Probability density estimation; Mixture models; Expectation-Maximization (EM) algorithm: E-step (posterior probabilities) and M-step (parameter updates); Covariance constraints.",
+        "outcome": "Apply Gaussian Mixture Models for soft probabilistic clustering and density estimation.",
+        "pedagogy": "Overlapping Gaussian bell curves demonstration with soft probabilistic assignment.",
+        "example": "Speaker diarization and acoustic speech pattern clustering in audio processing."
+      },
+      {
+        "week": 14,
+        "lec": 27,
+        "topic": "Model Evaluation, Stability Analysis & End-to-End Pipeline",
+        "ref": "T-1 Ch 11, R-1 Ch 12",
+        "or": "OR-1 (Evaluation Metrics)",
+        "desc": "External validation metrics when ground truth is partially available: Adjusted Rand Index (ARI), Normalized Mutual Information (NMI); Cluster stability under perturbation; Pipeline deployment.",
+        "outcome": "Validate unsupervised models using ARI/NMI and evaluate clustering robustness via bootstrap resampling.",
+        "pedagogy": "Sensitivity analysis charts and deployment architectural diagrams.",
+        "example": "Verifying customer segmentation model stability across consecutive quarters."
+      },
+      {
+        "week": 14,
+        "lec": 28,
+        "topic": "Spill Over Lecture 1: Advanced Anomaly & Deep Generative Models",
+        "ref": "T-1, R-1, R-2",
+        "or": "OR-1, OR-2",
+        "desc": "Buffer lecture for advanced applications: Deep Autoencoders for anomaly detection, Variational Autoencoders (VAE) overview, and Self-Organizing Maps (SOM).",
+        "outcome": "Appraise state-of-the-art unsupervised deep representation and reconstruction methods.",
+        "pedagogy": "Architecture diagrams and code demonstration of autoencoder reconstruction error.",
+        "example": "Industrial sensor telemetry predictive maintenance and turbine fault anticipation."
+      },
+      {
+        "week": 15,
+        "lec": 29,
+        "topic": "Spill Over Lecture 2: Real-World Case Studies & Deployment",
+        "ref": "T-1 Ch 12",
+        "or": "OR-4 (Case Studies)",
+        "desc": "Buffer lecture for end-to-end case studies: Deploying unsupervised models with Scikit-learn pipelines; Model serialization (joblib/pickle); Real-time inference latency.",
+        "outcome": "Package and deploy unsupervised pipelines as web endpoints or batch analytics jobs.",
+        "pedagogy": "Interactive live demo deploying a clustering REST API endpoint.",
+        "example": "Production deployment of customer classification microservice on AWS / Docker."
+      },
+      {
+        "week": 15,
+        "lec": 30,
+        "topic": "Spill Over Lecture 3: Comprehensive Course Review & Capstone Viva",
+        "ref": "All Units",
+        "or": "All Online Resources",
+        "desc": "Comprehensive review of all 6 course units; Summary of key algorithmic decisions; Final Project evaluation, student Q&A, and ETT preparation guidance.",
+        "outcome": "Synthesize complete knowledge of unsupervised learning algorithms and excel in final evaluations.",
+        "pedagogy": "Rapid-fire conceptual quiz, algorithmic decision cheat-sheet distribution.",
+        "example": "Preparation for senior machine learning engineer and data scientist technical interviews."
+      }
+    ]
+  },
+  "INT395 · Supervised Learning": {
+    "code": "INT395",
+    "eliteCode": "INT395",
+    "title": "UNSUPERVISED LEARNING (ED-Rev Intensive Batch)",
+    "ltp": "2-0-2",
+    "credits": 3,
+    "examCategory": "X7R (Elite Intensive)",
+    "weightage": {
+      "att": 5,
+      "ca": 45,
+      "ett": 50
+    },
+    "distribution": {
+      "beforeMidTermWeeks": 7,
+      "beforeMidTermLec": 14,
+      "afterMidTermWeeks": 7,
+      "afterMidTermLec": 13,
+      "spillOverLec": 3,
+      "totalLec": 30
+    },
+    "books": {
+      "textbooks": [
+        {
+          "id": "T-1",
+          "title": "Hands-On Unsupervised Learning Using Python",
+          "author": "Ankur A. Patel",
+          "publisher": "O'Reilly Media",
+          "edition": "1st Edition, 2019"
+        }
+      ],
+      "references": [
+        {
+          "id": "R-1",
+          "title": "Practical Machine Learning with Python",
+          "author": "Vaibhav Verdhan",
+          "publisher": "Manning Publications",
+          "edition": "2021"
+        },
+        {
+          "id": "R-2",
+          "title": "Applied Unsupervised Learning with Python",
+          "author": "Dr. Nimrita Koul",
+          "publisher": "AVA Publishing",
+          "edition": "2020"
+        }
+      ],
+      "onlineReadings": [
+        {
+          "id": "OR-1",
+          "title": "Scikit-learn User Guide: Clustering & Unsupervised Algorithms",
+          "url": "https://scikit-learn.org/stable/modules/clustering.html"
+        },
+        {
+          "id": "OR-2",
+          "title": "Scikit-learn Manifold Learning & Dimensionality Reduction Documentation",
+          "url": "https://scikit-learn.org/stable/modules/manifold.html"
+        },
+        {
+          "id": "OR-3",
+          "title": "Yellowbrick Machine Learning Visualizers for Cluster Evaluation",
+          "url": "https://www.scikit-yb.org/en/latest/api/cluster/index.html"
+        },
+        {
+          "id": "OR-4",
+          "title": "Kaggle Curated Datasets for Unsupervised Clustering and Anomaly Detection",
+          "url": "https://www.kaggle.com/datasets"
+        }
+      ]
+    },
+    "cos": [
+      {
+        "code": "CO1",
+        "level": "Understand (Level 2)",
+        "desc": "Explain the principles, paradigms, and real-world applications of unsupervised learning for exploratory data analysis and knowledge discovery."
+      },
+      {
+        "code": "CO2",
+        "level": "Apply (Level 3)",
+        "desc": "Apply clustering, similarity measures, and dimensionality reduction techniques to identify hidden structures in unlabeled datasets."
+      },
+      {
+        "code": "CO3",
+        "level": "Analyze (Level 4)",
+        "desc": "Analyze partition-based, hierarchical, density-based, and probabilistic learning techniques to select appropriate unsupervised models for diverse problem domains."
+      },
+      {
+        "code": "CO4",
+        "level": "Evaluate (Level 5)",
+        "desc": "Evaluate clustering, association rule mining, anomaly detection, and representation learning outcomes using appropriate validation metrics and visualization techniques."
+      },
+      {
+        "code": "CO5",
+        "level": "Evaluate (Level 5)",
+        "desc": "Evaluate the effectiveness of multiple unsupervised learning techniques in solving real-world pattern discovery, customer analytics, and anomaly detection problems."
+      },
+      {
+        "code": "CO6",
+        "level": "Apply / Create (Level 6)",
+        "desc": "Apply end-to-end unsupervised learning workflows involving data preprocessing, model development, visualization, interpretation, and deployment to solve complex domain-specific challenges."
+      }
+    ],
+    "caScheme": {
+      "category": "C010102",
+      "totalMarks": 45,
+      "summary": "Project (Compulsory, 77.78% weightage = 35 marks) + Best 1 of 2 Tests (22.22% weightage = 10 marks)",
+      "tasks": [
+        {
+          "task": "Project (Capstone Assignment)",
+          "weightage": "77.78% (Compulsory)",
+          "marks": 30,
+          "allotmentWeek": "Week 2",
+          "submissionWeek": "Week 11",
+          "mode": "Team/Individual Code Repository + Live Viva + Technical Documentation",
+          "cos": "CO2, CO4, CO5, CO6",
+          "nature": "End-to-end unsupervised problem formulation, data scraping/curation, clustering/manifold reduction, model validation, and deployment dashboard."
+        },
+        {
+          "task": "Test 1 (Objective / Subjective)",
+          "weightage": "22.22% (Shared Best-of-2)",
+          "marks": 30,
+          "allotmentWeek": "Week 5",
+          "submissionWeek": "Week 7 (Lecture 11)",
+          "mode": "In-class LMS / Written Test",
+          "cos": "CO1, CO2, CO3",
+          "nature": "Foundations of unsupervised learning, similarity metrics, k-Means, k-Medoids, and hierarchical clustering mechanics."
+        },
+        {
+          "task": "Test 2 (Objective / Subjective)",
+          "weightage": "22.22% (Shared Best-of-2)",
+          "marks": 30,
+          "allotmentWeek": "Week 8",
+          "submissionWeek": "Week 10 (Lecture 20)",
+          "mode": "In-class LMS / Written Test",
+          "cos": "CO3, CO4, CO5",
+          "nature": "Density-based clustering (DBSCAN), PCA, t-SNE, UMAP, Market Basket Analysis, and Anomaly Detection algorithms."
+        }
+      ]
+    },
+    "moocs": [
+      {
+        "platform": "NPTEL / SWAYAM",
+        "title": "Machine Learning (Prof. Balaraman Ravindran, IIT Madras)",
+        "duration": "12 Weeks",
+        "mappedCOs": "CO1, CO2, CO3, CO4"
+      },
+      {
+        "platform": "Coursera / DeepLearning.AI",
+        "title": "Unsupervised Learning, Recommenders, Reinforcement Learning (Andrew Ng)",
+        "duration": "4 Weeks",
+        "mappedCOs": "CO2, CO4, CO5"
+      }
+    ],
+    "practicals": [
+      {
+        "p": 1,
+        "title": "Exploratory Data Analysis & Similarity Metrics",
+        "tools": "Python, NumPy, SciPy",
+        "desc": "Analyze customer behavior patterns by performing exploratory data analysis and evaluating Euclidean, Manhattan, and Cosine similarity measures on multi-attribute customer profiles.",
+        "co": "CO1, CO2"
+      },
+      {
+        "p": 2,
+        "title": "k-Means & k-Medoids Segmentation",
+        "tools": "Python, Scikit-learn",
+        "desc": "Develop a customer segmentation solution by implementing and comparing k-Means and k-Medoids (PAM) clustering techniques on retail transaction datasets.",
+        "co": "CO2, CO3"
+      },
+      {
+        "p": 3,
+        "title": "Scalable k-Means From Scratch",
+        "tools": "Python, NumPy",
+        "desc": "Design a scalable clustering model by implementing k-Means from scratch, analyzing initialization strategies, vectorizing distance calculations, and validating convergence.",
+        "co": "CO2"
+      },
+      {
+        "p": 4,
+        "title": "Impact of Preprocessing & Scaling",
+        "tools": "Python, Pandas, Scikit-learn",
+        "desc": "Investigate the influence of feature scaling (StandardScaler vs MinMaxScaler vs RobustScaler) and missing value handling on cluster geometry and separation boundaries.",
+        "co": "CO2, CO3"
+      },
+      {
+        "p": 5,
+        "title": "Clustering Validation & Optimization",
+        "tools": "Python, Yellowbrick, Scikit-learn",
+        "desc": "Determine optimal cluster configurations by computing Elbow Method (Inertia/WCSS), Silhouette Coefficients, and Davies–Bouldin Index across synthetic and empirical datasets.",
+        "co": "CO3, CO4"
+      },
+      {
+        "p": 6,
+        "title": "Agglomerative Hierarchical Clustering",
+        "tools": "Python, SciPy, Matplotlib",
+        "desc": "Analyze hierarchical relationships in unlabeled data by constructing dendrograms and benchmarking single, complete, average, and Ward linkage strategies.",
+        "co": "CO3"
+      },
+      {
+        "p": 7,
+        "title": "DBSCAN Density-Based Clustering",
+        "tools": "Python, Scikit-learn",
+        "desc": "Develop a density-based spatial clustering solution using DBSCAN, analyzing the sensitivity of epsilon (ε) and MinPts, and isolating spatial noise/outlier samples.",
+        "co": "CO3, CO4"
+      },
+      {
+        "p": 8,
+        "title": "Comparative Clustering Benchmarks",
+        "tools": "Python, Matplotlib, Scikit-learn",
+        "desc": "Evaluate partition-based, hierarchical, and density-based clustering models against non-spherical geometric distributions (concentric rings, crescent moons, anisotropic blobs).",
+        "co": "CO3, CO4"
+      },
+      {
+        "p": 9,
+        "title": "Principal Component Analysis (PCA)",
+        "tools": "Python, Scikit-learn",
+        "desc": "Develop an efficient feature representation model by applying PCA to reduce dimensionality, computing explained variance ratios, scree plots, and eigenvalue decomposition.",
+        "co": "CO2, CO4"
+      },
+      {
+        "p": 10,
+        "title": "Non-Linear Manifold Learning (t-SNE & UMAP)",
+        "tools": "Python, openTSNE, UMAP-learn",
+        "desc": "Compare non-linear dimensionality reduction algorithms by projecting high-dimensional datasets (MNIST digits, Fashion-MNIST) into 2D/3D latent visual embeddings.",
+        "co": "CO2, CO4"
+      },
+      {
+        "p": 11,
+        "title": "Market Basket Analysis with Apriori & FP-Growth",
+        "tools": "Python, MLxtend",
+        "desc": "Extract actionable association rules from retail supermarket transaction logs by configuring Support, Confidence, Lift, and Conviction thresholds.",
+        "co": "CO4, CO5"
+      },
+      {
+        "p": 12,
+        "title": "Anomaly Detection Frameworks",
+        "tools": "Python, PyOD, Scikit-learn",
+        "desc": "Develop an anomaly detection pipeline comparing Isolation Forest, Local Outlier Factor (LOF), and One-Class SVM on skewed credit card fraud and network intrusion logs.",
+        "co": "CO4, CO5"
+      },
+      {
+        "p": 13,
+        "title": "Gaussian Mixture Models (GMM) & Soft Clustering",
+        "tools": "Python, Scikit-learn",
+        "desc": "Implement soft clustering with Gaussian Mixture Models, estimating covariance types (spherical, tied, diag, full) and optimizing BIC/AIC criteria via EM.",
+        "co": "CO3, CO4"
+      },
+      {
+        "p": 14,
+        "title": "End-to-End Capstone Project Pipeline",
+        "tools": "Python, Streamlit, Scikit-learn",
+        "desc": "Synthesize an end-to-end unsupervised pipeline incorporating raw data ingestion, preprocessing, dimensionality reduction, model clustering, evaluation metrics, and interactive dashboarding.",
+        "co": "CO5, CO6"
+      },
+      {
+        "p": 15,
+        "title": "Practical Spill-Over, Project Viva & Code Review",
+        "tools": "Python, Git, Jupyter",
+        "desc": "Conduct capstone code review, rubric-based technical viva voce, model deployment verification, and comprehensive practical evaluation.",
+        "co": "CO1–CO6"
+      }
+    ],
+    "lectures": [
+      {
+        "week": 1,
+        "lec": 1,
+        "topic": "Foundations of Unsupervised Learning & Core Paradigms",
+        "ref": "T-1 Ch 1, R-1 Ch 1",
+        "or": "OR-1 (Overview)",
+        "desc": "Introduction to unsupervised learning principles; Comparison between Supervised, Unsupervised, and Semi-Supervised learning paradigms; Unlabeled data challenges and value extraction in modern AI.",
+        "outcome": "Understand core unsupervised paradigms and differentiate unsupervised workflows from supervised regression and classification.",
+        "pedagogy": "Venn diagrams comparing ML paradigms, interactive taxonomy whiteboard session.",
+        "example": "Customer segmentation in Amazon and Netflix user personalization."
+      },
+      {
+        "week": 1,
+        "lec": 2,
+        "topic": "Problem Formulation & Real-World Industry Use Cases",
+        "ref": "T-1 Ch 1, R-2 Ch 1",
+        "or": "OR-4 (Kaggle Datasets)",
+        "desc": "Formulating business problems into unsupervised learning tasks; Exploratory Data Analysis (EDA) for structure discovery; Use cases across finance, healthcare, and retail.",
+        "outcome": "Formulate unstructured business problems as clustering, dimensionality reduction, or anomaly detection tasks.",
+        "pedagogy": "Case study analysis of fintech and e-commerce transaction workflows.",
+        "example": "Credit card transaction fraud identification and customer churn clustering."
+      },
+      {
+        "week": 2,
+        "lec": 3,
+        "topic": "Distance & Geometric Similarity Metrics",
+        "ref": "T-1 Ch 2, R-1 Ch 2",
+        "or": "OR-1 (Distance Metrics)",
+        "desc": "Mathematical formulations and properties of distance metrics: Euclidean (L2 norm), Manhattan (L1 city block), Minkowski, and Cosine similarity for high-dimensional vectors.",
+        "outcome": "Calculate and select appropriate distance/similarity metrics tailored to feature scales and vector geometries.",
+        "pedagogy": "Geometric intuition board work; 'As the crow flies vs city grid' analogy.",
+        "example": "Text document similarity in search engines and GPS routing distance computations."
+      },
+      {
+        "week": 2,
+        "lec": 4,
+        "topic": "Partition-Based Clustering: k-Means Mechanics",
+        "ref": "T-1 Ch 2, R-1 Ch 3",
+        "or": "OR-1 (k-Means)",
+        "desc": "Concept of hard vs soft clustering; k-Means algorithm formulation; Centroid initialization methods; Standard Lloyd's algorithm iteration and convergence criteria.",
+        "outcome": "Explain k-Means algorithmic mechanics and implement iterative centroid convergence.",
+        "pedagogy": "Step-by-step dry-run on 2D scatter plots; Colored magnets on magnetic board.",
+        "example": "Grouping retail customers based on annual income and spending score."
+      },
+      {
+        "week": 3,
+        "lec": 5,
+        "topic": "Advanced k-Means: k-Means++ Initialization & Pitfalls",
+        "ref": "T-1 Ch 2, R-2 Ch 2",
+        "or": "OR-1 (k-Means++)",
+        "desc": "Vulnerability of standard k-Means to poor local minima; k-Means++ probabilistic initialization proof and behavior; Convergence guarantees and computational complexity.",
+        "outcome": "Apply k-Means++ to safeguard against suboptimal centroid initialization traps.",
+        "pedagogy": "Live Jupyter Notebook simulation comparing random seeds against k-Means++.",
+        "example": "Clustering geographical weather station readings across national grid sensors."
+      },
+      {
+        "week": 3,
+        "lec": 6,
+        "topic": "Robust Partitioning: k-Medoids (PAM) & Preprocessing",
+        "ref": "T-1 Ch 2, R-1 Ch 3",
+        "or": "OR-1 (k-Medoids)",
+        "desc": "Partitioning Around Medoids (PAM) algorithm; Contrast between artificial mean centroids and actual exemplar medoids; Sensitivity to outliers; Impact of feature scaling and standardization.",
+        "outcome": "Select k-Medoids over k-Means when dataset contains heavy outliers and explain scaling prerequisites.",
+        "pedagogy": "Interactive comparative demonstration with and without extreme outlier injection.",
+        "example": "Hospital patient length-of-stay clustering with anomalous critical care outliers."
+      },
+      {
+        "week": 4,
+        "lec": 7,
+        "topic": "Scalable Clustering: MiniBatch k-Means",
+        "ref": "T-1 Ch 2, R-2 Ch 2",
+        "or": "OR-1 (MiniBatch)",
+        "desc": "Big Data clustering limitations; MiniBatch k-Means stochastic gradient descent updates; Memory footprint reduction and convergence speedup trade-offs.",
+        "outcome": "Deploy MiniBatch k-Means on massive streaming datasets that exceed system RAM.",
+        "pedagogy": "Algorithmic complexity profiling (Big-O time and memory comparisons).",
+        "example": "Large-scale web clickstream event clustering for digital advertising platforms."
+      },
+      {
+        "week": 4,
+        "lec": 8,
+        "topic": "Cluster Validation: Internal Metrics & Elbow Method",
+        "ref": "T-1 Ch 3, R-1 Ch 4",
+        "or": "OR-3 (Yellowbrick Elbow)",
+        "desc": "Within-Cluster Sum of Squares (WCSS / Inertia); Elbow Method mechanics and ambiguity pitfalls; Between-Cluster Sum of Squares (BCSS); Davies–Bouldin Index.",
+        "outcome": "Evaluate clustering compactness and separation using inertia curves and Davies–Bouldin indices.",
+        "pedagogy": "Graphical curvature analysis; Live interactive parameter tuning slider.",
+        "example": "Optimal product category tier determination in an e-commerce catalog."
+      },
+      {
+        "week": 5,
+        "lec": 9,
+        "topic": "Advanced Validation: Silhouette Analysis & Visualizers",
+        "ref": "T-1 Ch 3, R-2 Ch 3",
+        "or": "OR-3 (Silhouette Visualizer)",
+        "desc": "Silhouette Coefficient mathematical formulation: intra-cluster distance a(i) vs nearest-cluster distance b(i); Interpreting negative and near-zero silhouette values; Yellowbrick silhouette plots.",
+        "outcome": "Interpret silhouette plots to identify misclassified border points and determine optimal k.",
+        "pedagogy": "Knife-blade silhouette distribution visualizations and heatmaps.",
+        "example": "Telecom customer contract plan grouping and churn risk tiering."
+      },
+      {
+        "week": 5,
+        "lec": 10,
+        "topic": "Hierarchical Clustering: Agglomerative Mechanics",
+        "ref": "T-1 Ch 4, R-1 Ch 5",
+        "or": "OR-1 (Hierarchical)",
+        "desc": "Bottom-up agglomerative vs top-down divisive clustering; Proximity matrix computation; Linkage criteria: Single (minimum distance), Complete (maximum distance), Average, and Ward's minimum variance.",
+        "outcome": "Construct agglomerative cluster trees and evaluate linkage behaviors on elongated vs spherical shapes.",
+        "pedagogy": "Step-by-step matrix reduction board exercise.",
+        "example": "Phylogenetic biological tree synthesis and evolutionary gene family mapping."
+      },
+      {
+        "week": 6,
+        "lec": 11,
+        "topic": "Academic Task: Test 1 / Continuous Assessment Mid-Review",
+        "ref": "Curriculum Assessment",
+        "or": "LMS Portal",
+        "desc": "Objective and Subjective In-Class Assessment (CA Test 1) covering Foundations, Partition-Based Clustering, Distance Metrics, and Hierarchical Clustering Theory.",
+        "outcome": "Demonstrate conceptual mastery and problem-solving skills across Units 1 & 2.",
+        "pedagogy": "Formal structured written/LMS assessment test.",
+        "example": "Evaluation of algorithmic time complexity, distance derivations, and linkage matrices."
+      },
+      {
+        "week": 6,
+        "lec": 12,
+        "topic": "Dendrogram Interpretation & Tree Pruning",
+        "ref": "T-1 Ch 4, R-2 Ch 3",
+        "or": "OR-1 (Dendrograms)",
+        "desc": "Reading and interpreting dendrogram heights; Horizontal cut line placement; Determining natural cluster boundaries; Cophenetic correlation coefficient for tree fidelity.",
+        "outcome": "Determine optimal cluster partitions by pruning dendrograms at statistically defensible heights.",
+        "pedagogy": "Interactive dendrogram cutting tool in Python/SciPy.",
+        "example": "Document taxonomy generation and news article topical hierarchy creation."
+      },
+      {
+        "week": 7,
+        "lec": 13,
+        "topic": "Density-Based Clustering: DBSCAN Fundamentals",
+        "ref": "T-1 Ch 5, R-1 Ch 6",
+        "or": "OR-1 (DBSCAN)",
+        "desc": "Limitations of centroid and hierarchical clustering on irregular topologies; DBSCAN core concepts: Epsilon (ε) neighborhood, MinPts; Core points, Border points, and Noise points.",
+        "outcome": "Explain density reachability and connectivity; Isolate non-convex clusters with noise filtering.",
+        "pedagogy": "Visual animation of density wave propagation across arbitrary shaped point clouds.",
+        "example": "Urban traffic bottleneck detection and GPS taxi drop-off hotspot identification."
+      },
+      {
+        "week": 7,
+        "lec": 14,
+        "topic": "Mid-Term Spill Over & Clustering Algorithmic Review",
+        "ref": "T-1, R-1, R-2",
+        "or": "OR-1 (Clustering Comparison)",
+        "desc": "Buffer lecture for complex topics: Benchmarking k-Means vs Hierarchical vs DBSCAN across time complexity, memory, shape flexibility, and noise resilience; Mid-term doubt clearing.",
+        "outcome": "Synthesize comparative trade-offs among all partition, hierarchical, and density-based clustering models.",
+        "pedagogy": "Comprehensive matrix comparison and live benchmark shootout on non-convex datasets.",
+        "example": "Selecting suitable clustering paradigms for astronomical galaxy survey data."
+      },
+      {
+        "week": 8,
+        "lec": 15,
+        "topic": "Curse of Dimensionality & Dimensionality Reduction Intro",
+        "ref": "T-1 Ch 6, R-1 Ch 7",
+        "or": "OR-4 (High-dim Datasets)",
+        "desc": "Geometric phenomena in high dimensions: volume concentration, distance homogenization; Need for dimensionality reduction: noise suppression, visualization, and compute efficiency.",
+        "outcome": "Analyze the curse of dimensionality and justify dimensional compression for downstream ML.",
+        "pedagogy": "Geometric hypercube vs hypersphere volume ratio thought experiment.",
+        "example": "Processing genomic microarray data with 20,000 genes over 100 patient samples."
+      },
+      {
+        "week": 8,
+        "lec": 16,
+        "topic": "Principal Component Analysis (PCA): Geometric Intuition",
+        "ref": "T-1 Ch 6, R-1 Ch 7",
+        "or": "OR-2 (PCA Guide)",
+        "desc": "Linear dimensionality reduction; Direction of maximum variance; Orthogonal projection axes; Covariance matrix computation; Eigenvalues, eigenvectors, and principal components.",
+        "outcome": "Derive principal components geometrically and interpret variance preservation.",
+        "pedagogy": "2D/3D dynamic projection rotations; Ellipsoid variance axis animation.",
+        "example": "Facial recognition eigenfaces (AT&T Cambridge face database)."
+      },
+      {
+        "week": 9,
+        "lec": 17,
+        "topic": "PCA Practical Implementation: Scree Plots & Explained Variance",
+        "ref": "T-1 Ch 6, R-2 Ch 4",
+        "or": "OR-2 (PCA Variance)",
+        "desc": "Cumulative explained variance ratio calculation; Scree plot construction; Kaiser criterion for component retention; Reconstruction error and lossy compression analysis.",
+        "outcome": "Select the optimal number of principal components balancing compression ratio with information loss.",
+        "pedagogy": "Hands-on coding walkthrough on biomedical datasets using Scikit-learn PCA.",
+        "example": "Image compression and noise reduction in MRI and CT scans."
+      },
+      {
+        "week": 9,
+        "lec": 18,
+        "topic": "Non-Linear Manifold Learning: t-SNE",
+        "ref": "T-1 Ch 7, R-1 Ch 8",
+        "or": "OR-2 (t-SNE)",
+        "desc": "Limitations of linear PCA on curved manifolds; t-Distributed Stochastic Neighbor Embedding (t-SNE); Probability distributions over pairs; Perplexity parameter tuning; Local vs global preservation.",
+        "outcome": "Apply t-SNE to visualize high-dimensional data in 2D/3D and configure perplexity effectively.",
+        "pedagogy": "Interactive distortion visualization; Misreading t-SNE plots guide.",
+        "example": "Visualizing high-dimensional single-cell RNA sequencing (scRNA-seq) cell clusters."
+      },
+      {
+        "week": 10,
+        "lec": 19,
+        "topic": "Scalable Manifold Learning: UMAP & Autoencoders Intuition",
+        "ref": "T-1 Ch 7, R-2 Ch 5",
+        "or": "OR-2 (UMAP)",
+        "desc": "Uniform Manifold Approximation and Projection (UMAP) Riemannian geometry principles; Global structure preservation comparison (t-SNE vs UMAP); Conceptual introduction to Deep Autoencoders.",
+        "outcome": "Contrast UMAP and t-SNE in scalability and global structure fidelity; Understand latent bottleneck autoencoders.",
+        "pedagogy": "Side-by-side run on MNIST 70,000 digits benchmarking execution time and visual clustering.",
+        "example": "Visualizing 100,000 word embeddings in Natural Language Processing (Word2Vec / BERT)."
+      },
+      {
+        "week": 10,
+        "lec": 20,
+        "topic": "Academic Task: Test 2 / Continuous Assessment Review",
+        "ref": "Curriculum Assessment",
+        "or": "LMS Portal",
+        "desc": "Objective and Subjective In-Class Assessment (CA Test 2) covering DBSCAN, Dimensionality Reduction (PCA, t-SNE, UMAP), and Feature Representation Learning.",
+        "outcome": "Demonstrate rigorous theoretical and practical problem-solving across Units 3 & 4.",
+        "pedagogy": "Formal structured written/LMS assessment test.",
+        "example": "Evaluation of covariance matrices, eigenvector calculations, and manifold hyperparameters."
+      },
+      {
+        "week": 11,
+        "lec": 21,
+        "topic": "Association Rule Mining: Apriori Algorithm Mechanics",
+        "ref": "T-1 Ch 8, R-1 Ch 9",
+        "or": "OR-1 (Association Rules)",
+        "desc": "Market Basket Analysis foundations; Itemsets, transactions, and rule formats (A -> B); Key metrics: Support, Confidence, Lift, and Conviction; Apriori downward-closure property.",
+        "outcome": "Extract strong association rules and interpret Lift to discard coincidental item correlations.",
+        "pedagogy": "Supermarket shopping cart board game with transaction frequency tables.",
+        "example": "Amazon 'Frequently Bought Together' cross-sell recommendation engines."
+      },
+      {
+        "week": 11,
+        "lec": 22,
+        "topic": "Capstone Project Review: Phase-1 Architecture Evaluation",
+        "ref": "Project Rubric",
+        "or": "GitHub Repository",
+        "desc": "Formal evaluation of Continuous Assessment Capstone Project: Problem definition, EDA, data pipeline, and initial model benchmarking presented by student groups.",
+        "outcome": "Defend end-to-end unsupervised design choices, baseline models, and code architecture.",
+        "pedagogy": "Interactive peer critique and rubric-based faculty technical viva.",
+        "example": "Live code walkthrough of end-to-end industry analytics repositories."
+      },
+      {
+        "week": 12,
+        "lec": 23,
+        "topic": "Scalable Rule Mining: FP-Growth (Frequent Pattern Tree)",
+        "ref": "T-1 Ch 8, R-2 Ch 6",
+        "or": "OR-1 (FP-Growth)",
+        "desc": "Computational bottlenecks of candidate generation in Apriori; FP-Tree compact data structure construction; Mining frequent itemsets without candidate generation.",
+        "outcome": "Deploy FP-Growth algorithm for orders-of-magnitude faster association mining on sparse datasets.",
+        "pedagogy": "Interactive FP-tree building walkthrough with prefix path mining.",
+        "example": "Healthcare adverse drug reaction combination mining from prescription databases."
+      },
+      {
+        "week": 12,
+        "lec": 24,
+        "topic": "Anomaly & Outlier Detection: Statistical & Distance Methods",
+        "ref": "T-1 Ch 9, R-1 Ch 10",
+        "or": "OR-1 (Outlier Detection)",
+        "desc": "Defining anomalies: point, contextual, and collective outliers; Z-score and IQR bounds; Distance-based k-NN outlier scores; Local Outlier Factor (LOF) local density estimation.",
+        "outcome": "Differentiate global and local outliers and apply LOF to non-uniform density datasets.",
+        "pedagogy": "2D scatter visual highlighting isolated outliers vs local cluster-edge outliers.",
+        "example": "Network intrusion detection identifying malicious port-scanning patterns."
+      },
+      {
+        "week": 13,
+        "lec": 25,
+        "topic": "Tree-Based Anomaly Detection: Isolation Forest",
+        "ref": "T-1 Ch 9, R-2 Ch 7",
+        "or": "OR-1 (Isolation Forest)",
+        "desc": "Isolation Forest core philosophy: isolating anomalies rather than profiling normal points; Recursive random partitioning; Average path length in isolation trees; Anomaly score computation.",
+        "outcome": "Implement Isolation Forest for high-dimensional anomaly detection with linear time complexity.",
+        "pedagogy": "Tree partitioning animation illustrating rapid isolation of rare anomalous points.",
+        "example": "Financial banking transaction fraud screening and automated anti-money laundering (AML)."
+      },
+      {
+        "week": 13,
+        "lec": 26,
+        "topic": "Probabilistic Clustering: Gaussian Mixture Models (GMM)",
+        "ref": "T-1 Ch 10, R-1 Ch 11",
+        "or": "OR-1 (Gaussian Mixtures)",
+        "desc": "Probability density estimation; Mixture models; Expectation-Maximization (EM) algorithm: E-step (posterior probabilities) and M-step (parameter updates); Covariance constraints.",
+        "outcome": "Apply Gaussian Mixture Models for soft probabilistic clustering and density estimation.",
+        "pedagogy": "Overlapping Gaussian bell curves demonstration with soft probabilistic assignment.",
+        "example": "Speaker diarization and acoustic speech pattern clustering in audio processing."
+      },
+      {
+        "week": 14,
+        "lec": 27,
+        "topic": "Model Evaluation, Stability Analysis & End-to-End Pipeline",
+        "ref": "T-1 Ch 11, R-1 Ch 12",
+        "or": "OR-1 (Evaluation Metrics)",
+        "desc": "External validation metrics when ground truth is partially available: Adjusted Rand Index (ARI), Normalized Mutual Information (NMI); Cluster stability under perturbation; Pipeline deployment.",
+        "outcome": "Validate unsupervised models using ARI/NMI and evaluate clustering robustness via bootstrap resampling.",
+        "pedagogy": "Sensitivity analysis charts and deployment architectural diagrams.",
+        "example": "Verifying customer segmentation model stability across consecutive quarters."
+      },
+      {
+        "week": 14,
+        "lec": 28,
+        "topic": "Spill Over Lecture 1: Advanced Anomaly & Deep Generative Models",
+        "ref": "T-1, R-1, R-2",
+        "or": "OR-1, OR-2",
+        "desc": "Buffer lecture for advanced applications: Deep Autoencoders for anomaly detection, Variational Autoencoders (VAE) overview, and Self-Organizing Maps (SOM).",
+        "outcome": "Appraise state-of-the-art unsupervised deep representation and reconstruction methods.",
+        "pedagogy": "Architecture diagrams and code demonstration of autoencoder reconstruction error.",
+        "example": "Industrial sensor telemetry predictive maintenance and turbine fault anticipation."
+      },
+      {
+        "week": 15,
+        "lec": 29,
+        "topic": "Spill Over Lecture 2: Real-World Case Studies & Deployment",
+        "ref": "T-1 Ch 12",
+        "or": "OR-4 (Case Studies)",
+        "desc": "Buffer lecture for end-to-end case studies: Deploying unsupervised models with Scikit-learn pipelines; Model serialization (joblib/pickle); Real-time inference latency.",
+        "outcome": "Package and deploy unsupervised pipelines as web endpoints or batch analytics jobs.",
+        "pedagogy": "Interactive live demo deploying a clustering REST API endpoint.",
+        "example": "Production deployment of customer classification microservice on AWS / Docker."
+      },
+      {
+        "week": 15,
+        "lec": 30,
+        "topic": "Spill Over Lecture 3: Comprehensive Course Review & Capstone Viva",
+        "ref": "All Units",
+        "or": "All Online Resources",
+        "desc": "Comprehensive review of all 6 course units; Summary of key algorithmic decisions; Final Project evaluation, student Q&A, and ETT preparation guidance.",
+        "outcome": "Synthesize complete knowledge of unsupervised learning algorithms and excel in final evaluations.",
+        "pedagogy": "Rapid-fire conceptual quiz, algorithmic decision cheat-sheet distribution.",
+        "example": "Preparation for senior machine learning engineer and data scientist technical interviews."
+      }
+    ]
+  }
+}
