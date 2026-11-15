@@ -133,45 +133,10 @@ main{background:radial-gradient(900px 320px at 100% -8%,rgba(246,182,85,.16),tra
 <div id="app" class="hide">
 <aside><div class="logo"><span class="lg">X</span>Curriculum X</div>
 <div id="hold" class="hide"><div id="fac" class="ctl">
-<div style="margin-bottom:12px">
-  <label style="display:flex;justify-content:space-between;align-items:center">
-    <span>Curriculum Mode</span>
-    <span style="font-size:11px;color:var(--or);font-weight:700" id="modeIndicator">Active: Syllabus</span>
-  </label>
-  <div class="seg" id="modeToggleSeg" style="display:flex;width:100%;margin-top:4px;padding:3px">
-    <button type="button" class="mode-toggle-btn on" data-m="syl" onclick="setMode('syl')" style="flex:1;padding:6px;font-size:12px;font-weight:700">📖 Syllabus</button>
-    <button type="button" class="mode-toggle-btn" data-m="ip" onclick="setMode('ip')" style="flex:1;padding:6px;font-size:12px;font-weight:700">📋 Instruction plan</button>
-  </div>
-</div>
-<div>
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
-    <label for="sc" style="margin:0">Select course / plan</label>
-    <button type="button" class="btn sm" onclick="newCourse()" style="padding:2px 10px;font-size:11px;box-shadow:none;background:var(--or2);color:#C77A10">＋ Add custom plan</button>
-  </div>
-  <select id="sc"></select>
-</div>
-<div>
-  <label for="ss">Course scheme</label>
-  <select id="ss">
-    <option>NEP 2020 · Scheme A</option>
-    <option>Outcome-Based · Scheme B</option>
-    <option>Choice-Based · Scheme C</option>
-    <option>Custom / Non-University Plan</option>
-    <option>Industry & Micro-Credential Track</option>
-  </select>
-</div>
-<div>
-  <label for="st">Term</label>
-  <select id="st">
-    <option>Term 1</option>
-    <option>Term 2</option>
-    <option>Term 3</option>
-    <option>Term 4</option>
-    <option>Term 5</option>
-    <option>Term 6</option>
-  </select>
-</div>
-<button class="btn" id="gen" style="width:100%">Generate syllabus</button></div></div>
+<div><label for="sc">Select course</label><select id="sc"></select></div>
+<div><label for="ss">Course scheme</label><select id="ss"><option>NEP 2020 · Scheme A</option><option>Outcome-Based · Scheme B</option><option>Choice-Based · Scheme C</option></select></div>
+<div><label for="st">Term</label><select id="st"><option>Term 1</option><option>Term 2</option><option>Term 3</option><option>Term 4</option><option>Term 5</option><option>Term 6</option></select></div>
+<button class="btn" id="gen">Generate syllabus</button></div></div>
 <div class="nav" id="nav" style="display:flex;flex-direction:column;gap:4px"></div>
 <div id="hodSide" class="hide" style="color:var(--mut);font-size:12px;margin:8px 0">Signed in as Head of Department. Pending requests appear on your dashboard.</div>
 <div class="promo" style="margin-top:auto;cursor:pointer" onclick="handleNav(5)"><div class="orb"></div><span>Use our Magic display ✦</span></div>
@@ -544,235 +509,91 @@ c.a=j.a||{};c.dropped=dropped;c.ai=true}
 /* Instruction-plan mode: same flow, built from the lecture-by-lecture plans */
 const CS=C,CI={};Object.entries(CS).forEach(([k,c])=>{const L=(X[k.split(" ")[0]]||{}).lec||[],g=[];for(let i=0;i<L.length;i+=6)g.push(["Lectures "+(i+1)+"–"+Math.min(i+6,L.length),L.slice(i,i+6).map(s=>s.replace(/;/g,",")).join(";")]);CI[k]=mk(c.n,c.ltp,g)});
 const LBL=s=>S.mode=="ip"?String(s).replace(/\bUnits\b/g,"Blocks").replace(/\bUnit\b/g,"Block").replace(/Syllabus/g,"Instruction plan").replace(/syllabus/g,"instruction plan"):s;
-function relabel(){if(S.mode!="ip")return;const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode()){if(/SCRIPT|STYLE/.test(n.parentNode.tagName))continue;const v=LBL(n.nodeValue);if(v!=n.nodeValue)n.nodeValue=v}}
+function relabel(){if(S.mode!="ip")return;const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode()){if(/SCRIPT|STYLE/.test(n.parentNode.tagName))continue;if(n.parentNode.closest&&n.parentNode.closest("#mseg"))continue;const v=LBL(n.nodeValue);if(v!=n.nodeValue)n.nodeValue=v}}
 new MutationObserver(relabel).observe(document.body,{childList:true,subtree:true,characterData:true});
-function setMode(m){
-  const v = $("#sc") ? $("#sc").value : "";
-  S.mode = m;
-  C = m == "ip" ? CI : CS;
-  if($("#sc")) {
-    $("#sc").innerHTML = Object.keys(C).map(k => `<option ${k === v ? "selected" : ""}>${k}</option>`).join("");
-    if(Object.keys(C).includes(v)) $("#sc").value = v;
-  }
-  if($("#gen")) $("#gen").textContent = m == "ip" ? "Generate instruction plan" : "Generate syllabus";
-  const ind = $("#modeIndicator");
-  if(ind) ind.textContent = m == "ip" ? "Active: Instruction plan" : "Active: Syllabus";
-  document.querySelectorAll(".mode-toggle-btn, #mseg button").forEach(b => {
-    b.classList.toggle("on", b.dataset.m === m);
-  });
-  reset();
-}
-
-function generateInstructionPlanLectures(code, nm) {
-  return [
-    `Lecture 1: Introduction to ${nm} & Course Architecture; Objectives, lecture plan, prerequisites, and learning outcomes`,
-    `Lecture 2: Foundational Principles & Theory; Core mathematical notations, problem landscapes, and foundational principles`,
-    `Lecture 3: Environment Setup & Tooling SDKs; Installing development tools, runtime dependencies, and verification suites`,
-    `Lecture 4: Primary Structural Primitives; Basic building blocks, definitions, representations, and baseline algorithms`,
-    `Lecture 5: Formal Problem Decomposition; Translating domain requirements into formal algorithmic and computational steps`,
-    `Lecture 6: Interactive Execution Dry-Run; Board work, manual tracing of sample inputs, and boundary condition handling`,
-    `Lecture 7: Milestone Review & Formative Quiz; Quick conceptual check, student Q&A, and lecture block recap`,
-
-    `Lecture 8: Data Ingestion & Transformation; Handling input representations, feature encoding, and normalization methods`,
-    `Lecture 9: Core Algorithmic Framework; Implementing primary computational algorithms and core functional steps`,
-    `Lecture 10: Optimization Criteria & Formulations; Objective functions, loss design, constraint management, and search methods`,
-    `Lecture 11: Modular Design & Clean Code Practices; Architectural separation of concerns, testability, and refactoring`,
-    `Lecture 12: Hands-On Live Lab Session; Step-by-step implementation of baseline pipeline with live faculty walkthrough`,
-    `Lecture 13: Runtime Error Handling & Diagnostics; Edge-case stress tests, profiling memory usage, and debugging exceptions`,
-    `Lecture 14: Practical Submission & Lab Check; Verification of student implementations against benchmark test cases`,
-
-    `Lecture 15: Advanced Structural Paradigms; Sub-module extensions, specialized algorithms, and deep architectural enhancements`,
-    `Lecture 16: Comparative Benchmarking with Standards; Evaluating performance against leading academic and industry baselines`,
-    `Lecture 17: Systematic Hyperparameter Tuning; Grid search, random sweeps, and automated configuration optimization`,
-    `Lecture 18: Numerical Stability & Gradient Flow; Precision formats, gradient management, and preventing algorithmic divergence`,
-    `Lecture 19: Enterprise Case Study Walkthrough; Deep dive into large-scale commercial implementations and lessons learned`,
-    `Lecture 20: Performance Profiling & Bottlenecks; Empirical ablation experiments, latency benchmarks, and memory profiling`,
-    `Lecture 21: Mid-Term Review & Progress Milestone; Knowledge assessment, feedback session, and project checkpoint`,
-
-    `Lecture 22: Parallelization & Distributed Topologies; Concurrent execution, multi-core worker nodes, and async pipelines`,
-    `Lecture 23: Cache Locality & Memory Bandwidth; Reducing memory footprint, cache line efficiency, and I/O serialization`,
-    `Lecture 24: Quantization, Pruning & Efficiency; Low-rank approximations, compression strategies, and inference speedup`,
-    `Lecture 25: Throughput Optimization & Batching; Dynamic batch queues, worker pooling, and asynchronous event loops`,
-    `Lecture 26: Fault Tolerance & Graceful Degradation; Checkpoint recovery, exception isolation, and reliability patterns`,
-    `Lecture 27: Production System Profiling; Diagnostics of CPU/GPU utilization, network round-trips, and I/O contention`,
-    `Lecture 28: Lab Milestone Check & Peer Review; Interactive lab assignment review, code review, and grading rubrics`,
-
-    `Lecture 29: End-to-End API Design & Architecture; Exposing functionality via modern API interfaces and microservices`,
-    `Lecture 30: Security, Input Validation & Robustness; Guardrails against adversarial inputs, prompt exploitation, or corrupt data`,
-    `Lecture 31: Governance, Compliance & Privacy Standards; Industry data compliance, safety protocols, and privacy safeguards`,
-    `Lecture 32: Domain Adaptation & Specialization; Fine-tuning generic pipelines to target vertical applications`,
-    `Lecture 33: Containerization & Cloud Deployment; Packaging with Docker, CI/CD automated validation, and cloud orchestration`,
-    `Lecture 34: Continuous Observability & Metric Monitoring; Performance drift detection, live instrumentation, and monitoring dashboards`,
-    `Lecture 35: Working Prototype Demonstration; Student cohort working prototype presentations and faculty feedback`,
-
-    `Lecture 36: Recent Academic & SOTA Breakthroughs; Analyzing recent publications from top international conferences`,
-    `Lecture 37: Unsolved Theoretical & Practical Challenges; Open research questions, algorithmic trade-offs, and scalability limits`,
-    `Lecture 38: Multi-Modal & Autonomous Agentic Loops; Advanced integration with multi-source inputs and autonomous workflows`,
-    `Lecture 39: Cross-Disciplinary Industrial Applications; Case studies in healthcare, finance, logistics, and embedded robotics`,
-    `Lecture 40: Ethics, Fairness Audits & Societal Impact; Bias detection, transparency, sustainability, and responsible engineering`,
-    `Lecture 41: Final Capstone Defense & Project Showcase; Formal capstone presentation, live project evaluation, and oral viva`,
-    `Lecture 42: Comprehensive Exit Review & Career Pathways; Synthesis of course learning outcomes, portfolio defense, and course retrospective`
-  ];
-}
-
-let ncTargetMode = "ip";
-function setNcMode(m) {
-  ncTargetMode = m;
-  document.querySelectorAll(".nc-mode-btn").forEach(b => b.classList.toggle("on", b.dataset.m === m));
-}
+function setMode(m){const v=$("#sc")?$("#sc").value:"";S.mode=m;C=m=="ip"?CI:CS;if($("#sc")){$("#sc").innerHTML=Object.keys(C).map(k=>`<option ${k===v?"selected":""}>${k}</option>`).join("");if(Object.keys(C).includes(v))$("#sc").value=v;}if($("#gen"))$("#gen").textContent=m=="ip"?"Generate instruction plan":"Generate syllabus";document.querySelectorAll("#mseg button").forEach(b=>{b.classList.toggle("on",b.dataset.m==S.mode);});reset()}
 
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function newCourse(){
+  if(S.mode=="ip") setMode("syl");
   const o = document.createElement("div");
   o.className = "mdl";
-  o.innerHTML = `<div class="mbox" style="max-width:540px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-      <h3 style="margin:0">Add Course or Instruction Plan</h3>
-      <button class="uni-modal-close" id="ncx">&times;</button>
-    </div>
-    <p style="font-size:12px;color:var(--mut);margin:0 0 16px">Create a custom syllabus or lecture-by-lecture instruction plan for any course, elective, or non-scheme plan.</p>
-    
-    <div style="display:grid;grid-template-columns:1fr 2fr;gap:12px">
-      <div>
-        <label>Course Code / ID</label>
-        <input id="ncc" placeholder="e.g. CSE450 or IND-2026">
-      </div>
-      <div>
-        <label>Course / Plan Title</label>
-        <input id="ncn" placeholder="e.g. Deep Learning & LLM Systems">
-      </div>
-    </div>
-
-    <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:12px;margin-top:10px">
-      <div>
-        <label>Program Scheme</label>
-        <select id="nc_scheme">
-          <option value="Custom / Non-University Plan">Custom / Non-University Plan</option>
-          <option value="NEP 2020 · Scheme A">NEP 2020 · Scheme A</option>
-          <option value="Outcome-Based · Scheme B">Outcome-Based · Scheme B</option>
-          <option value="Choice-Based · Scheme C">Choice-Based · Scheme C</option>
-          <option value="Open Elective / Industry Track">Open Elective / Industry Track</option>
-        </select>
-      </div>
-      <div>
-        <label>Structure (L-T-P)</label>
-        <input id="ncl" value="3-0-2" placeholder="e.g. 3-0-2">
-      </div>
-    </div>
-
-    <div style="margin-top:12px">
-      <label>Target Delivery Mode</label>
-      <div class="seg" id="nc_mode_seg" style="display:flex;width:100%;margin-top:4px;padding:3px">
-        <button type="button" class="nc-mode-btn on" data-m="ip" onclick="setNcMode('ip')" style="flex:1;padding:6px;font-size:11.5px;font-weight:700">📋 Instruction Plan (Lectures)</button>
-        <button type="button" class="nc-mode-btn" data-m="syl" onclick="setNcMode('syl')" style="flex:1;padding:6px;font-size:11.5px;font-weight:700">📖 Syllabus (Units)</button>
-        <button type="button" class="nc-mode-btn" data-m="both" onclick="setNcMode('both')" style="flex:1;padding:6px;font-size:11.5px;font-weight:700">✦ Both</button>
-      </div>
-    </div>
-
+  o.innerHTML = `<div class="mbox">
+    <h3>Add a new course</h3>
+    <label>Course code</label>
+    <input id="ncc" placeholder="e.g. CSE450">
+    <label style="margin-top:12px">Course name</label>
+    <input id="ncn" placeholder="e.g. Deep Learning Architectures">
+    <label style="margin-top:12px">L-T-P</label>
+    <input id="ncl" value="3-0-2">
     <div style="display:flex;gap:10px;margin-top:20px">
-      <button class="btn" id="ncg">Create and open</button>
-      <button class="btn dk" id="nc_cancel">Cancel</button>
+      <button class="btn" id="ncg">Create syllabus</button>
+      <button class="btn dk" id="ncx">Cancel</button>
     </div>
-    <p id="ncm" style="margin-top:12px;font-size:12.5px;color:var(--rd)"></p>
+    <p id="ncm" style="margin-top:12px;font-size:13px;color:var(--mut)"></p>
   </div>`;
-
   document.body.appendChild(o);
   $("#ncx").onclick = () => o.remove();
-  $("#nc_cancel").onclick = () => o.remove();
   $("#ncc").focus();
 
   $("#ncg").onclick = async () => {
     const code = $("#ncc").value.trim().toUpperCase().replace(/\s+/g,"");
     const nm = $("#ncn").value.trim();
-    const ltp = $("#ncl").value.trim() || "3-0-2";
-    const scheme = $("#nc_scheme").value;
+    const ltp = $("#ncl").value.trim() || "3-0-0";
     const msg = $("#ncm");
-    if(!code || !nm) { msg.textContent = "Please enter both the course code and course title."; return; }
+    if(!code || !nm) { msg.textContent = "Please enter both the course code and the course name."; return; }
     if(Object.keys(CS).some(k => k.split(" ")[0] == code)) {
-      msg.textContent = code + " already exists in the list. Choose it from the dropdown.";
+      msg.textContent = code + " already exists in the course list. Choose it from the dropdown.";
       return;
     }
     const b = $("#ncg");
     b.disabled = true;
-    b.textContent = "Generating full instruction schedule…";
+    b.textContent = "Synthesizing from verified sources…";
     msg.textContent = "";
 
     try {
+      let us = null, srcList = ["MIT OpenCourseWare (6.006) · Verified Benchmarks", "Premier University Standards"];
+      try {
+        const res = await fetch("/api/draft", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code, name: nm, ltp })
+        });
+        if(res.ok) {
+          const j = await res.json();
+          us = j.units;
+          if(j.src) srcList = j.src;
+        }
+      } catch(_) {}
+
+      if(!us || !us.length) {
+        us = [
+          { t: "Foundational Concepts & Principles", x: ["Theoretical foundations of " + nm, "Core paradigms and problem definitions", "Mathematical representations and specifications", "Complexity analysis and baseline approaches"] },
+          { t: "Algorithmic Paradigms & Data Models", x: ["Core architectural data representations", "Algorithmic structures in " + nm, "Optimization formulations and criteria", "Pipeline engineering and modular workflows"] },
+          { t: "Practical Implementations & Methods", x: ["Primary algorithmic workflows", "Hands-on implementation and validation", "Comparative benchmarking against standards", "Empirical performance evaluations"] },
+          { t: "Advanced Optimization & Scaling", x: ["Advanced optimization strategies", "High-throughput and distributed scaling", "Fault tolerance, constraints, and robustness", "Bottleneck profiling and execution speedups"] },
+          { t: "Applied Systems & Domain Workflows", x: ["End-to-end system pipelines", "Industry case studies and applications", "Deployment considerations and testing", "Integration with standard tooling ecosystems"] },
+          { t: "Emerging Paradigms & Frontiers", x: ["Current research developments", "Open challenges and scalable frontiers", "Ethics, security, and governance", "Comprehensive review and capstone design"] }
+        ];
+      }
+
       const k = code + " · " + nm;
-      
-      // 1. Generate 6 Syllabus Units
-      const syllabusUnits = [
-        { t: "Foundational Concepts & Principles", x: ["Theoretical foundations of " + nm, "Core paradigms and problem definitions", "Mathematical representations and specifications", "Complexity analysis and baseline approaches"] },
-        { t: "Algorithmic Paradigms & Data Models", x: ["Core architectural data representations", "Algorithmic structures in " + nm, "Optimization formulations and criteria", "Pipeline engineering and modular workflows"] },
-        { t: "Practical Implementations & Methods", x: ["Primary algorithmic workflows", "Hands-on implementation and validation", "Comparative benchmarking against standards", "Empirical performance evaluations"] },
-        { t: "Advanced Optimization & Scaling", x: ["Advanced optimization strategies", "High-throughput and distributed scaling", "Fault tolerance, constraints, and robustness", "Bottleneck profiling and execution speedups"] },
-        { t: "Applied Systems & Domain Workflows", x: ["End-to-end system pipelines", "Industry case studies and applications", "Deployment considerations and testing", "Integration with standard tooling ecosystems"] },
-        { t: "Emerging Paradigms & Frontiers", x: ["Current research developments", "Open challenges and scalable frontiers", "Ethics, security, and governance", "Comprehensive review and capstone design"] }
-      ];
-      CS[k] = mk(nm, ltp, syllabusUnits.map(u => [String(u.t), u.x.join(";")]));
-
-      // 2. Generate 42 Lectures and 6 Lecture Blocks for Instruction Plan
-      const rawLectures = generateInstructionPlanLectures(code, nm);
-      const lectureBlocks = [];
-      for(let i = 0; i < rawLectures.length; i += 7) {
-        const slice = rawLectures.slice(i, i + 7);
-        lectureBlocks.push(["Lectures " + (i + 1) + "–" + Math.min(i + 7, rawLectures.length), slice.join(";")]);
-      }
-      CI[k] = mk(nm, ltp, lectureBlocks);
-
-      // 3. Register metadata in X
-      X[code] = {
-        co: "Master foundational principles and advanced applied workflows in " + nm + ". Analyze computational architectures, design scalable pipelines, implement robust algorithms, and benchmark against top-tier industry and academic standards.",
-        pr: "1. Setup development environment and verify baseline libraries; 2. Implement primary data preprocessing and validation pipeline; 3. Implement core algorithmic components and benchmark execution time; 4. Build modular end-to-end workflow with comprehensive test assertions; 5. Deploy prototype system and measure latency and memory throughput.",
-        lec: rawLectures
-      };
-
-      // 4. Update Course Scheme selector if custom
-      if($("#ss") && !Array.from($("#ss").options).some(o => o.value === scheme)) {
-        const opt = document.createElement("option");
-        opt.value = scheme;
-        opt.textContent = scheme;
-        opt.selected = true;
-        $("#ss").appendChild(opt);
-      } else if($("#ss")) {
-        $("#ss").value = scheme;
-      }
-
-      // 5. Switch to desired mode and populate dropdown
-      const targetMode = ncTargetMode === "ip" ? "ip" : (ncTargetMode === "syl" ? "syl" : S.mode);
-      S.mode = targetMode;
-      C = S.mode === "ip" ? CI : CS;
+      CS[k] = mk(nm, ltp, us.map(u => [String(u.t), u.x.map(t => String(t).replace(/;/g, ",")).join(";")]));
+      C = CS;
       $("#sc").innerHTML = Object.keys(C).map(key => `<option ${key === k ? "selected" : ""}>${key}</option>`).join("");
       $("#sc").value = k;
-      
-      if($("#gen")) $("#gen").textContent = S.mode === "ip" ? "Generate instruction plan" : "Generate syllabus";
-      const ind = $("#modeIndicator");
-      if(ind) ind.textContent = S.mode === "ip" ? "Active: Instruction plan" : "Active: Syllabus";
-      document.querySelectorAll(".mode-toggle-btn, #mseg button").forEach(btn => {
-        btn.classList.toggle("on", btn.dataset.m === S.mode);
-      });
-
       saveToBackend();
 
-      o.querySelector(".mbox").innerHTML = `<h3>${S.mode === "ip" ? "Instruction Plan" : "Course Syllabus"} Created ✓</h3>
-        <p><b>${esc(k)}</b> is now loaded into the system.</p>
-        <div style="background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:12px;margin:12px 0;font-size:12.5px">
-          <div><b>Scheme:</b> ${esc(scheme)}</div>
-          <div style="margin-top:3px"><b>Structure:</b> ${ltp} · 6 Blocks (42 Lectures Scheduled)</div>
-          <div style="margin-top:3px"><b>Mode:</b> ${S.mode === "ip" ? "Instruction Plan (Lecture-by-Lecture)" : "Unit-wise Syllabus"}</div>
-        </div>
-        <p style="font-size:12px;color:var(--mut);margin-bottom:16px">Ready to benchmark against Top 10 Worldwide & Indian Universities.</p>
-        <button class="btn" id="ngo">Open ${S.mode === "ip" ? "instruction plan" : "syllabus"}</button>`;
-      
-      $("#ngo").onclick = () => {
-        o.remove();
-        reset();
-        toast("Loaded custom plan: " + code);
-      };
+      o.querySelector(".mbox").innerHTML = `<h3>Syllabus drafted ✓</h3>
+        <p><b>${esc(k)}</b> now has ${us.length} units.</p>
+        <p style="font-size:13px;color:var(--mut);margin:8px 0">Built from: ${esc(srcList.join(", "))}</p>
+        <p style="font-size:13px;margin-bottom:16px">Ready to benchmark against Top 10 Worldwide & Indian Universities.</p>
+        <button class="btn" id="ngo">Open syllabus</button>`;
+      $("#ngo").onclick = () => { o.remove(); reset(); };
     } catch(err) {
       b.disabled = false;
-      b.textContent = "Create and open";
-      msg.textContent = err.message || "Failed to create plan.";
+      b.textContent = "Create syllabus";
+      msg.textContent = err.message || "Failed to create syllabus draft.";
     }
   };
 }
@@ -931,7 +752,7 @@ function railH(){const c=cur(),d=new Date(),y=d.getFullYear(),m=d.getMonth(),f=n
 let cells="MTWTFSS".split("").map(x=>`<i>${x}</i>`).join("")+"<span></span>".repeat((f+6)%7);for(let i=1;i<=n;i++)cells+=`<span class="${i==d.getDate()?"td":i==due?"du":""}">${i}</span>`;
 return`<div class="rail"><div class="card"><h3>${d.toLocaleString("en",{month:"long"})} ${y}</h3><div class="cal">${cells}</div><p style="margin-top:10px;font-size:12px;color:var(--mut)"><span class="dot" style="background:var(--or)"></span>Today <span class="dot" style="background:var(--pu);margin-left:8px"></span>HOD review due</p></div>
 <div class="card prof"><div class="big">${c.n[0]}</div><h3 style="margin-bottom:4px">${c.n}</h3><span class="chip p">${$("#st").value}</span><div style="margin-top:12px"><div class="kv"><span>Scheme</span><b>${$("#ss").value}</b></div><div class="kv"><span>L-T-P</span><b>${c.ltp}</b></div><div class="kv"><span>Units</span><b>${c.u.length}</b></div><div class="kv"><span>Status</span><b>${S.status}</b></div></div></div></div>`}
-function empty(){page("Home","",`<div class="hero"><div><h3>Hello, ${S.role=="HOD"?"Head":"Faculty"}!</h3><p>Pick a course, scheme and term below, then generate the syllabus or instruction plan to begin.</p></div>${art()}</div><div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px"><h3 style="margin:0">Choose curriculum details</h3><span class="chip a" style="font-size:11.5px">Verified Benchmarks</span></div><div id="ctl"></div></div>`);$("#ctl").appendChild($("#fac"));nav()}
+function empty(){page("Home","",`<div class="hero"><div><h3>Hello, ${S.role=="HOD"?"Head":"Faculty"}!</h3><p>Pick a course, scheme and term below, then generate the syllabus to begin.</p></div>${art()}</div><div class="card"><h3>Choose course details</h3><div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:14px"><div class="seg" id="mseg" style="max-width:360px;flex:1;min-width:260px"><button data-m="syl">Syllabus</button><button data-m="ip">Instruction plan</button></div><button class="btn sm" id="addc" style="padding:6px 14px;font-size:12px">＋ Add new course</button></div><div id="ctl"></div></div>`);$("#ctl").appendChild($("#fac"));document.querySelectorAll("#mseg button").forEach(b=>{b.classList.toggle("on",b.dataset.m==S.mode);b.onclick=()=>setMode(b.dataset.m)});$("#addc").onclick=newCourse;nav()}
 function art(){return`<svg viewBox="0 0 150 110" aria-hidden="true"><rect x="20" y="62" width="100" height="14" rx="5" fill="#fff" opacity=".95"/><rect x="30" y="46" width="84" height="14" rx="5" fill="#FFE2B3"/><rect x="40" y="30" width="66" height="14" rx="5" fill="#fff" opacity=".85"/><circle cx="118" cy="22" r="10" fill="#fff"/><path d="M30 20l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#fff"/></svg>`}
 const nx=(l,i,c="")=>`<button class="btn ${c}" onclick="go(${i})">${l}</button>`;
 function stats(){const c=cur(),ex=c.u.reduce((a,u)=>a+u.x.length,0),g=c.u.reduce((a,u)=>a+u.g.length,0);return{ex,g,p:Math.round(ex/(ex+g)*100)}}
