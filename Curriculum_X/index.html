@@ -756,16 +756,709 @@ function empty(){page("Home","",`<div class="hero"><div><h3>Hello, ${S.role=="HO
 function art(){return`<svg viewBox="0 0 150 110" aria-hidden="true"><rect x="20" y="62" width="100" height="14" rx="5" fill="#fff" opacity=".95"/><rect x="30" y="46" width="84" height="14" rx="5" fill="#FFE2B3"/><rect x="40" y="30" width="66" height="14" rx="5" fill="#fff" opacity=".85"/><circle cx="118" cy="22" r="10" fill="#fff"/><path d="M30 20l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#fff"/></svg>`}
 const nx=(l,i,c="")=>`<button class="btn ${c}" onclick="go(${i})">${l}</button>`;
 function stats(){const c=cur(),ex=c.u.reduce((a,u)=>a+u.x.length,0),g=c.u.reduce((a,u)=>a+u.g.length,0);return{ex,g,p:Math.round(ex/(ex+g)*100)}}
-function syl(){const c=cur(),s=stats();page("Syllabus","",`<div class="hero"><div><h3>${c.n} is ready</h3><p>${c.u.length} units · ${s.ex} topics · ${s.g} benchmark gaps found against Top 10 World & India Universities.</p>${nx("Open course table",2)}</div>${art()}</div>
-<div class="card"><h3>Unit-wise syllabus</h3>${c.u.map((u,i)=>`<div class="unit"><div class="n">${i+1}</div><div><h4>${u.t}</h4><div class="chips">${u.x.map(t=>`<span class="chip">${t}</span>`).join("")}</div></div></div>`).join("")}</div>`)}
-function tab(){const c=cur();page("Course table","",`<div class="card scroll">
+
+  
+  const INT396_DATA = {
+    code: "INT396",
+    eliteCode: "INT395 (ED-Rev Intensive Batch)",
+    title: "UNSUPERVISED LEARNING",
+    ltp: "2-0-2",
+    credits: 3,
+    examCategory: "X3 (Regular) / X7R (Elite)",
+    weightage: { att: 5, ca: 45, ett: 50 },
+    distribution: { beforeMidTermWeeks: 7, beforeMidTermLec: 14, afterMidTermWeeks: 7, afterMidTermLec: 13, spillOverLec: 3, totalLec: 30 },
+    books: {
+      textbooks: [
+        { id: "T-1", title: "HANDS-ON UNSUPERVISED LEARNING USING PYTHON: HOW TO BUILD APPLIED MACHINE LEARNING SOLUTIONS FROM UNLABELED DATA", author: "ANKUR A. PATEL", publisher: "O'REILLY MEDIA", edition: "1st Edition, 2019" }
+      ],
+      references: [
+        { id: "R-1", title: "MODELS AND ALGORITHMS FOR UNSUPERVISED LEARNING: PRACTICAL UNSUPERVISED MACHINE LEARNING", author: "VAIBHAV VERDHAN", publisher: "Manning Publications", edition: "2021" },
+        { id: "R-2", title: "KICKSTART UNSUPERVISED MACHINE LEARNING: MASTER UNSUPERVISED MACHINE LEARNING THROUGH PATTERN DISCOVERY, CLUSTERING, AND DIMENSIONALITY REDUCTION TO BUILD INTELLIGENT, REAL-WORLD APPLICATIONS", author: "DR. NIMRITA KOUL", publisher: "AVA PUBLISHING", edition: "2020" }
+      ],
+      onlineReadings: [
+        { id: "OR-1", title: "Scikit-learn: Unsupervised Learning Documentation (Clustering, Biclustering, Decompositions)", url: "https://scikit-learn.org/stable/unsupervised_learning.html" },
+        { id: "OR-2", title: "Scikit-learn PCA, Kernel PCA & Manifold Learning Guide", url: "https://scikit-learn.org/stable/modules/manifold.html" },
+        { id: "OR-3", title: "Yellowbrick Machine Learning Visualizers for Clustering (Elbow, Silhouette, Intercluster Distance)", url: "https://www.scikit-yb.org/en/latest/api/cluster/index.html" },
+        { id: "OR-4", title: "Kaggle Curated Datasets Repository for Clustering, Customer Segmentation and Anomaly Detection", url: "https://www.kaggle.com/datasets" }
+      ]
+    },
+    cos: [
+      { code: "CO1", level: "Understand (Level 2)", desc: "Explain the principles, paradigms, and real-world applications of unsupervised learning for exploratory data analysis and knowledge discovery." },
+      { code: "CO2", level: "Apply (Level 3)", desc: "Apply clustering, similarity measures, and dimensionality reduction techniques to identify hidden structures in unlabeled datasets." },
+      { code: "CO3", level: "Analyze (Level 4)", desc: "Analyze partition-based, hierarchical, density-based, and probabilistic learning techniques to select appropriate unsupervised models for diverse problem domains." },
+      { code: "CO4", level: "Evaluate (Level 5)", desc: "Evaluate clustering, association rule mining, anomaly detection, and representation learning outcomes using appropriate validation metrics and visualization techniques." },
+      { code: "CO5", level: "Evaluate (Level 5)", desc: "Evaluate the effectiveness of multiple unsupervised learning techniques in solving real-world pattern discovery, customer analytics, and anomaly detection problems." },
+      { code: "CO6", level: "Apply / Create (Level 6)", desc: "Apply end-to-end unsupervised learning workflows involving data preprocessing, model development, visualization, interpretation, and deployment to solve complex domain-specific challenges." }
+    ],
+    caScheme: {
+      category: "C010102",
+      totalMarks: 45,
+      summary: "Total 3 tasks: 1 Compulsory Project (77.78% weightage = 35 marks) + Best 1 out of 2 Tests (22.22% weightage = 10 marks)",
+      tasks: [
+        {
+          task: "Project (Capstone Assignment)",
+          weightage: "77.78% (Compulsory)",
+          marks: 30,
+          allotmentWeek: "Week 2",
+          submissionWeek: "Week 11",
+          mode: "Individual / Group Code Repository + Live Viva + Technical Documentation",
+          cos: "CO1, CO2, CO3, CO4, CO5, CO6",
+          objective: "To enable students to design, implement, evaluate, and communicate an end-to-end unsupervised learning solution for real-world problems.",
+          nature: "Students are required to identify a real-world problem from domains such as healthcare, finance, agriculture, education, retail, cybersecurity, transportation, manufacturing, or smart cities and develop a comprehensive data product."
+        },
+        {
+          task: "Test 1 (Objective / Subjective)",
+          weightage: "22.22% (Shared Best-of-2)",
+          marks: 30,
+          allotmentWeek: "Week 5",
+          submissionWeek: "Week 7 (Lecture 11)",
+          mode: "In-class LMS / Written Test",
+          cos: "CO1, CO2, CO3, CO4",
+          objective: "Assess understanding of unsupervised learning foundations, distance metrics, k-Means, k-Medoids, and hierarchical clustering mechanics.",
+          nature: "Structured test assessing analytical derivations, distance metrics, objective functions, and linkage algorithms."
+        },
+        {
+          task: "Test 2 (Objective / Subjective)",
+          weightage: "22.22% (Shared Best-of-2)",
+          marks: 30,
+          allotmentWeek: "Week 8",
+          submissionWeek: "Week 10 (Lecture 20)",
+          mode: "In-class LMS / Written Test",
+          cos: "CO3, CO4, CO5, CO6",
+          objective: "Assess understanding of density-based clustering (DBSCAN), dimensionality reduction (PCA, t-SNE, UMAP), and anomaly detection.",
+          nature: "Structured test assessing non-linear manifold embeddings, isolation forest algorithms, and validation metrics."
+        }
+      ]
+    },
+    moocs: [
+      { platform: "NPTEL / SWAYAM", title: "Machine Learning and Deep Learning - Fundamentals and Applications", offeredBy: "Prof. Balaraman Ravindran, IIT Madras", duration: "12 Weeks", mappedCOs: "CO1, CO2, CO3, CO4" },
+      { platform: "Coursera / DeepLearning.AI", title: "Unsupervised Learning, Recommenders, Reinforcement Learning", offeredBy: "Andrew Ng", duration: "4 Weeks", mappedCOs: "CO2, CO4, CO5, CO6" }
+    ],
+    practicals: [
+      { p: 1, title: "Exploratory Data Analysis & Similarity Metrics", tools: "Python, NumPy, SciPy", desc: "Analyze customer behavior patterns by performing exploratory data analysis and evaluating Euclidean, Manhattan, and Cosine similarity measures on an unlabeled customer dataset.", outcome: "Analyze unlabeled datasets using exploratory data analysis and compute appropriate similarity and distance measures to identify meaningful patterns and relationships.", co: "CO1, CO2" },
+      { p: 2, title: "Customer Segmentation with k-Means & k-Medoids", tools: "Python, Scikit-learn", desc: "Develop a customer segmentation solution by implementing and comparing k-Means and k-Medoids clustering techniques on the Mall Customers dataset.", outcome: "Develop the capability to discover meaningful customer segments and translate clustering results into actionable business insights.", co: "CO2, CO3" },
+      { p: 3, title: "Scalable Clustering: From-Scratch k-Means", tools: "Python, NumPy", desc: "Design a scalable clustering model by implementing k-Means from scratch and validating its performance using the Scikit-learn framework.", outcome: "Build competency in designing clustering solutions through algorithmic implementation and validating their effectiveness using industry-standard machine learning frameworks.", co: "CO2" },
+      { p: 4, title: "Influence of Data Preprocessing & Feature Scaling", tools: "Python, Pandas, Scikit-learn", desc: "Investigate the influence of data preprocessing by examining the effect of feature scaling and standardization on clustering quality and model convergence.", outcome: "Gain proficiency in improving the quality and reliability of unsupervised learning models through appropriate data preprocessing and feature transformation techniques.", co: "CO2, CO3" },
+      { p: 5, title: "Cluster Validation: Elbow Method, Silhouette & Davies-Bouldin", tools: "Python, Yellowbrick, Scikit-learn", desc: "Determine the optimal clustering configuration by applying Elbow Method, Silhouette Score, and Davies-Bouldin Index on a real-world marketing dataset.", outcome: "Develop the ability to evaluate multiple clustering solutions and justify the selection of the most suitable model using objective validation measures.", co: "CO3, CO4" },
+      { p: 6, title: "Agglomerative Hierarchical Clustering & Dendrograms", tools: "Python, SciPy, Matplotlib", desc: "Analyze hierarchical relationships in unlabelled data by constructing dendrograms and comparing multiple linkage strategies using Hierarchical Clustering.", outcome: "Acquire the ability to interpret hierarchical relationships within complex datasets and derive meaningful insights from cluster structures.", co: "CO3" },
+      { p: 7, title: "DBSCAN Density-Based Clustering & Noise Isolation", tools: "Python, Scikit-learn", desc: "Develop a density-based clustering solution by applying DBSCAN and evaluating the impact of epsilon (e) and MinPts parameters on cluster formation and noise detection.", outcome: "Develop competency in identifying naturally occurring clusters and distinguishing anomalous observations within real-world datasets.", co: "CO3, CO4" },
+      { p: 8, title: "Comparative Clustering Benchmarks on Diverse Geometries", tools: "Python, Matplotlib, Scikit-learn", desc: "Evaluate clustering techniques for diverse data distributions by benchmarking k-Means, Hierarchical Clustering, and DBSCAN using clustering validation metrics.", outcome: "Gain the ability to critically evaluate and recommend appropriate clustering techniques based on dataset characteristics, performance, and application requirements.", co: "CO3, CO4" },
+      { p: 9, title: "Principal Component Analysis (PCA) Dimensionality Reduction", tools: "Python, Scikit-learn", desc: "Develop an efficient feature representation model by applying Principal Component Analysis (PCA) to reduce dimensionality while preserving maximum variance.", outcome: "Develop proficiency in representing high-dimensional data in compact feature spaces to improve computational efficiency and analytical effectiveness.", co: "CO2, CO4" },
+      { p: 10, title: "Non-Linear Manifold Visualization (t-SNE & UMAP)", tools: "Python, openTSNE, UMAP-learn", desc: "Compare dimensionality reduction techniques by visualizing high-dimensional datasets using PCA, t-SNE, and UMAP for exploratory data analysis.", outcome: "Acquire the ability to explore, visualize, and interpret complex datasets using advanced dimensionality reduction techniques for effective knowledge discovery.", co: "CO2, CO4" },
+      { p: 11, title: "Market Basket Analysis with Apriori & FP-Growth", tools: "Python, MLxtend", desc: "Extract actionable business insights by implementing Apriori and FP-Growth algorithms for Market Basket Analysis and interpreting association rules.", outcome: "Develop competency in extracting valuable knowledge from transactional data to support business intelligence, recommendation systems, and strategic decision-making.", co: "CO4, CO5" },
+      { p: 12, title: "Anomaly Detection Frameworks (Isolation Forest & LOF)", tools: "Python, PyOD, Scikit-learn", desc: "Develop an anomaly detection framework by comparing Isolation Forest and Local Outlier Factor (LOF) for identifying unusual observations in cybersecurity or financial datasets.", outcome: "Gain the ability to identify unusual behavioural patterns and detect anomalies for improving the reliability and security of intelligent systems.", co: "CO4, CO5" },
+      { p: 13, title: "Clustering Validation Metrics & Stability Analysis", tools: "Python, Scikit-learn, Yellowbrick", desc: "Assess the quality of unsupervised learning models using clustering validation metrics, visualization techniques, and stability analysis to support model selection.", outcome: "Develop the capability to assess the robustness, reliability, and effectiveness of unsupervised learning models using appropriate validation and visualization techniques.", co: "CO3, CO4" },
+      { p: 14, title: "End-to-End Unsupervised Learning Capstone Pipeline", tools: "Python, Streamlit, Scikit-learn", desc: "Develop an end-to-end unsupervised learning solution by integrating data preprocessing, clustering, dimensionality reduction, anomaly detection, visualization, evaluation, and presentation of insights for a real-world application.", outcome: "Demonstrate the ability to design, develop, evaluate, and communicate an end-to-end unsupervised learning solution for solving complex real-world analytical problems.", co: "CO5, CO6" },
+      { p: 15, title: "Practical Spill-Over, Project Viva Voce & Technical Review", tools: "Python, Git, Jupyter", desc: "Comprehensive practical spill-over, capstone code review, rubric-based technical viva voce, and practical assessment verification.", outcome: "Synthesize full hands-on technical proficiency across all unsupervised learning paradigms.", co: "CO1, CO2, CO3, CO4, CO5, CO6" }
+    ],
+    lectures: [
+      {
+        week: 1, lec: 1, topic: "Foundations of Unsupervised Learning & Core Paradigms",
+        ref: "T-1 Ch 1, R-1 Ch 1", or: "OR-1 (Overview)",
+        desc: "Introduction to unsupervised learning principles; Comparison between Supervised, Unsupervised, and Semi-Supervised learning paradigms; Core challenges in mining unlabeled data; Finding hidden structure and latent patterns.",
+        outcome: "Understand core unsupervised paradigms and differentiate unsupervised workflows from supervised regression and classification.",
+        pedagogy: "Venn diagrams comparing ML paradigms, interactive taxonomy whiteboard session.",
+        example: "Customer segmentation in Amazon and Netflix user personalization."
+      },
+      {
+        week: 1, lec: 2, topic: "Problem Formulation & Real-World Industry Use Cases",
+        ref: "T-1 Ch 1, R-2 Ch 1", or: "OR-4 (Kaggle Datasets)",
+        desc: "Formulating business problems into unsupervised learning tasks; Exploratory Data Analysis (EDA) for structure discovery; Key use cases across market segmentation, customer behavior analysis, anomaly and fraud detection.",
+        outcome: "Formulate unstructured business problems as clustering, dimensionality reduction, or anomaly detection tasks.",
+        pedagogy: "Case study analysis of fintech and e-commerce transaction workflows.",
+        example: "Credit card transaction fraud identification and customer churn clustering."
+      },
+      {
+        week: 2, lec: 3, topic: "Distance & Geometric Similarity Metrics",
+        ref: "T-1 Ch 2, R-1 Ch 2", or: "OR-1 (Distance Metrics)",
+        desc: "Mathematical formulations and properties of distance metrics: Euclidean (L2 norm), Manhattan (L1 city block), Minkowski, and Cosine similarity for high-dimensional vectors.",
+        outcome: "Calculate and select appropriate distance/similarity metrics tailored to feature scales and vector geometries.",
+        pedagogy: "Geometric intuition board work; 'As the crow flies vs city grid' analogy.",
+        example: "Text document similarity in search engines and GPS routing distance computations."
+      },
+      {
+        week: 2, lec: 4, topic: "Partition-Based Clustering: Clustering Fundamentals & k-Means Mechanics",
+        ref: "T-1 Ch 2, R-1 Ch 3", or: "OR-1 (k-Means)",
+        desc: "Clustering fundamentals and assumptions; Concept of hard vs soft clustering; k-Means algorithm formulation; Centroid initialization methods; Standard Lloyd's algorithm iteration and convergence criteria.",
+        outcome: "Explain k-Means algorithmic mechanics and implement iterative centroid convergence.",
+        pedagogy: "Step-by-step dry-run on 2D scatter plots; Colored magnets on magnetic board.",
+        example: "Grouping retail customers based on annual income and spending score."
+      },
+      {
+        week: 3, lec: 5, topic: "Advanced k-Means: Objective Function & Initialization Pitfalls",
+        ref: "T-1 Ch 2, R-1 Ch 3", or: "OR-1 (k-Means)",
+        desc: "Mathematical formulation of k-Means objective function: Within-Cluster Sum of Squares (WCSS / Inertia); Vulnerability to poor local minima; Initialization sensitivity and convergence traps.",
+        outcome: "Analyze mathematical objective functions and evaluate initialization sensitivity on convergence stability.",
+        pedagogy: "Mathematical derivation of centroid updates and gradient descent analogies.",
+        example: "Clustering geographical weather station readings across national grid sensors."
+      },
+      {
+        week: 3, lec: 6, topic: "k-Means++ Initialization Algorithm & Convergence Guarantees",
+        ref: "T-1 Ch 2, R-2 Ch 2", or: "OR-1 (k-Means++)",
+        desc: "The k-Means++ probabilistic seeding algorithm: choosing initial seeds with probability proportional to squared distance; Theoretical O(log k) approximation guarantees; Eliminating suboptimal clusters.",
+        outcome: "Apply k-Means++ to safeguard against suboptimal centroid initialization traps.",
+        pedagogy: "Live Jupyter Notebook simulation comparing random seeds against k-Means++.",
+        example: "Warehouse logistics hub location placement minimizing transport distances."
+      },
+      {
+        week: 4, lec: 7, topic: "Robust Partitioning: k-Medoids (PAM), Standardization & MiniBatch k-Means",
+        ref: "T-1 Ch 2, R-1 Ch 3", or: "OR-1 (k-Medoids)",
+        desc: "Partitioning Around Medoids (PAM) algorithm; Contrast between artificial mean centroids and actual exemplar medoids; Sensitivity to outliers; Impact of feature scaling and standardization; MiniBatch k-Means for large-scale data.",
+        outcome: "Select k-Medoids over k-Means when dataset contains heavy outliers and explain scaling prerequisites.",
+        pedagogy: "Interactive comparative demonstration with and without extreme outlier injection.",
+        example: "Hospital patient length-of-stay clustering with anomalous critical care outliers."
+      },
+      {
+        week: 4, lec: 8, topic: "Cluster Validation: Internal Metrics, Inertia & Elbow Method Pitfalls",
+        ref: "T-1 Ch 3, R-1 Ch 4", or: "OR-3 (Yellowbrick Elbow)",
+        desc: "Within-Cluster Sum of Squares (WCSS / Inertia); Critical examination of Elbow Method subjectivity and ambiguity; Overfitting risks with large k; Between-Cluster Sum of Squares (BCSS); Davies-Bouldin Index.",
+        outcome: "Evaluate clustering compactness and separation using inertia curves and Davies-Bouldin indices.",
+        pedagogy: "Graphical curvature analysis; Live interactive parameter tuning slider.",
+        example: "Optimal product category tier determination in an e-commerce catalog."
+      },
+      {
+        week: 5, lec: 9, topic: "Advanced Validation: Silhouette Analysis & Cluster Visualizers",
+        ref: "T-1 Ch 3, R-2 Ch 3", or: "OR-3 (Silhouette Visualizer)",
+        desc: "Silhouette Coefficient mathematical formulation: intra-cluster distance a(i) vs nearest-cluster distance b(i); Interpreting negative, zero, and positive silhouette values; Yellowbrick silhouette plots for cluster profiling.",
+        outcome: "Interpret silhouette plots to identify misclassified border points and determine optimal k.",
+        pedagogy: "Knife-blade silhouette distribution visualizations and heatmaps.",
+        example: "Telecom customer contract plan grouping and churn risk tiering."
+      },
+      {
+        week: 5, lec: 10, topic: "Hierarchical Clustering: Agglomerative Mechanics & Linkage Strategies",
+        ref: "T-1 Ch 4, R-1 Ch 5", or: "OR-1 (Hierarchical)",
+        desc: "Bottom-up agglomerative vs top-down divisive clustering; Proximity matrix computation; Linkage criteria: Single (minimum distance), Complete (maximum distance), Average, and Ward's minimum variance method.",
+        outcome: "Construct agglomerative cluster trees and evaluate linkage behaviors on elongated vs spherical shapes.",
+        pedagogy: "Step-by-step matrix reduction board exercise.",
+        example: "Phylogenetic biological tree synthesis and evolutionary gene family mapping."
+      },
+      {
+        week: 6, lec: 11, topic: "Academic Task: Test 1 / Continuous Assessment Mid-Review",
+        ref: "Curriculum Assessment", or: "LMS Portal", isMilestone: "test",
+        desc: "Formal Continuous Assessment Test 1 (Objective & Subjective) covering Foundations of Unsupervised Learning, Distance Metrics, k-Means, k-Medoids, and Hierarchical Clustering Theory.",
+        outcome: "Demonstrate conceptual mastery and problem-solving skills across Units 1 & 2.",
+        pedagogy: "Formal structured written/LMS assessment test.",
+        example: "Evaluation of algorithmic time complexity, distance derivations, and linkage matrices."
+      },
+      {
+        week: 6, lec: 12, topic: "Dendrogram Interpretation, Tree Pruning & Cophenetic Correlation",
+        ref: "T-1 Ch 4, R-2 Ch 3", or: "OR-1 (Dendrograms)",
+        desc: "Reading and interpreting dendrogram heights; Horizontal cut line placement; Determining natural cluster boundaries; Cophenetic correlation coefficient for tree fidelity; Pruning strategies.",
+        outcome: "Determine optimal cluster partitions by pruning dendrograms at statistically defensible heights.",
+        pedagogy: "Interactive dendrogram cutting tool in Python/SciPy.",
+        example: "Document taxonomy generation and news article topical hierarchy creation."
+      },
+      {
+        week: 7, lec: 13, topic: "Density-Based Clustering: DBSCAN Fundamentals & Mechanics",
+        ref: "T-1 Ch 5, R-1 Ch 6", or: "OR-1 (DBSCAN)",
+        desc: "Limitations of centroid and hierarchical clustering on irregular topologies; DBSCAN core concepts: Epsilon (e) neighborhood, MinPts; Core points, Border points, and Noise points; Density reachability and connectivity.",
+        outcome: "Explain density reachability and connectivity; Isolate non-convex clusters with noise filtering.",
+        pedagogy: "Visual animation of density wave propagation across arbitrary shaped point clouds.",
+        example: "Urban traffic bottleneck detection and GPS taxi drop-off hotspot identification."
+      },
+      {
+        week: 7, lec: 14, topic: "Mid-Term Spill Over: Algorithmic Shootout & Comparative Review",
+        ref: "T-1, R-1, R-2", or: "OR-1 (Clustering Comparison)", isMilestone: "spillover",
+        desc: "Buffer lecture for complex topics: Comparative benchmarking of k-Means vs Hierarchical vs DBSCAN across time complexity, memory footprint, geometry flexibility, and noise resilience; Mid-term doubt clearing.",
+        outcome: "Synthesize comparative trade-offs among all partition, hierarchical, and density-based clustering models.",
+        pedagogy: "Comprehensive matrix comparison and live benchmark shootout on non-convex datasets.",
+        example: "Selecting suitable clustering paradigms for astronomical galaxy survey data."
+      },
+      {
+        week: 8, lec: 15, topic: "Curse of Dimensionality & Need for Feature Representation",
+        ref: "T-1 Ch 6, R-1 Ch 7", or: "OR-4 (High-dim Datasets)",
+        desc: "Geometric phenomena in high dimensions: volume concentration, distance homogenization; Need for dimensionality reduction: noise suppression, visualization, storage reduction, and downstream compute efficiency.",
+        outcome: "Analyze the curse of dimensionality and justify dimensional compression for downstream ML.",
+        pedagogy: "Geometric hypercube vs hypersphere volume ratio thought experiment.",
+        example: "Processing genomic microarray data with 20,000 genes over 100 patient samples."
+      },
+      {
+        week: 8, lec: 16, topic: "Principal Component Analysis (PCA): Geometric Intuition & Mathematics",
+        ref: "T-1 Ch 6, R-1 Ch 7", or: "OR-2 (PCA Guide)",
+        desc: "Linear dimensionality reduction; Direction of maximum variance; Orthogonal projection axes; Covariance matrix computation; Eigenvalues, eigenvectors, and principal components.",
+        outcome: "Derive principal components geometrically and interpret variance preservation.",
+        pedagogy: "2D/3D dynamic projection rotations; Ellipsoid variance axis animation.",
+        example: "Facial recognition eigenfaces (AT&T Cambridge face database)."
+      },
+      {
+        week: 9, lec: 17, topic: "PCA Implementation: Scree Plots & Explained Variance Ratio",
+        ref: "T-1 Ch 6, R-2 Ch 4", or: "OR-2 (PCA Variance)",
+        desc: "Cumulative explained variance ratio calculation; Scree plot construction; Kaiser criterion for component retention; Reconstruction error and lossy compression analysis.",
+        outcome: "Select the optimal number of principal components balancing compression ratio with information loss.",
+        pedagogy: "Hands-on coding walkthrough on biomedical datasets using Scikit-learn PCA.",
+        example: "Image compression and noise reduction in MRI and CT scans."
+      },
+      {
+        week: 9, lec: 18, topic: "Non-Linear Manifold Learning: t-SNE & Perplexity Tuning",
+        ref: "T-1 Ch 7, R-1 Ch 8", or: "OR-2 (t-SNE)",
+        desc: "Limitations of linear PCA on curved manifolds; t-Distributed Stochastic Neighbor Embedding (t-SNE); Probability distributions over pairs; Perplexity parameter tuning; Local vs global preservation trade-offs.",
+        outcome: "Apply t-SNE to visualize high-dimensional data in 2D/3D and configure perplexity effectively.",
+        pedagogy: "Interactive distortion visualization; Misreading t-SNE plots guide.",
+        example: "Visualizing high-dimensional single-cell RNA sequencing (scRNA-seq) cell clusters."
+      },
+      {
+        week: 10, lec: 19, topic: "Scalable Manifold Learning: UMAP & Autoencoders Intuition",
+        ref: "T-1 Ch 7, R-2 Ch 5", or: "OR-2 (UMAP)",
+        desc: "Uniform Manifold Approximation and Projection (UMAP) Riemannian geometry principles; Global structure preservation comparison (t-SNE vs UMAP); Conceptual introduction to Deep Autoencoders and latent bottlenecks.",
+        outcome: "Contrast UMAP and t-SNE in scalability and global structure fidelity; Understand latent bottleneck autoencoders.",
+        pedagogy: "Side-by-side run on MNIST 70,000 digits benchmarking execution time and visual clustering.",
+        example: "Visualizing 100,000 word embeddings in Natural Language Processing (Word2Vec / BERT)."
+      },
+      {
+        week: 10, lec: 20, topic: "Academic Task: Test 2 / Continuous Assessment Review",
+        ref: "Curriculum Assessment", or: "LMS Portal", isMilestone: "test",
+        desc: "Formal Continuous Assessment Test 2 (Objective & Subjective) covering DBSCAN, Dimensionality Reduction (PCA, t-SNE, UMAP), and Feature Representation Learning.",
+        outcome: "Demonstrate rigorous theoretical and practical problem-solving across Units 3 & 4.",
+        pedagogy: "Formal structured written/LMS assessment test.",
+        example: "Evaluation of covariance matrices, eigenvector calculations, and manifold hyperparameters."
+      },
+      {
+        week: 11, lec: 21, topic: "Association Rule Mining: Apriori Algorithm Mechanics",
+        ref: "T-1 Ch 8, R-1 Ch 9", or: "OR-1 (Association Rules)",
+        desc: "Market Basket Analysis foundations; Itemsets, transactions, and rule formats (A -> B); Key metrics: Support, Confidence, Lift, and Conviction; Apriori downward-closure property and candidate generation.",
+        outcome: "Extract strong association rules and interpret Lift to discard coincidental item correlations.",
+        pedagogy: "Supermarket shopping cart board game with transaction frequency tables.",
+        example: "Amazon 'Frequently Bought Together' cross-sell recommendation engines."
+      },
+      {
+        week: 11, lec: 22, topic: "Capstone Project Review: Phase-1 Architecture Evaluation",
+        ref: "Project Rubric", or: "GitHub Repository", isMilestone: "project",
+        desc: "Formal evaluation of Continuous Assessment Capstone Project: Problem definition, EDA, data pipeline, and initial model benchmarking presented by student groups.",
+        outcome: "Defend end-to-end unsupervised design choices, baseline models, and code architecture.",
+        pedagogy: "Interactive peer critique and rubric-based faculty technical viva.",
+        example: "Live code walkthrough of end-to-end industry analytics repositories."
+      },
+      {
+        week: 12, lec: 23, topic: "Scalable Rule Mining: FP-Growth (Frequent Pattern Tree)",
+        ref: "T-1 Ch 8, R-2 Ch 6", or: "OR-1 (FP-Growth)",
+        desc: "Computational bottlenecks of candidate generation in Apriori; FP-Tree compact data structure construction; Mining frequent itemsets without candidate generation; Conditional FP-trees.",
+        outcome: "Deploy FP-Growth algorithm for orders-of-magnitude faster association mining on sparse datasets.",
+        pedagogy: "Interactive FP-tree building walkthrough with prefix path mining.",
+        example: "Healthcare adverse drug reaction combination mining from prescription databases."
+      },
+      {
+        week: 12, lec: 24, topic: "Anomaly & Outlier Detection: Statistical & Distance Methods",
+        ref: "T-1 Ch 9, R-1 Ch 10", or: "OR-1 (Outlier Detection)",
+        desc: "Defining anomalies: point, contextual, and collective outliers; Z-score and IQR bounds; Distance-based k-NN outlier scores; Local Outlier Factor (LOF) local density estimation.",
+        outcome: "Differentiate global and local outliers and apply LOF to non-uniform density datasets.",
+        pedagogy: "2D scatter visual highlighting isolated outliers vs local cluster-edge outliers.",
+        example: "Network intrusion detection identifying malicious port-scanning patterns."
+      },
+      {
+        week: 13, lec: 25, topic: "Tree-Based Anomaly Detection: Isolation Forest",
+        ref: "T-1 Ch 9, R-2 Ch 7", or: "OR-1 (Isolation Forest)",
+        desc: "Isolation Forest core philosophy: isolating anomalies rather than profiling normal points; Recursive random partitioning; Average path length in isolation trees; Anomaly score computation.",
+        outcome: "Implement Isolation Forest for high-dimensional anomaly detection with linear time complexity.",
+        pedagogy: "Tree partitioning animation illustrating rapid isolation of rare anomalous points.",
+        example: "Financial banking transaction fraud screening and automated anti-money laundering (AML)."
+      },
+      {
+        week: 13, lec: 26, topic: "Probabilistic Clustering: Gaussian Mixture Models (GMM)",
+        ref: "T-1 Ch 10, R-1 Ch 11", or: "OR-1 (Gaussian Mixtures)",
+        desc: "Probability density estimation; Mixture models; Expectation-Maximization (EM) algorithm: E-step (posterior probabilities) and M-step (parameter updates); Covariance constraints (full, tied, diagonal, spherical).",
+        outcome: "Apply Gaussian Mixture Models for soft probabilistic clustering and density estimation.",
+        pedagogy: "Overlapping Gaussian bell curves demonstration with soft probabilistic assignment.",
+        example: "Speaker diarization and acoustic speech pattern clustering in audio processing."
+      },
+      {
+        week: 14, lec: 27, topic: "Model Evaluation, Stability Analysis & End-to-End Pipeline",
+        ref: "T-1 Ch 11, R-1 Ch 12", or: "OR-1 (Evaluation Metrics)",
+        desc: "External validation metrics when ground truth is partially available: Adjusted Rand Index (ARI), Normalized Mutual Information (NMI); Cluster stability under perturbation; Pipeline deployment.",
+        outcome: "Validate unsupervised models using ARI/NMI and evaluate clustering robustness via bootstrap resampling.",
+        pedagogy: "Sensitivity analysis charts and deployment architectural diagrams.",
+        example: "Verifying customer segmentation model stability across consecutive quarters."
+      },
+      {
+        week: 14, lec: 28, topic: "Spill Over Lecture 1: Advanced Anomaly & Deep Generative Models",
+        ref: "T-1, R-1, R-2", or: "OR-1, OR-2", isMilestone: "spillover",
+        desc: "Buffer lecture for advanced applications: Deep Autoencoders for anomaly detection, Variational Autoencoders (VAE) overview, and Self-Organizing Maps (SOM).",
+        outcome: "Appraise state-of-the-art unsupervised deep representation and reconstruction methods.",
+        pedagogy: "Architecture diagrams and code demonstration of autoencoder reconstruction error.",
+        example: "Industrial sensor telemetry predictive maintenance and turbine fault anticipation."
+      },
+      {
+        week: 15, lec: 29, topic: "Spill Over Lecture 2: Real-World Case Studies & Deployment",
+        ref: "T-1 Ch 12", or: "OR-4 (Case Studies)", isMilestone: "spillover",
+        desc: "Buffer lecture for end-to-end case studies: Deploying unsupervised models with Scikit-learn pipelines; Model serialization (joblib/pickle); Real-time inference latency.",
+        outcome: "Package and deploy unsupervised pipelines as web endpoints or batch analytics jobs.",
+        pedagogy: "Interactive live demo deploying a clustering REST API endpoint.",
+        example: "Production deployment of customer classification microservice on AWS / Docker."
+      },
+      {
+        week: 15, lec: 30, topic: "Spill Over Lecture 3: Comprehensive Course Review & Capstone Viva",
+        ref: "All Units", or: "All Online Resources", isMilestone: "spillover",
+        desc: "Comprehensive review of all 6 course units; Summary of key algorithmic decisions; Final Project evaluation, student Q&A, and ETT preparation guidance.",
+        outcome: "Synthesize complete knowledge of unsupervised learning algorithms and excel in final evaluations.",
+        pedagogy: "Rapid-fire conceptual quiz, algorithmic decision cheat-sheet distribution.",
+        example: "Preparation for senior machine learning engineer and data scientist technical interviews."
+      }
+    ]
+  };
+
+  function getCourseIpData(courseKey) {
+    if (!courseKey && $("#sc")) courseKey = $("#sc").value;
+    const code = (courseKey || "").split(" ")[0].trim();
+    if (code === "INT396" || code === "INT395") {
+      return INT396_DATA;
+    }
+    const x = X[code] || {};
+    const curObj = (typeof cur === "function") ? cur() : {};
+    const title = curObj.n || x.title || courseKey || "Course Instruction Plan";
+    const ltp = curObj.ltp || "3-0-0";
+    const lecturesList = (x.lec || []).map((t, idx) => {
+      const wk = Math.floor(idx / 2) + 1;
+      return {
+        week: wk,
+        lec: idx + 1,
+        topic: t,
+        ref: "T-1 Ch " + (Math.floor(idx / 5) + 1),
+        or: "Online Course Docs",
+        desc: "Comprehensive theoretical analysis and practical implementation of " + t + " with problem sets and dry runs.",
+        outcome: "Understand core mechanisms of " + t + " and apply algorithmic patterns to solve domain problems.",
+        pedagogy: "Interactive whiteboard derivation, algorithm dry-run, code demonstration.",
+        example: "Industry application in data pipelines and system automation."
+      };
+    });
+
+    while (lecturesList.length < 30) {
+      const idx = lecturesList.length;
+      const wk = Math.floor(idx / 2) + 1;
+      lecturesList.push({
+        week: wk,
+        lec: idx + 1,
+        topic: idx >= 27 ? "Spill Over & Comprehensive Course Review" : "Advanced Practical Topic " + (idx + 1),
+        ref: "T-1 / Reference Notes",
+        or: "LMS Resources",
+        isMilestone: idx >= 27 ? "spillover" : (idx === 10 || idx === 19 ? "test" : undefined),
+        desc: idx >= 27 ? "Buffer lecture for complex topics review, student doubt clearing, and continuous assessment viva voce." : "Detailed problem-solving, case study analysis, and practical coding walkthrough.",
+        outcome: "Synthesize domain principles and evaluate algorithmic effectiveness in production scenarios.",
+        pedagogy: "Case study discussion, dry-run demonstration, technical Q&A.",
+        example: "Scalable industry deployment and performance optimization."
+      });
+    }
+
+    const cosList = [
+      { code: "CO1", level: "Understand (Level 2)", desc: (x.co || "").slice(0, 150) || "Understand foundational paradigms, architectures, and theoretical underpinnings of the course domain." },
+      { code: "CO2", level: "Apply (Level 3)", desc: "Apply algorithmic and practical implementation techniques to design and solve domain-specific problems." },
+      { code: "CO3", level: "Analyze (Level 4)", desc: "Analyze system trade-offs, time and space complexity, and optimal configurations across diverse problem constraints." },
+      { code: "CO4", level: "Evaluate (Level 5)", desc: "Evaluate performance outcomes using objective benchmarks, validation metrics, and analytical rubrics." },
+      { code: "CO5", level: "Evaluate (Level 5)", desc: "Evaluate multi-paradigm solutions against industry-standard requirements and operational constraints." },
+      { code: "CO6", level: "Create (Level 6)", desc: "Develop and deploy an end-to-end capstone solution incorporating automated workflows, documentation, and technical defense." }
+    ];
+
+    const practicalsList = (x.pr ? x.pr.split(";").filter(s => s.trim().length > 0) : []).map((pStr, pIdx) => {
+      return {
+        p: pIdx + 1,
+        title: pStr.trim().replace(/^\\d+\\.\\s*/, ""),
+        tools: "Development Environment, IDE & Frameworks",
+        desc: pStr.trim(),
+        outcome: "Develop hands-on implementation competency and validate code performance.",
+        co: "CO" + ((pIdx % 6) + 1)
+      };
+    });
+
+    while (practicalsList.length < 15) {
+      const pIdx = practicalsList.length;
+      practicalsList.push({
+        p: pIdx + 1,
+        title: pIdx === 14 ? "Practical Spill-Over, Project Viva Voce & Technical Defense" : "Hands-on Laboratory Experiment " + (pIdx + 1),
+        tools: "Standard Toolchain & Test Suite",
+        desc: pIdx === 14 ? "Comprehensive evaluation of laboratory experiments, viva voce, and practical assessment verification." : "Algorithmic implementation, performance profiling, and test-case validation.",
+        outcome: "Synthesize full hands-on technical proficiency across all laboratory modules.",
+        co: "CO" + ((pIdx % 6) + 1)
+      });
+    }
+
+    return {
+      code: code,
+      eliteCode: code + " (Elite / Intensive)",
+      title: title,
+      ltp: ltp,
+      credits: 3,
+      examCategory: "X3 (Regular) / X7R (Elite)",
+      weightage: { att: 5, ca: 45, ett: 50 },
+      distribution: { beforeMidTermWeeks: 7, beforeMidTermLec: 14, afterMidTermWeeks: 7, afterMidTermLec: 13, spillOverLec: 3, totalLec: 30 },
+      books: {
+        textbooks: [{ id: "T-1", title: title + " Core Reference", author: "Prescribed University Author", publisher: "Standard Publishing", edition: "Latest Edition" }],
+        references: [{ id: "R-1", title: "Advanced " + title + " Handbook", author: "Domain Expert", publisher: "Academic Press", edition: "Current Edition" }],
+        onlineReadings: [{ id: "OR-1", title: "Official Documentation & Framework Guides", url: "#" }]
+      },
+      cos: cosList,
+      caScheme: {
+        category: "C010102",
+        totalMarks: 45,
+        summary: "Project (Compulsory, 77.78% weightage = 35 marks) + Best 1 of 2 Tests (22.22% weightage = 10 marks)",
+        tasks: [
+          { task: "Project (Capstone Assignment)", weightage: "77.78% (Compulsory)", marks: 30, allotmentWeek: "Week 2", submissionWeek: "Week 11", mode: "Code Repository + Viva", cos: "CO1-CO6", nature: "End-to-end design, implementation, and technical documentation of real-world problems." },
+          { task: "Test 1 (Objective / Subjective)", weightage: "22.22% (Shared Best-of-2)", marks: 30, allotmentWeek: "Week 5", submissionWeek: "Week 7 (Lecture 11)", mode: "In-class LMS / Written", cos: "CO1, CO2, CO3", nature: "Evaluation of foundational concepts, mathematical formulations, and algorithmic theory." },
+          { task: "Test 2 (Objective / Subjective)", weightage: "22.22% (Shared Best-of-2)", marks: 30, allotmentWeek: "Week 8", submissionWeek: "Week 10 (Lecture 20)", mode: "In-class LMS / Written", cos: "CO3, CO4, CO5", nature: "Evaluation of advanced architectures, performance analysis, and deployment principles." }
+        ]
+      },
+      moocs: [
+        { platform: "NPTEL / SWAYAM", title: title + " - Advanced Fundamentals", offeredBy: "IIT Faculty", duration: "12 Weeks", mappedCOs: "CO1, CO2, CO3" }
+      ],
+      practicals: practicalsList,
+      lectures: lecturesList
+    };
+  }
+
+
+  function syl(){
+    const c = cur(), s = stats();
+    if(S.mode === "ip") {
+      const ip = getCourseIpData($("#sc") ? $("#sc").value : "");
+      
+      // Group the 30 lectures into 5 thematic blocks of 6 lectures
+      const blocks = [];
+      for(let i = 0; i < ip.lectures.length; i += 6) {
+        const slice = ip.lectures.slice(i, i + 6);
+        const blockNum = Math.floor(i / 6) + 1;
+        const mainTopic = slice[0] ? slice[0].topic.split(":")[0].split("&")[0].split("(")[0].trim() : "Advanced Topics";
+        blocks.push({
+          num: blockNum,
+          title: "Block " + blockNum + ": Lectures " + (i + 1) + "–" + Math.min(i + 6, ip.lectures.length) + " (" + mainTopic + ")",
+          lectures: slice
+        });
+      }
+
+      page("Instruction plan", "", `
+        <div class="hero">
+          <div>
+            <h3>${ip.code} · ${ip.title}</h3>
+            <p>Automated 15-week lecture schedule, Bloom's course outcomes, practical plan, and continuous assessment scheme.</p>
+            ${nx("Open master schedule table", 2)}
+          </div>
+          ${art()}
+        </div>
+
+        <div class="card" style="margin-bottom:14px;padding:12px 18px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px">
+            <h4 style="margin:0;font-size:14px">Course structure & regulatory parameters</h4>
+            <span class="chip a">Automated Accreditation Setup</span>
+          </div>
+          <div class="chips" style="gap:8px">
+            <span class="chip a" style="font-weight:700">Structure: L-T-P ${ip.ltp} (${ip.credits} Credits)</span>
+            <span class="chip p">Category: ${ip.examCategory}</span>
+            <span class="chip">Weightage: ATT 5% · CA 45% · ETT 50%</span>
+            <span class="chip a" style="font-weight:700">Scheme: ${ip.caScheme.category}</span>
+            <span class="chip">Timeline: 15 Weeks · 30 Lectures · 15 Practicals</span>
+          </div>
+        </div>
+
+        <!-- Card 1: 30-Lecture Teaching Schedule in native Unit/Chip pattern -->
+        <div class="card" style="margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+            <div>
+              <h3 style="margin:0 0 4px">30-Lecture teaching schedule</h3>
+              <p style="font-size:12.5px;color:var(--mut);margin:0">Organized into 5 delivery blocks with automated textbook references and real-world applications</p>
+            </div>
+            <span class="chip a">30 Lectures Scheduled</span>
+          </div>
+          ${blocks.map((b, i) => `
+            <div class="unit">
+              <div class="n">${b.num}</div>
+              <div style="flex:1">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:6px">
+                  <h4 style="margin:0">${b.title}</h4>
+                  <span class="chip p" style="font-size:11px">${b.lectures.length} Lectures</span>
+                </div>
+                <div class="chips">
+                  ${b.lectures.map(l => `
+                    <span class="chip" style="${l.isMilestone ? 'border:1.5px solid var(--or);font-weight:600' : ''}" title="${l.desc}">
+                      ${l.isMilestone ? '⭐ ' : ''}Lec ${l.lec}: ${l.topic}
+                    </span>
+                  `).join("")}
+                </div>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+
+        <!-- Card 2: Course Outcomes & Bloom's Mapping -->
+        <div class="card" style="margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+            <div>
+              <h3 style="margin:0 0 4px">Course outcomes & Bloom's taxonomy</h3>
+              <p style="font-size:12.5px;color:var(--mut);margin:0">Automated mapping of student competencies to Bloom's cognitive taxonomy levels</p>
+            </div>
+            <span class="chip p">6 Outcomes Defined</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px">
+            ${ip.cos.map(co => `
+              <div style="background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:12px 14px">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                  <b style="color:var(--or);font-size:14px">${co.code}</b>
+                  <span class="chip p" style="font-size:10.5px">${co.level}</span>
+                </div>
+                <p style="font-size:12.5px;color:var(--ink);margin:0;line-height:1.5">${co.desc}</p>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+
+        <!-- Card 3: Continuous Assessment (CA) Scheme -->
+        <div class="card" style="margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+            <div>
+              <h3 style="margin:0 0 4px">Continuous assessment (CA) scheme</h3>
+              <p style="font-size:12.5px;color:var(--mut);margin:0">Category ${ip.caScheme.category} · Total 45 Marks · Automated task distribution</p>
+            </div>
+            <span class="chip" style="background:#FFF1DA;color:#D97706;font-weight:700">Scheme ${ip.caScheme.category}</span>
+          </div>
+          <table>
+            <tr><th>Academic Task</th><th>Weightage</th><th>Marks</th><th>Timeline</th><th>Mode</th><th>Scope & Nature</th></tr>
+            ${ip.caScheme.tasks.map(t => `
+              <tr>
+                <td><b>${t.task}</b></td>
+                <td><span class="chip ${t.weightage.includes('Compulsory') ? 'p' : 'a'}">${t.weightage}</span></td>
+                <td><b>${t.marks} Marks</b></td>
+                <td>Allotted: ${t.allotmentWeek}<br><span style="font-size:11.5px;color:var(--mut)">Due: ${t.submissionWeek}</span></td>
+                <td>${t.mode}</td>
+                <td style="font-size:12px;line-height:1.4">${t.nature}</td>
+              </tr>
+            `).join("")}
+          </table>
+        </div>
+
+        <!-- Card 4: Practical Laboratory Plan -->
+        <div class="card" style="margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+            <div>
+              <h3 style="margin:0 0 4px">Practical laboratory plan (15 Experiments)</h3>
+              <p style="font-size:12.5px;color:var(--mut);margin:0">14 Core laboratory experiments + 1 Spillover & Technical Viva Voce</p>
+            </div>
+            <span class="chip a">Hands-on Component</span>
+          </div>
+          <table>
+            <tr><th style="width:85px">Exp #</th><th>Experiment Title & Scope</th><th style="width:180px">Software Tools</th><th style="width:90px">Mapped CO</th></tr>
+            ${ip.practicals.map(p => `
+              <tr>
+                <td><b>Practical ${p.p}</b></td>
+                <td><b>${p.title}</b><div style="font-size:12px;color:var(--mut);margin-top:2px">${p.desc}</div></td>
+                <td><span class="chip" style="font-size:11px">${p.tools}</span></td>
+                <td><span class="chip p" style="font-size:11px">${p.co}</span></td>
+              </tr>
+            `).join("")}
+          </table>
+        </div>
+
+        <!-- Card 5: Prescribed Textbooks & Learning Resources -->
+        <div class="card" style="margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+            <div>
+              <h3 style="margin:0 0 4px">Prescribed textbooks & digital resources</h3>
+              <p style="font-size:12.5px;color:var(--mut);margin:0">Official bibliography compliant with University academic regulatory standards</p>
+            </div>
+            <span class="chip a">Verified Bibliography</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px">
+            ${ip.books.textbooks.map(b => `
+              <div style="background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:12px 14px">
+                <span class="chip p" style="font-size:11px;font-weight:700">${b.id} TextBook</span>
+                <div style="font-weight:700;font-size:13px;margin:6px 0 3px">${b.title}</div>
+                <div style="font-size:11.5px;color:var(--mut)"><b>Author:</b> ${b.author} · <b>Publisher:</b> ${b.publisher}</div>
+              </div>
+            `).join("")}
+            ${ip.books.references.map(b => `
+              <div style="background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:12px 14px">
+                <span class="chip" style="font-size:11px;font-weight:700;background:var(--pu2);color:var(--pu)">${b.id} Reference</span>
+                <div style="font-weight:700;font-size:13px;margin:6px 0 3px">${b.title}</div>
+                <div style="font-size:11.5px;color:var(--mut)"><b>Author:</b> ${b.author} · <b>Publisher:</b> ${b.publisher}</div>
+              </div>
+            `).join("")}
+          </div>
+          <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
+            ${ip.books.onlineReadings.map(r => `
+              <span class="chip a" style="font-size:11.5px">🌐 <b>${r.id}:</b> ${r.title.split('(')[0].trim()}</span>
+            `).join("")}
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;margin-top:14px">
+          ${nx("Open master schedule table →", 2)}
+        </div>
+      `);
+      return;
+    }
+
+    // Syllabus mode (Unit-wise)
+    page("Syllabus","",`<div class="hero"><div><h3>${c.n} is ready</h3><p>${c.u.length} units · ${s.ex} topics · ${s.g} benchmark gaps found against Top 10 World & India Universities.</p>${nx("Open course table",2)}</div>${art()}</div>
+<div class="card"><h3>Unit-wise syllabus</h3>${c.u.map((u,i)=>`<div class="unit"><div class="n">${i+1}</div><div><h4>${u.t}</h4><div class="chips">${u.x.map(t=>`<span class="chip">${t}</span>`).join("")}</div></div></div>`).join("")}</div>`);
+  }
+
+  function tab(){
+    const c = cur();
+    if(S.mode === "ip") {
+      const ip = getCourseIpData($("#sc") ? $("#sc").value : "");
+      page("Course table", "", `
+        <div class="card scroll">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+                <span class="chip a" style="font-weight:700">📋 Master 30-Lecture Matrix</span>
+                <span class="chip p">L-T-P ${ip.ltp} · ${ip.credits} Credits</span>
+                <span class="chip" style="background:#FFF1DA;color:#D97706;font-weight:600">Scheme ${ip.caScheme.category}</span>
+              </div>
+              <h3 style="margin:0 0 4px">${ip.code} · ${ip.title} — 30-Lecture Teaching Schedule</h3>
+              <p style="font-size:12.5px;color:var(--mut);margin:0">Complete 8-column accreditation-grade schedule covering all 15 weeks with pedagogical tools and industry applications.</p>
+            </div>
+            <button class="btn" onclick="go(3)">Check coverage →</button>
+          </div>
+
+          <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+            <thead>
+              <tr style="background:var(--soft);text-align:left">
+                <th style="width:65px">Wk / Lec</th>
+                <th style="width:160px">Broad Topic & Sub-Topics</th>
+                <th style="width:95px">Text Ref</th>
+                <th style="min-width:240px">Lecture Description & Scope</th>
+                <th style="min-width:180px">Learning Outcome</th>
+                <th style="min-width:140px">Pedagogical Tool</th>
+                <th style="min-width:150px">Live Example</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${ip.lectures.map(l => `
+                <tr style="border-bottom:1px solid var(--line);background:${l.isMilestone === 'test' ? '#FFFDF8' : (l.isMilestone === 'project' ? '#FAF5FF' : (l.isMilestone === 'spillover' ? '#F0FDF4' : 'transparent'))}">
+                  <td style="font-weight:700;color:var(--or)">
+                    W${l.week}<br><span style="font-size:11px;color:var(--mut)">Lec ${l.lec}</span>
+                    ${l.isMilestone === 'test' ? '<br><span style="font-size:10px;background:#FDEAE7;color:#E8705F;padding:1px 4px;border-radius:4px;font-weight:700">TEST</span>' : ''}
+                    ${l.isMilestone === 'project' ? '<br><span style="font-size:10px;background:#EEEBFD;color:#7C3AED;padding:1px 4px;border-radius:4px;font-weight:700">PROJ</span>' : ''}
+                    ${l.isMilestone === 'spillover' ? '<br><span style="font-size:10px;background:#E0F6F2;color:#0D9488;padding:1px 4px;border-radius:4px;font-weight:700">SPILL</span>' : ''}
+                  </td>
+                  <td><b>${l.topic}</b></td>
+                  <td><span class="chip" style="font-size:11px">${l.ref}</span></td>
+                  <td style="line-height:1.45;color:var(--ink)">${l.desc}</td>
+                  <td style="line-height:1.45;color:var(--ink);background:rgba(255,255,255,0.4)">${l.outcome}</td>
+                  <td style="line-height:1.45;color:var(--tl);font-weight:500">${l.pedagogy}</td>
+                  <td style="line-height:1.45;color:var(--pu);font-weight:500">${l.example}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:22px;padding-top:16px;border-top:1px solid var(--line);flex-wrap:wrap;gap:12px">
+            <span style="font-size:13px;color:var(--mut)">Review all 30 scheduled lectures above before inspecting comparative benchmark coverage against top universities.</span>
+            <div style="display:flex;gap:10px">
+              <button class="btn" style="background:var(--soft);color:var(--ink);border:1.5px solid var(--line)" onclick="go(1)">← Back to Plan Overview</button>
+              <button class="btn" onclick="go(3)">Check coverage →</button>
+            </div>
+          </div>
+        </div>
+      `);
+      return;
+    }
+
+    // Syllabus mode table
+    page("Course table","",`<div class="card scroll">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
 <div><h3 style="margin:0 0 4px">Units and topics breakdown</h3><p style="font-size:12.5px;color:var(--mut);margin:0">Complete curriculum matrix across all ${c.u.length} units with current structure and detected gaps</p></div>
 <span class="chip a">Verified Matrix</span></div>
 <table><tr><th>Course name</th><th>L-T-P</th><th>Unit</th><th>Topics</th><th>Status</th></tr>${c.u.map((u,i)=>`<tr>${i?"":`<td rowspan="${c.u.length}"><b>${c.n}</b><br><span class="chip p">${$("#st").value}</span></td><td rowspan="${c.u.length}"><span class="chip a">${c.ltp}</span></td>`}<td><b>Unit ${i+1}</b><br>${u.t}</td><td>${u.x.length} topics</td><td><span class="dot" style="background:${u.g.length>1?"var(--rd)":"var(--or)"}"></span>${u.g.length} benchmark gap${u.g.length>1?"s":""}</td></tr>`).join("")}</table>
 <div style="display:flex;justify-content:space-between;align-items:center;margin-top:22px;padding-top:16px;border-top:1px solid var(--line);flex-wrap:wrap;gap:12px">
 <span style="font-size:13px;color:var(--mut)">Review course table above before inspecting comparative benchmark coverage against top universities.</span>
-<button class="btn" onclick="go(3)">Check coverage →</button></div></div>`)}
+<button class="btn" onclick="go(3)">Check coverage →</button></div></div>`);
+  }
 
 let currentUniTab = "world";
 function setUniTab(tab){
