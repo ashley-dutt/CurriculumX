@@ -1630,28 +1630,37 @@ function rev(){
         ${S.frozen.length >= c.u.length ? `
           <div class="magic" style="margin-top:14px">
             <p>✓ All ${c.u.length} units are frozen. Your new syllabus is ready to build.</p>
-            <button class="btn mg" onclick="go(5)">✦ Magic display (Preview)</button>
+            <button class="btn mg" onclick="go(5)">✦ Magic display</button>
           </div>
         ` : ''}
       </div>
 
+      <!-- Live preview window with edit button at the end -->
       <div class="card prev">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
           <h3 style="margin:0">Live preview</h3>
-          <button class="btn sm lt" onclick="go(5)">Full Preview ↗</button>
+          <span class="chip a" style="font-size:11px">Real-time sync</span>
         </div>
         ${c.u.map((u, k) => `
-          <div style="margin-bottom:12px">
+          <div style="margin-bottom:12px;cursor:pointer" onclick="S.ui=${k};rev()" title="Click to review Unit ${k + 1}">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
               <h4 style="margin:0">Unit ${k + 1}: ${u.t}</h4>
               <span style="display:flex;gap:4px;align-items:center">
                 ${S.frozen.includes(k) ? '<span class="chip a" style="font-size:10px;padding:1px 6px">frozen</span>' : ''}
-                <button type="button" class="btn sm lt" style="padding:1px 6px;font-size:10px" onclick="S.ui=${k};rev()">Edit</button>
+                <span style="font-size:11px;color:var(--or)">Edit →</span>
               </span>
             </div>
             <ul>${nu(k).map(x => `<li class="${x.c}">${x.t}</li>`).join("")}</ul>
           </div>
         `).join("")}
+
+        <!-- Edit button at the end of Live Preview window -->
+        <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--line)">
+          <div style="font-size:12px;color:var(--mut);margin-bottom:8px">Want to change decisions or ignore topics across any unit?</div>
+          <button type="button" class="btn lt sm" style="width:100%;font-weight:600" onclick="openEditModal(S.ui || 0)">
+            ✏️ Edit & ignore topics from any unit
+          </button>
+        </div>
       </div>
     </div>
   `, false);
@@ -1798,9 +1807,9 @@ function openEditModal(unitIdx = 0){
     `;
 
     const closeBtn = o.querySelector("#btnCloseEditModal");
-    if(closeBtn) closeBtn.onclick = () => { o.remove(); mag(); };
+    if(closeBtn) closeBtn.onclick = () => { o.remove(); if(S.step === 4) rev(); else mag(); };
     const doneBtn = o.querySelector("#btnDoneEditModal");
-    if(doneBtn) doneBtn.onclick = () => { o.remove(); mag(); toast("Preview updated with changes"); };
+    if(doneBtn) doneBtn.onclick = () => { o.remove(); if(S.step === 4) rev(); else mag(); toast("Preview updated with changes"); };
   }
 
   window.switchEditModalUnit = function(k){
@@ -1817,24 +1826,17 @@ function openEditModal(unitIdx = 0){
 
   window.openReviewScreenFromModal = function(uIdx){
     o.remove();
-    editUnitFromPreview(uIdx);
+    S.ui = uIdx;
+    S.frozen = S.frozen.filter(x => x !== uIdx);
+    go(4);
+    toast("Editing Unit " + (uIdx + 1) + ": modify decisions or ignore topics");
   };
 
   renderModalContent();
   document.body.appendChild(o);
 }
 
-function editUnitFromPreview(unitIdx){
-  S.ui = unitIdx;
-  S.frozen = S.frozen.filter(x => x !== unitIdx);
-  go(4);
-  toast("Editing Unit " + (unitIdx + 1) + ": modify decisions or ignore topics");
-}
-
-function editFromPreview(){
-  openEditModal(S.ui || 0);
-}
-
+// Clean Magic Display without any edit buttons
 function mag(){
   S.magic = true;
   const c = cur();
@@ -1842,49 +1844,23 @@ function mag(){
     <div class="hero">
       <div>
         <h3>New syllabus is ready ✦</h3>
-        <p>Aligned with Top 10 Worldwide & Indian Universities (MIT, Stanford, IIT Bombay, IIT Delhi, CMU, etc.). Alignment score ${bench()}%. You can edit decisions, ignore topics, or revise any unit below.</p>
-        <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
-          <button type="button" class="btn lt" onclick="editFromPreview()" style="font-size:13px;padding:6px 14px">✏️ Edit topics & decisions</button>
-          ${nx("Submit for HOD approval", 6)}
-        </div>
+        <p>Aligned with Top 10 Worldwide & Indian Universities (MIT, Stanford, IIT Bombay, IIT Delhi, CMU, etc.). Alignment score ${bench()}%.</p>
       </div>
       ${art()}
     </div>
-
     <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
-        <div>
-          <h3 style="margin:0 0 4px">${c.n} · updated syllabus</h3>
-          <p style="font-size:12.5px;color:var(--mut);margin:0">Review approved changes across all ${c.u.length} units. Green = Added, Orange = Replaced.</p>
-        </div>
-        <button type="button" class="btn sm lt" onclick="editFromPreview()">✏️ Edit all units</button>
-      </div>
-
+      <h3>${c.n} · updated syllabus</h3>
       ${c.u.map((u, i) => `
         <div class="unit">
           <div class="n">${i + 1}</div>
-          <div style="flex:1">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:6px">
-              <h4 style="margin:0">${u.t}</h4>
-              <button type="button" class="btn sm lt" style="padding:2px 8px;font-size:11px" onclick="editUnitFromPreview(${i})" title="Edit or ignore topics in Unit ${i + 1}">✏️ Edit Unit ${i + 1}</button>
-            </div>
+          <div>
+            <h4>${u.t}</h4>
             <div class="chips">
               ${nu(i).map(t => `<span class="chip ${t.c == 'add' ? 'a' : t.c == 'rep' ? 'r' : ''}">${t.t}</span>`).join("")}
             </div>
           </div>
         </div>
       `).join("")}
-
-      <!-- Edit action bar at end of preview window -->
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:22px;padding-top:16px;border-top:1px solid var(--line);flex-wrap:wrap;gap:12px">
-        <div>
-          <span style="font-size:13px;color:var(--mut)">Need to change or ignore topics? You can customize decisions for any unit.</span>
-        </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <button type="button" class="btn lt" onclick="editFromPreview()">✏️ Edit topics & decisions</button>
-          <button type="button" class="btn" onclick="go(6)">Submit for HOD approval →</button>
-        </div>
-      </div>
     </div>
   `);
 }
