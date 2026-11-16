@@ -657,7 +657,7 @@ function nav(){
   if(S.role=="DAA"){
     $("#nav").innerHTML = `
       <button class="nv ${S.step==0?"on":""}" onclick="go(0)"><b>🏛️</b>Curriculum Approval</button>
-      <button class="nv ${S.step==1?"on":""}" onclick="daaGazetteView()"><b>📜</b>BoS Gazette</button>
+      <button class="nv ${S.step==1?"on":""}" onclick="daaGazetteView()"><b>📜</b>Approved Courses</button>
     `;
     return;
   }
@@ -1945,7 +1945,7 @@ function sub(){
         <div style="color:var(--mut);font-weight:700">→</div>
         <div style="display:flex;align-items:center;gap:6px">
           <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${isApprovedByDaa?'var(--tl)':isApprovedByHod?'var(--or)':'#cbd5e1'}"></span>
-          <b>3. DAA</b>: ${isApprovedByDaa?'Gazetted':isApprovedByHod?'Awaiting Sanction':'Queue'}
+          <b>3. DAA</b>: ${isApprovedByDaa?'Approved':isApprovedByHod?'Awaiting Approval':'Queue'}
         </div>
       </div>
 
@@ -1957,7 +1957,7 @@ function sub(){
         </div>
       ` : isApprovedByDaa ? `
         <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 14px;color:#166534">
-          <b>✓ Officially Gazetted by DAA!</b> Final university sanction granted and ratified by the Board of Studies.
+          <b>✓ Officially Approved by DAA!</b> Final university approval granted and confirmed.
         </div>
       ` : `
         <div style="background:var(--soft);border-radius:10px;padding:12px 14px;color:var(--mut)">
@@ -2022,7 +2022,7 @@ async function daa(){
   const isApproved = S.status === "Approved & Gazetted";
   const isPending = (S.status && S.status.toLowerCase().includes("daa")) || S.status === "Recommended for further approval";
   const statusChipClass = isApproved ? "a" : isPending ? "r" : "p";
-  const statusLabel = isApproved ? "✓ Approved & Gazetted" : isPending ? "● Pending DAA Approval" : S.status;
+  const statusLabel = isApproved ? "✓ Officially Approved" : isPending ? "● Pending DAA Approval" : S.status;
 
   const body = `
     <!-- Clean Sub-bar with Course Switcher & Status -->
@@ -2069,13 +2069,13 @@ async function daa(){
       <textarea id="daaRemarks" rows="3" placeholder="Write remarks, BoS resolution notes, or directives for the department...">${S.remarks || ""}</textarea>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
         <button class="btn" style="background:#16a34a;border-color:#16a34a" onclick="daaDecision('Approved & Gazetted')">
-          ✓ Grant Final Approval & Gazette
+          ✓ Grant Final Approval
         </button>
         <button class="btn lt" style="color:#dc2626;border-color:#fca5a5" onclick="daaDecision('Correction requested')">
           ↩ Return to HOD for Revision
         </button>
         <button class="btn sm lt" onclick="daaGazetteView()">
-          📜 View BoS Gazette Notification
+          📜 View Approval Certificate
         </button>
         <button class="btn dk" onclick="daaDecision(S.status)">
           Save Remarks
@@ -2118,13 +2118,13 @@ function daaGazetteView(){
     <div class="hero" style="background:linear-gradient(120deg, #F29A2E, #F7B54F) !important;color:#ffffff !important;border-radius:24px;margin-bottom:20px;padding:26px 28px">
       <div>
         <div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,0.95);font-weight:700;margin-bottom:4px">
-          Official University Publication · Academic Session 2026-2027
+          Division of Academic Affairs (DAA) · Session 2026-2027
         </div>
         <h3 style="margin:0 0 6px;color:#ffffff;font-size:22px;font-weight:800;letter-spacing:-.02em">
-          Board of Studies (BoS) Curriculum Gazette
+          Official Course Approval Certificate
         </h3>
         <p style="margin:0;opacity:.95;font-size:13px;color:#ffffff;max-width:540px;line-height:1.5">
-          Authoritative academic notification ratifying full course curricula, schemes, and benchmark alignment under Outcome-Based Education (OBE).
+          Official university notification certifying that the curriculum is reviewed, benchmarked, and approved for teaching.
         </p>
       </div>
       ${art()}
@@ -2135,7 +2135,7 @@ function daaGazetteView(){
       <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:18px">
         <div>
           <span class="chip ${isApproved?'a':'r'}" style="font-size:11.5px;font-weight:700;margin-bottom:6px;display:inline-block">
-            ${isApproved ? '✓ Officially Gazetted & Ratified' : '● Pending Final DAA Sanction'}
+            ${isApproved ? '✓ Officially Approved by DAA' : '● Pending DAA Approval'}
           </span>
           <h3 style="margin:0;font-size:20px">${c.n}</h3>
           <p style="margin:4px 0 0;font-size:13px;color:var(--mut)">
@@ -2143,7 +2143,7 @@ function daaGazetteView(){
           </p>
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn" onclick="dlGazette()">⬇ Download Gazette PDF</button>
+          <button class="btn" onclick="dlGazette()">⬇ Download Approval Certificate (PDF)</button>
           <button class="btn lt" onclick="daa()">← Back to Approval Dashboard</button>
         </div>
       </div>
@@ -2197,7 +2197,7 @@ function daaGazetteView(){
     <!-- University Portfolio Table of Gazetted Curricula -->
     <div class="card" style="border:1.5px solid var(--line);background:#fff;border-radius:24px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
-        <h3 style="margin:0;font-size:16px">Department Gazetted Curricula Registry</h3>
+        <h3 style="margin:0;font-size:16px">All Approved Courses</h3>
         <span style="font-size:12px;color:var(--mut)">School of Computer Science & Engineering</span>
       </div>
       <div class="scroll">
@@ -2246,7 +2246,7 @@ function daaGazetteView(){
     </div>
   `;
 
-  page("Board of studies gazette", "", body, false);
+  page("Approved courses & certificates", "", body, false);
 }
 
 // Dedicated BoS Gazette PDF Generator
@@ -2287,7 +2287,7 @@ async function dlGazette(){
   d.text("LOVELY PROFESSIONAL UNIVERSITY", M, 42);
   d.setFontSize(12);
   d.setFont("helvetica", "normal");
-  d.text("DIVISION OF ACADEMIC AFFAIRS  |  OFFICIAL CURRICULUM GAZETTE", M, 62);
+  d.text("DIVISION OF ACADEMIC AFFAIRS  |  OFFICIAL APPROVAL CERTIFICATE", M, 62);
   d.setFontSize(10);
   d.text("Academic Session 2026-2027  ·  Ref: LPU/DAA/BOS/2026/04", M, 78);
 
@@ -2314,10 +2314,10 @@ async function dlGazette(){
   T("Head of Department (HOD) - Recommended for Academic Sanction", 10, 1, [60,58,66]);
   T("Dean, Division of Academic Affairs (DAA) - Officially Gazetted & Ratified", 10, 1, [242, 154, 46]);
 
-  const fn = "BoS_Gazette_" + c.n.replace(/[^a-zA-Z0-9]/g, "_") + ".pdf";
+  const fn = "Approval_Certificate_" + c.n.replace(/[^a-zA-Z0-9]/g, "_") + ".pdf";
   try {
     d.save(fn);
-    toast("Gazette PDF downloaded successfully!");
+    toast("Approval Certificate downloaded successfully!");
   } catch(e) {
     toast("Could not save the Gazette PDF");
   }
