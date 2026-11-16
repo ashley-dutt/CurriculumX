@@ -2108,43 +2108,134 @@ async function daaDecision(newStatus){
 
 function daaGazetteView(){
   S.step = 1;
+  const c = cur();
+  const R = rep();
   const today = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
-  page("Board of Studies Gazette", "", `
-    <div class="card" style="max-width:860px;margin:0 auto;border:1.5px solid var(--line);background:#fff;padding:32px;border-radius:24px">
-      <div style="text-align:center;border-bottom:2px solid var(--dk);padding-bottom:16px;margin-bottom:18px">
-        <div style="font-size:18px;font-weight:800;letter-spacing:.05em;color:var(--dk)">LOVELY PROFESSIONAL UNIVERSITY</div>
-        <div style="font-size:13px;font-weight:700;color:var(--or);margin-top:2px">DIVISION OF ACADEMIC AFFAIRS (DAA)</div>
-        <div style="font-size:11.5px;color:var(--mut);margin-top:3px">OFFICIAL BOARD OF STUDIES (BoS) NOTIFICATION & CURRICULUM GAZETTE</div>
-        <div style="font-size:11px;color:var(--mut);margin-top:2px">Notification Ref: LPU/DAA/BOS/2026/04 · Date: ${today}</div>
+  const isApproved = S.status === "Approved & Gazetted";
+
+  const body = `
+    <!-- Clean Hero Header -->
+    <div class="hero" style="background:linear-gradient(120deg, #F29A2E, #F7B54F) !important;color:#ffffff !important;border-radius:24px;margin-bottom:20px;padding:26px 28px">
+      <div>
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,0.95);font-weight:700;margin-bottom:4px">
+          Official University Publication · Academic Session 2026-2027
+        </div>
+        <h3 style="margin:0 0 6px;color:#ffffff;font-size:22px;font-weight:800;letter-spacing:-.02em">
+          Board of Studies (BoS) Curriculum Gazette
+        </h3>
+        <p style="margin:0;opacity:.95;font-size:13px;color:#ffffff;max-width:540px;line-height:1.5">
+          Authoritative academic notification ratifying full course curricula, schemes, and benchmark alignment under Outcome-Based Education (OBE).
+        </p>
+      </div>
+      ${art()}
+    </div>
+
+    <!-- Active Course Gazette Certificate Card -->
+    <div class="card" style="border:1.5px solid var(--line);background:#fff;border-radius:24px;padding:26px;margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:18px">
+        <div>
+          <span class="chip ${isApproved?'a':'r'}" style="font-size:11.5px;font-weight:700;margin-bottom:6px;display:inline-block">
+            ${isApproved ? '✓ Officially Gazetted & Ratified' : '● Pending Final DAA Sanction'}
+          </span>
+          <h3 style="margin:0;font-size:20px">${c.n}</h3>
+          <p style="margin:4px 0 0;font-size:13px;color:var(--mut)">
+            ${$("#sc").value.split("·")[0].trim()} · L-T-P ${c.ltp} · ${$("#ss").value} · ${$("#st").value}
+          </p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn" onclick="dlGazette()">⬇ Download Gazette PDF</button>
+          <button class="btn lt" onclick="daa()">← Back to Approval Dashboard</button>
+        </div>
       </div>
 
-      <p style="font-size:13px;line-height:1.6;color:#334155">
-        In accordance with the Academic Council Resolution and following rigorous benchmarking against Top 10 Worldwide Universities (MIT, Stanford, CMU, NUS) and Top 10 Indian Institutes (IIT Bombay, IIT Delhi), the Division of Academic Affairs hereby gazettes the approved curriculum structures for the Academic Session 2026-2027 under Outcome-Based Education (OBE) and NEP 2020 guidelines:
-      </p>
+      <!-- Gazette Specifications Grid -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px">
+        <div style="background:var(--soft);padding:14px;border-radius:14px">
+          <span style="font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;display:block;margin-bottom:4px">Notification Ref</span>
+          <b style="font-size:14px;color:var(--txt)">LPU/DAA/BOS/2026/04</b>
+        </div>
+        <div style="background:var(--soft);padding:14px;border-radius:14px">
+          <span style="font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;display:block;margin-bottom:4px">Ratification Date</span>
+          <b style="font-size:14px;color:var(--txt)">${today}</b>
+        </div>
+        <div style="background:var(--soft);padding:14px;border-radius:14px">
+          <span style="font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;display:block;margin-bottom:4px">Benchmark Alignment</span>
+          <b style="font-size:14px;color:var(--or)">92.4% (Global Top 10)</b>
+        </div>
+        <div style="background:var(--soft);padding:14px;border-radius:14px">
+          <span style="font-size:11px;font-weight:700;color:var(--mut);text-transform:uppercase;display:block;margin-bottom:4px">Sanctioning Authority</span>
+          <b style="font-size:14px;color:var(--txt)">Dean, Academic Affairs</b>
+        </div>
+      </div>
 
-      <div class="scroll" style="margin:16px 0">
-        <table style="width:100%;font-size:12.5px;border-collapse:collapse">
+      <!-- Approved Units Summary -->
+      <div style="margin-bottom:20px">
+        <h4 style="margin:0 0 10px;font-size:14px;color:var(--txt)">Ratified Syllabus Units (${c.u.length} Units)</h4>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px">
+          ${c.u.map((u, i) => `
+            <div style="background:var(--soft);padding:10px 14px;border-radius:12px;display:flex;align-items:center;gap:10px">
+              <span style="width:24px;height:24px;border-radius:50%;background:var(--or2);color:var(--or);font-weight:700;font-size:11.5px;display:grid;place-items:center">${i+1}</span>
+              <span style="font-size:12.5px;font-weight:600;color:var(--txt)">${u.t}</span>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+
+      <!-- Formal Ratification Stamp -->
+      <div style="display:flex;justify-content:space-between;align-items:center;background:var(--soft);border:1px dashed var(--line);padding:16px 20px;border-radius:16px;flex-wrap:wrap;gap:12px">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--txt)">Division of Academic Affairs (DAA) · Official Seal</div>
+          <div style="font-size:11px;color:var(--mut);margin-top:2px">Verified against MIT, Stanford, CMU, NUS and IIT curricula under NEP 2020 OBE guidelines.</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:12.5px;font-weight:700;color:var(--or)">✓ Ratified by Board of Studies</div>
+          <div style="font-size:11px;color:var(--mut)">Lovely Professional University</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- University Portfolio Table of Gazetted Curricula -->
+    <div class="card" style="border:1.5px solid var(--line);background:#fff;border-radius:24px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+        <h3 style="margin:0;font-size:16px">Department Gazetted Curricula Registry</h3>
+        <span style="font-size:12px;color:var(--mut)">School of Computer Science & Engineering</span>
+      </div>
+      <div class="scroll">
+        <table style="width:100%;min-width:600px;font-size:13px">
           <thead>
-            <tr style="background:var(--soft)">
-              <th style="padding:8px 10px;border-bottom:2px solid var(--line);text-align:left">Course Code & Title</th>
-              <th style="padding:8px 10px;border-bottom:2px solid var(--line);text-align:left">Credits (L-T-P)</th>
-              <th style="padding:8px 10px;border-bottom:2px solid var(--line);text-align:left">Department / School</th>
-              <th style="padding:8px 10px;border-bottom:2px solid var(--line);text-align:left">Benchmark Score</th>
-              <th style="padding:8px 10px;border-bottom:2px solid var(--line);text-align:center">Sanction Status</th>
+            <tr>
+              <th>Course Code & Title</th>
+              <th>Scheme / Credits</th>
+              <th>Benchmark Match</th>
+              <th>Ratification</th>
+              <th style="text-align:right">Action</th>
             </tr>
           </thead>
           <tbody>
             ${Object.keys(C).map(k => {
-              const isCurrent = k === $("#sc").value;
-              const status = isCurrent ? S.status : "Approved & Gazetted";
+              const isSelected = k === $("#sc").value;
+              const status = isSelected ? S.status : "Approved & Gazetted";
               return `
-                <tr>
-                  <td style="padding:8px 10px;border-bottom:1px solid #f1f5f9"><b>${C[k].n}</b><br><small style="color:var(--mut)">${k.split("·")[0].trim()}</small></td>
-                  <td style="padding:8px 10px;border-bottom:1px solid #f1f5f9">${C[k].ltp}</td>
-                  <td style="padding:8px 10px;border-bottom:1px solid #f1f5f9">School of Computer Science & Engg.</td>
-                  <td style="padding:8px 10px;border-bottom:1px solid #f1f5f9"><b style="color:var(--or)">92.4%</b></td>
-                  <td style="padding:8px 10px;border-bottom:1px solid #f1f5f9;text-align:center">
-                    <span class="chip ${status==='Approved & Gazetted'?'a':'r'}" style="font-size:10.5px">${status}</span>
+                <tr style="${isSelected ? 'background:rgba(242,154,46,0.06)' : ''}">
+                  <td>
+                    <b>${C[k].n}</b>
+                    <div style="font-size:11.5px;color:var(--mut)">${k.split("·")[0].trim()} · ${C[k].u.length} Units</div>
+                  </td>
+                  <td>
+                    <div>${$("#ss").value}</div>
+                    <small style="color:var(--mut)">L-T-P ${C[k].ltp}</small>
+                  </td>
+                  <td>
+                    <b style="color:var(--or)">92.4%</b>
+                    <div style="font-size:11px;color:var(--mut)">MIT, Stanford, IIT</div>
+                  </td>
+                  <td>
+                    <span class="chip ${status==='Approved & Gazetted'?'a':'r'}" style="font-size:11px">${status}</span>
+                  </td>
+                  <td style="text-align:right">
+                    <button class="btn sm ${isSelected ? '' : 'lt'}" onclick="switchDaaCourse('${k}')">
+                      ${isSelected ? 'Current' : 'Select'}
+                    </button>
                   </td>
                 </tr>
               `;
@@ -2152,25 +2243,84 @@ function daaGazetteView(){
           </tbody>
         </table>
       </div>
-
-      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:24px;padding-top:16px;border-top:1px dashed var(--line)">
-        <div>
-          <div style="font-size:11.5px;color:var(--mut)">Digital Verification Hash:</div>
-          <code style="font-size:10.5px;background:var(--soft);padding:2px 6px;border-radius:4px">SHA256:7f9b8c2d1e04a5e9f82d1c6b8401</code>
-        </div>
-        <div style="text-align:right">
-          <div style="font-size:13px;font-weight:700">Dean, Academic Affairs (DAA)</div>
-          <div style="font-size:11.5px;color:var(--mut)">Lovely Professional University</div>
-          <div style="color:var(--or);font-size:11px;font-weight:600;margin-top:2px">✓ Officially Gazetted & Ratified</div>
-        </div>
-      </div>
-
-      <div style="margin-top:20px;text-align:center">
-        <button class="btn" onclick="dl()">⬇ Download Official Gazette Notification PDF</button>
-        <button class="btn lt" style="margin-left:8px" onclick="daa()">← Back to Approval Dashboard</button>
-      </div>
     </div>
-  `, false);
+  `;
+
+  page("Board of studies gazette", "", body, false);
+}
+
+// Dedicated BoS Gazette PDF Generator
+async function dlGazette(){
+  const c = cur();
+  const R = rep();
+  if(!window.jspdf){ toast("PDF tool is still loading, try again"); return; }
+
+  const d = new window.jspdf.jsPDF({ unit: "pt", format: "a4" }), W = 595, M = 44;
+  let y = 0;
+  const pg = n => { if(y + n > 800){ d.addPage(); y = 56; } };
+  const T = (s, sz = 10, b = 0, col = [43,42,47], x = M, gap = 5) => {
+    d.setFont("helvetica", b ? "bold" : "normal");
+    d.setFontSize(sz);
+    d.setTextColor(col[0], col[1], col[2]);
+    d.splitTextToSize(String(LBL(s)), W - M - x).forEach(l => {
+      pg(sz + gap);
+      d.text(l, x, y);
+      y += sz + gap;
+    });
+  };
+  const H = s => {
+    y += 12;
+    pg(40);
+    d.setFillColor(242, 154, 46);
+    d.rect(M, y - 11, 4, 14, "F");
+    T(s, 13, 1, [43,42,47], M + 12, 6);
+    y += 2;
+  };
+  const line = () => { d.setDrawColor(238, 232, 222); d.line(M, y - 8, W - M, y - 8); };
+
+  // Header Banner
+  d.setFillColor(242, 154, 46);
+  d.rect(0, 0, W, 96, "F");
+  d.setTextColor(255, 255, 255);
+  d.setFont("helvetica", "bold");
+  d.setFontSize(18);
+  d.text("LOVELY PROFESSIONAL UNIVERSITY", M, 42);
+  d.setFontSize(12);
+  d.setFont("helvetica", "normal");
+  d.text("DIVISION OF ACADEMIC AFFAIRS  |  OFFICIAL CURRICULUM GAZETTE", M, 62);
+  d.setFontSize(10);
+  d.text("Academic Session 2026-2027  ·  Ref: LPU/DAA/BOS/2026/04", M, 78);
+
+  y = 126;
+  T(c.n, 18, 1, [43,42,47], M, 8);
+  T(`Course Code: ${$("#sc").value.split("·")[0].trim()}   |   Scheme: ${$("#ss").value}   |   Credits: L-T-P ${c.ltp}`, 10, 0, [110,106,120]);
+  T("Gazetted Date: " + new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }), 10, 0, [110,106,120]);
+
+  H("1. Statutory Board of Studies Ratification");
+  T("In accordance with the Academic Council Resolution and following extensive benchmarking against Top 10 Worldwide Universities (MIT, Stanford, CMU, NUS) and Top 10 Indian Institutes (IIT Bombay, IIT Delhi), the Division of Academic Affairs hereby formally ratifies and gazettes the approved curriculum specifications for instruction and examination.", 10.5, 0, [60,58,66]);
+
+  H("2. Course Structure & Verified Syllabus Units");
+  c.u.forEach((u, i) => {
+    T(`Unit ${i+1}: ${u.t}`, 10.5, 1, [43,42,47], M, 4);
+    T(nu(i).map(t => t.t).join("; "), 9.5, 0, [90,88,98], M + 10, 4);
+    y += 2;
+  });
+
+  H("3. Institutional Benchmarking Compliance");
+  T(`Institutional alignment benchmark: ${R.after}% (calculated across MIT, Stanford, CMU, NUS, and IIT curricula under NEP 2020 Outcome-Based Education standards).`, 10.5, 0, [60,58,66]);
+
+  H("4. Executive Sanction & Signatures");
+  y += 10;
+  T("Head of Department (HOD) - Recommended for Academic Sanction", 10, 1, [60,58,66]);
+  T("Dean, Division of Academic Affairs (DAA) - Officially Gazetted & Ratified", 10, 1, [242, 154, 46]);
+
+  const fn = "BoS_Gazette_" + c.n.replace(/[^a-zA-Z0-9]/g, "_") + ".pdf";
+  try {
+    d.save(fn);
+    toast("Gazette PDF downloaded successfully!");
+  } catch(e) {
+    toast("Could not save the Gazette PDF");
+  }
 }
 function hod(){if(S.status=="Draft"){page("HOD dashboard","",`<div class="hero"><div><h3>No pending requests</h3><p>Faculty submissions will appear here for review.</p></div>${art()}</div>`,false);return}
 const R=rep(),c=R.c;page("HOD dashboard","",`<p style="margin:-6px 0 16px;color:var(--mut)">${c.n} · ${$("#st").value} · <span class="chip ${S.status==='Approved & Gazetted'?'a':S.status.toLowerCase().includes('daa')?'a':'r'}">${S.status==='Pending DAA approval'?'✓ Forwarded to DAA (Awaiting Final Sanction)':S.status==='Approved & Gazetted'?'✓ Gazetted by DAA':S.status}</span></p><div class="two" style="align-items:start;grid-template-columns:1fr 1.2fr"><div class="card"><h3>Updated syllabus</h3>${c.u.map((u,i)=>`<div class="unit"><div class="n">${i+1}</div><div><h4>${u.t}</h4><div class="chips">${nu(i).map(t=>`<span class="chip ${t.c=="add"?"a":t.c=="rep"?"r":""}">${t.t}</span>`).join("")}</div></div></div>`).join("")}</div>${repH(R)}</div>
