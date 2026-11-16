@@ -1982,7 +1982,7 @@ const TG=A+Rp+I+units.reduce((a,u)=>a+u.ds.filter(d=>d=="Pending").length,0),adr
 return{c,units,tot,before,after,A,Rp,I,unis,ok:after>=85}}
 function bench(){return rep().after}
 function verdict(R){return R.ok?"The updated syllabus is well aligned with the benchmark universities and is recommended for further approval.":"Alignment is below the 85% target. Consider adopting more of the pending or ignored gap topics before approval."}
-function repH(R){return`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h3 style="margin:0">Benchmarking report</h3><button class="btn sm" onclick="dl()">⬇ Download PDF</button></div>
+function repH(R){return`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h3 style="margin:0">Benchmarking report</h3><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn sm" onclick="dlSyllabus()">⬇ Download Syllabus (PDF)</button><button class="btn sm lt" onclick="dlIP()">⬇ Download IP (PDF)</button></div></div>
 <div class="kpis"><div class="kpi"><span>Alignment before</span><b>${R.before}%</b></div><div class="kpi"><span>Alignment after</span><b style="color:var(--tl)">${R.after}%</b></div><div class="kpi"><span>Topics added / replaced</span><b>${R.A} / ${R.Rp}</b></div><div class="kpi"><span>Topics ignored</span><b>${R.I}</b></div></div>
 <h4 class="s">Top 10 Worldwide Universities Alignment</h4>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin-bottom:14px">
@@ -2323,9 +2323,823 @@ async function dlGazette(){
   }
 }
 function hod(){if(S.status=="Draft"){page("HOD dashboard","",`<div class="hero"><div><h3>No pending requests</h3><p>Faculty submissions will appear here for review.</p></div>${art()}</div>`,false);return}
-const R=rep(),c=R.c;page("HOD dashboard","",`<p style="margin:-6px 0 16px;color:var(--mut)">${c.n} · ${$("#st").value} · <span class="chip ${S.status==='Approved & Gazetted'?'a':S.status.toLowerCase().includes('daa')?'a':'r'}">${S.status==='Pending DAA approval'?'✓ Forwarded to DAA (Awaiting Final Sanction)':S.status==='Approved & Gazetted'?'✓ Gazetted by DAA':S.status}</span></p><div class="two" style="align-items:start;grid-template-columns:1fr 1.2fr"><div class="card"><h3>Updated syllabus</h3>${c.u.map((u,i)=>`<div class="unit"><div class="n">${i+1}</div><div><h4>${u.t}</h4><div class="chips">${nu(i).map(t=>`<span class="chip ${t.c=="add"?"a":t.c=="rep"?"r":""}">${t.t}</span>`).join("")}</div></div></div>`).join("")}</div>${repH(R)}</div>
+const R=rep(),c=R.c;page("HOD dashboard","",`<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin:-6px 0 16px"><div><p style="margin:0;color:var(--mut)">${c.n} · ${$("#st").value} · <span class="chip ${S.status==='Approved & Gazetted'?'a':S.status.toLowerCase().includes('daa')?'a':'r'}">${S.status==='Pending DAA approval'?'✓ Forwarded to DAA (Awaiting Final Sanction)':S.status==='Approved & Gazetted'?'✓ Gazetted by DAA':S.status}</span></p></div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn sm" onclick="dlSyllabus()">⬇ Download Syllabus (PDF)</button><button class="btn sm lt" onclick="dlIP()">⬇ Download IP (PDF)</button></div></div> · <span class="chip ${S.status==='Approved & Gazetted'?'a':S.status.toLowerCase().includes('daa')?'a':'r'}">${S.status==='Pending DAA approval'?'✓ Forwarded to DAA (Awaiting Final Sanction)':S.status==='Approved & Gazetted'?'✓ Gazetted by DAA':S.status}</span></p><div class="two" style="align-items:start;grid-template-columns:1fr 1.2fr"><div class="card"><h3>Updated syllabus</h3>${c.u.map((u,i)=>`<div class="unit"><div class="n">${i+1}</div><div><h4>${u.t}</h4><div class="chips">${nu(i).map(t=>`<span class="chip ${t.c=="add"?"a":t.c=="rep"?"r":""}">${t.t}</span>`).join("")}</div></div></div>`).join("")}</div>${repH(R)}</div>
 <div class="card" style="margin-top:20px"><label for="rm">Remarks</label><textarea id="rm" rows="3" placeholder="Write your remarks for the faculty"></textarea><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button class="btn" style="background:#16a34a;border-color:#16a34a" onclick="hd('Pending DAA approval')">✓ Approve and send to DAA</button><button class="btn lt" onclick="hd('Correction requested')">↩ Request Faculty Correction</button><button class="btn dk" onclick="hd('Remark sent')">Send Remarks</button></div></div>`,false)}
-async function dl(){const R=rep(),c=R.c;if(!window.jspdf){toast("PDF tool is still loading, try again");return}
+
+// --- Official University Syllabus & Instruction Plan PDF Generators ---
+
+function getCourseFullMeta(){
+  const courseKey = ($("#sc") ? $("#sc").value : "INT373 · Agile Driven Development and Project Management");
+  const code = courseKey.split("·")[0].trim();
+  const c = cur() || C[courseKey] || C["INT373 · Agile Driven Development and Project Management"];
+  const x = (typeof X !== "undefined" && X[code]) ? X[code] : {};
+
+  const ltpParts = (c.ltp || "2-0-2").split("-");
+  const L = parseInt(ltpParts[0]) || 2;
+  const T = parseInt(ltpParts[1]) || 0;
+  const P = parseInt(ltpParts[2]) || 0;
+  const credits = L + T + Math.round(P / 2);
+
+  // Parse COs
+  let cos = [];
+  if (x.co) {
+    cos = x.co.split(/(?:CO\d+\s*::\s*|\.\s+(?=[A-Z]))/).map(s => s.trim()).filter(s => s.length > 15);
+  }
+  if (!cos.length || cos.length < 4) {
+    cos = [
+      `Explain foundational principles, architectural paradigms, and core theoretical models of ${c.n}.`,
+      `Analyze algorithmic workflows, structural dynamics, and computational complexity across key problem domains.`,
+      `Apply standard engineering techniques, design patterns, and modern methodologies to design robust solutions.`,
+      `Evaluate comparative performance metrics, trade-offs, and scalability bottlenecks in real-world scenarios.`,
+      `Synthesize advanced frameworks, multi-system integrations, and domain-specific best practices.`,
+      `Formulate end-to-end practical implementations, collaborative workflows, and technical governance pipelines.`
+    ];
+  }
+
+  // Parse Books
+  let textbooks = [];
+  let references = [];
+
+  if (code === "INT373") {
+    textbooks = [
+      { no: "T-1", title: "SUCCEEDING WITH AGILE: SOFTWARE DEVELOPMENT USING SCRUM", author: "MIKE COHN", publisher: "PEARSON" }
+    ];
+    references = [
+      { no: "R-1", title: "ESSENTIAL SCRUM: A PRACTICAL GUIDE TO THE MOST POPULAR AGILE PROCESS", author: "KENNETH S. RUBIN", publisher: "ADDISON-WESLEY" },
+      { no: "R-2", title: "SOFTWARE PROJECT MANAGEMENT", author: "BOB HUGHES, MIKE CORETELL AND RAJIB MALL", publisher: "MCGRAW HILL EDUCATION" },
+      { no: "R-3", title: "HANDS-ON AGILE SOFTWARE DEVELOPMENT WITH JIRA: DESIGN AND MANAGE SOFTWARE PROJECTS USING THE AGILE METHODOLOGY", author: "DAVID HARNED", publisher: "PACKT PUBLISHING" }
+    ];
+  } else if (code === "CSE408") {
+    textbooks = [
+      { no: "T-1", title: "INTRODUCTION TO ALGORITHMS (4TH EDITION)", author: "THOMAS H. CORMEN, CHARLES E. LEISERSON, RONALD L. RIVEST, CLIFFORD STEIN", publisher: "MIT PRESS / PHI" }
+    ];
+    references = [
+      { no: "R-1", title: "ALGORITHM DESIGN", author: "JON KLEINBERG, EVA TARDOS", publisher: "PEARSON" },
+      { no: "R-2", title: "INTRODUCTION TO THE DESIGN AND ANALYSIS OF ALGORITHMS", author: "ANANY LEVITIN", publisher: "PEARSON" },
+      { no: "R-3", title: "THE ALGORITHM DESIGN MANUAL", author: "STEVEN S. SKIENA", publisher: "SPRINGER" }
+    ];
+  } else if (code === "INT396") {
+    textbooks = [
+      { no: "T-1", title: "HANDS-ON UNSUPERVISED LEARNING USING PYTHON", author: "ANKUR A. PATEL", publisher: "O'REILLY MEDIA" }
+    ];
+    references = [
+      { no: "R-1", title: "PATTERN RECOGNITION AND MACHINE LEARNING", author: "CHRISTOPHER M. BISHOP", publisher: "SPRINGER" },
+      { no: "R-2", title: "MACHINE LEARNING: A PROBABILISTIC PERSPECTIVE", author: "KEVIN P. MURPHY", publisher: "MIT PRESS" },
+      { no: "R-3", title: "THE ELEMENTS OF STATISTICAL LEARNING", author: "TREVOR HASTIE, ROBERT TIBSHIRANI, JEROME FRIEDMAN", publisher: "SPRINGER" }
+    ];
+  } else {
+    textbooks = [
+      { no: "T-1", title: `ADVANCED ${c.n.toUpperCase()}: CORE CONCEPTS AND PRACTICES`, author: "STANDARD UNIVERSITY PRESS EDITORIAL BOARD", publisher: "PEARSON EDUCATION" }
+    ];
+    references = [
+      { no: "R-1", title: `PRINCIPLES OF ${c.n.toUpperCase()}`, author: "ACADEMIC EXPERT PANEL", publisher: "MCGRAW HILL" },
+      { no: "R-2", title: `HANDS-ON ${c.n.toUpperCase()} WITH MODERN TOOLING`, author: "INDUSTRY RESEARCH CONSORTIUM", publisher: "O'REILLY MEDIA" },
+      { no: "R-3", title: `APPLIED ${c.n.toUpperCase()} CASE STUDIES`, author: "UNIVERSITY TEXTBOOK COMMISSION", publisher: "SPRINGER" }
+    ];
+  }
+
+  // Parse Practicals
+  let practicals = [];
+  if (x.pr) {
+    practicals = x.pr.split(/;\s*|\n+/).map(p => p.replace(/^\d+\.\s*/, "").trim()).filter(Boolean);
+  }
+  if (!practicals.length) {
+    practicals = [
+      "Setting Up the Practical Environment & Development Tools",
+      "Core Implementation & Baseline Algorithmic Verification",
+      "Hands-On Simulation of Domain Workflows",
+      "Data Modeling, Representation & Validation Exercises",
+      "Benchmarking & Execution Profiling on Benchmark Problems",
+      "Interactive Case Studies & Real-World Application Workflows",
+      "Collaborative Team-Based Sprint & Architecture Reviews",
+      "Advanced Optimization, Refactoring & Test Automation",
+      "System Integration, Monitoring & Metric Tracking",
+      "Comprehensive Capstone Simulation & Code Walkthrough"
+    ];
+  }
+
+  // Parse Units (with approved/updated topics from nu(i))
+  const units = c.u.map((u, i) => {
+    const updatedTopics = nu(i).map(t => t.t).join(", ");
+    return {
+      title: u.t,
+      topics: updatedTopics || u.x.join(", ")
+    };
+  });
+
+  return {
+    code,
+    title: c.n.toUpperCase(),
+    ltp: c.ltp,
+    credits,
+    planner: "34459::Nicky",
+    weightage: "ATT: 5  CA: 25  MTT: 20  ETT: 50",
+    focus: "EMPLOYABILITY, ENTREPRENEURSHIP, SKILL DEVELOPMENT",
+    cos: cos.slice(0, 6),
+    units,
+    textbooks,
+    references,
+    practicals
+  };
+}
+
+// 1. Download Final Official Syllabus PDF (Matching User Document 2)
+async function dlSyllabus(){
+  if(!window.jspdf){ toast("PDF library is still loading, please wait..."); return; }
+  const c = getCourseFullMeta();
+  const d = new window.jspdf.jsPDF({ unit: "pt", format: "a4" });
+  const W = 595, H = 842, M = 44, contentW = W - 2 * M;
+  let y = 50;
+
+  const checkPage = (need) => {
+    if (y + need > H - 50) {
+      d.addPage();
+      y = 50;
+    }
+  };
+
+  // Header
+  d.setFont("helvetica", "bold");
+  d.setFontSize(11);
+  d.setTextColor(15, 23, 42);
+  d.text(`${c.code}:${c.title}`, M, y);
+  y += 18;
+
+  d.setFont("helvetica", "normal");
+  d.setFontSize(9.5);
+  const ltpStr = `L:${c.ltp.split("-")[0] || 2}  T:${c.ltp.split("-")[1] || 0}  P:${c.ltp.split("-")[2] || 2}   Credits:${c.credits}`;
+  d.text(ltpStr, W - M - d.getTextWidth(ltpStr), y);
+  y += 24;
+
+  // Course Outcomes
+  d.setFont("helvetica", "bold");
+  d.text("Course Outcomes:", M, y);
+  d.setFont("helvetica", "normal");
+  d.text("Through this course students should be able to", M + 110, y);
+  y += 16;
+
+  c.cos.forEach((co, idx) => {
+    checkPage(24);
+    d.setFont("helvetica", "normal");
+    d.setFontSize(9);
+    const coNum = `CO${idx + 1} :: `;
+    d.text(coNum, M + 45, y);
+    const lines = d.splitTextToSize(co, contentW - 85);
+    lines.forEach((line, li) => {
+      if (li > 0) y += 12;
+      d.text(line, M + 85, y);
+    });
+    y += 14;
+  });
+  y += 14;
+
+  // Units (Unit I to Unit VI)
+  const unitRomans = ["Unit I", "Unit II", "Unit III", "Unit IV", "Unit V", "Unit VI"];
+  const unitPairs = [];
+  for (let i = 0; i < c.units.length; i += 2) {
+    unitPairs.push([c.units[i], c.units[i + 1]]);
+  }
+
+  unitRomans.forEach((uRom, idx) => {
+    checkPage(50);
+    d.setFont("helvetica", "bold");
+    d.setFontSize(10);
+    d.text(uRom, M, y);
+    y += 14;
+
+    const pair = unitPairs[idx] || (c.units[idx] ? [c.units[idx]] : []);
+    pair.filter(Boolean).forEach(u => {
+      d.setFont("helvetica", "bold");
+      d.setFontSize(9);
+      const titlePrefix = u.title + " : ";
+      const prefixW = d.getTextWidth(titlePrefix);
+      d.text(titlePrefix, M + 40, y);
+      d.setFont("helvetica", "normal");
+
+      const fullText = titlePrefix + u.topics;
+      const lines = d.splitTextToSize(fullText, contentW - 40);
+      lines.forEach((line, li) => {
+        if (li === 0) {
+          const rest = line.slice(titlePrefix.length);
+          d.text(rest, M + 40 + prefixW, y);
+        } else {
+          y += 12;
+          checkPage(16);
+          d.text(line, M + 40, y);
+        }
+      });
+      y += 16;
+    });
+    y += 6;
+  });
+
+  // Practicals
+  if (c.practicals && c.practicals.length) {
+    checkPage(50);
+    d.setFont("helvetica", "bold");
+    d.setFontSize(10);
+    d.text("List of Practicals / Experiments:", M, y);
+    y += 14;
+    d.text("List of Practicals", M + 20, y);
+    y += 14;
+
+    c.practicals.forEach(p => {
+      checkPage(16);
+      d.setFont("helvetica", "normal");
+      d.setFontSize(9);
+      d.text("•  " + p, M + 35, y);
+      y += 13;
+    });
+    y += 10;
+  }
+
+  // Text Books
+  if (c.textbooks && c.textbooks.length) {
+    checkPage(40);
+    d.setFont("helvetica", "bold");
+    d.setFontSize(10);
+    d.text("Text Books:", M, y);
+    y += 14;
+    c.textbooks.forEach((tb, i) => {
+      checkPage(18);
+      d.setFont("helvetica", "normal");
+      d.setFontSize(9);
+      d.text(`${i + 1}. ${tb.title} by ${tb.author}, ${tb.publisher}`, M + 20, y);
+      y += 14;
+    });
+    y += 8;
+  }
+
+  // References
+  if (c.references && c.references.length) {
+    checkPage(40);
+    d.setFont("helvetica", "bold");
+    d.setFontSize(10);
+    d.text("References:", M, y);
+    y += 14;
+    c.references.forEach((rf, i) => {
+      checkPage(18);
+      d.setFont("helvetica", "normal");
+      d.setFontSize(9);
+      const str = `${i + 1}. ${rf.title} by ${rf.author}, ${rf.publisher}`;
+      const lines = d.splitTextToSize(str, contentW - 20);
+      lines.forEach(l => {
+        d.text(l, M + 20, y);
+        y += 12;
+      });
+      y += 4;
+    });
+  }
+
+  // Footers
+  const totalPages = d.getNumberOfPages();
+  for (let i = 1; i <= totalPages; i++) {
+    d.setPage(i);
+    d.setFont("helvetica", "normal");
+    d.setFontSize(8.5);
+    d.setTextColor(110, 106, 120);
+    d.text("Session  2026-27", M, H - 36);
+    const pStr = `Page:${i}/${totalPages}`;
+    d.text(pStr, W - M - d.getTextWidth(pStr), H - 36);
+  }
+
+  const fn = "Syllabus_" + c.code + ".pdf";
+  try {
+    d.save(fn);
+    toast("Final Syllabus downloaded successfully!");
+  } catch(e) {
+    toast("Could not save the Syllabus PDF");
+  }
+}
+
+// 2. Download Final Official Instruction Plan (IP) PDF (Matching User Document 1)
+async function dlIP(){
+  if(!window.jspdf){ toast("PDF library is still loading, please wait..."); return; }
+  const c = getCourseFullMeta();
+  const d = new window.jspdf.jsPDF({ unit: "pt", format: "a4" });
+  const W = 595, H = 842, M = 36, contentW = W - 2 * M;
+  let y = 36;
+
+  const footerText = "An instruction plan is only a tentative plan. The teacher may make some changes in his/her teaching plan. The students are advised to use syllabus for preparation of all examinations. The students are expected to keep themselves updated on the contemporary issues related to the course. Upto 20% of the questions in any examination/Academic tasks can be asked from such issues even if not explicitly mentioned in the instruction plan.";
+
+  const drawFooter = () => {
+    d.setFont("helvetica", "normal");
+    d.setFontSize(7.5);
+    d.setTextColor(80, 80, 80);
+    const lines = d.splitTextToSize(footerText, contentW);
+    let fy = H - 36;
+    lines.forEach(l => {
+      d.text(l, M, fy);
+      fy += 9;
+    });
+  };
+
+  const checkPage = (need) => {
+    if (y + need > H - 54) {
+      drawFooter();
+      d.addPage();
+      y = 36;
+    }
+  };
+
+  // Helper: Draw Table
+  const drawTable = (headers, rows, colWidths, opts = {}) => {
+    const defaultRowH = opts.rowHeight || 18;
+    const headerH = opts.headerHeight || 20;
+    const fontSize = opts.fontSize || 8;
+
+    checkPage(headerH + defaultRowH * 2);
+
+    d.setFillColor(255, 255, 255);
+    d.rect(M, y, contentW, headerH, "S");
+    let curX = M;
+    d.setFont("helvetica", "bold");
+    d.setFontSize(fontSize);
+    d.setTextColor(0, 0, 0);
+
+    headers.forEach((h, ci) => {
+      const w = colWidths[ci];
+      if (ci > 0) d.line(curX, y, curX, y + headerH);
+      const hLines = d.splitTextToSize(h, w - 6);
+      d.text(hLines[0] || "", curX + 3, y + 13);
+      if (hLines[1]) d.text(hLines[1], curX + 3, y + 21);
+      curX += w;
+    });
+    y += headerH;
+
+    rows.forEach(r => {
+      d.setFont("helvetica", "normal");
+      d.setFontSize(fontSize);
+      let maxLines = 1;
+      const cellLines = r.map((cellText, ci) => {
+        const lines = d.splitTextToSize(String(cellText || ""), colWidths[ci] - 6);
+        if (lines.length > maxLines) maxLines = lines.length;
+        return lines;
+      });
+
+      const rowH = Math.max(defaultRowH, maxLines * 11 + 6);
+      checkPage(rowH);
+
+      d.rect(M, y, contentW, rowH, "S");
+      let rx = M;
+      cellLines.forEach((lines, ci) => {
+        const w = colWidths[ci];
+        if (ci > 0) d.line(rx, y, rx, y + rowH);
+        lines.forEach((line, li) => {
+          d.text(line, rx + 3, y + 11 + li * 10);
+        });
+        rx += w;
+      });
+      y += rowH;
+    });
+    y += 10;
+  };
+
+  // 1. Header: Lovely Professional University, Punjab
+  d.setFont("times", "bold");
+  d.setFontSize(16);
+  d.setTextColor(0, 0, 0);
+  const univTitle = "Lovely Professional University, Punjab";
+  d.text(univTitle, (W - d.getTextWidth(univTitle)) / 2, y + 10);
+  y += 24;
+
+  // 2. Course Meta Grid
+  const metaColW = [85, 215, 45, 45, 50, 40, 43];
+  drawTable(
+    ["Course Code", "Course Title", "Lectures", "Tutorials", "Practicals", "Credits", "Course Planner"],
+    [[c.code, c.title, c.ltp.split("-")[0]||"2", c.ltp.split("-")[1]||"0", c.ltp.split("-")[2]||"2", c.credits||"3", c.planner||"34459::Nicky"]],
+    metaColW,
+    { rowHeight: 28, fontSize: 8 }
+  );
+
+  // Weightage and Focus box
+  checkPage(34);
+  d.rect(M, y - 6, contentW, 28, "S");
+  d.setFont("helvetica", "bold");
+  d.setFontSize(8);
+  d.text("Course Weightage", M + 4, y + 6);
+  d.setFont("helvetica", "normal");
+  d.text(c.weightage || "ATT: 5  CA: 25  MTT: 20  ETT: 50", M + 110, y + 6);
+  d.line(M, y + 10, M + contentW, y + 10);
+  d.setFont("helvetica", "bold");
+  d.text("Course Focus", M + 4, y + 20);
+  d.setFont("helvetica", "normal");
+  d.text(c.focus || "EMPLOYABILITY, ENTREPRENEURSHIP, SKILL DEVELOPMENT", M + 110, y + 20);
+  y += 34;
+
+  // 3. Course Outcomes
+  checkPage(90);
+  d.setFont("helvetica", "bold");
+  d.setFontSize(8.5);
+  d.text("Course Outcomes :Through this course students should be able to", M, y);
+  y += 14;
+
+  c.cos.forEach((co, idx) => {
+    checkPage(24);
+    d.setFont("helvetica", "normal");
+    d.setFontSize(8);
+    const coNum = `CO${idx + 1} :: `;
+    d.text(coNum, M, y);
+    const lines = d.splitTextToSize(co, contentW - 40);
+    lines.forEach((l, li) => {
+      if (li > 0) y += 10;
+      d.text(l, M + 35, y);
+    });
+    y += 12;
+  });
+  y += 10;
+
+  // 4. TextBooks ( T )
+  checkPage(50);
+  d.setFont("helvetica", "bold");
+  d.setFontSize(8.5);
+  d.text("TextBooks ( T )", M, y);
+  y += 8;
+  drawTable(
+    ["Sr No", "Title", "Author", "Publisher Name"],
+    c.textbooks.map(tb => [tb.no, tb.title, tb.author, tb.publisher]),
+    [50, 235, 120, 118],
+    { rowHeight: 26, fontSize: 8 }
+  );
+
+  // 5. Reference Books ( R )
+  checkPage(50);
+  d.setFont("helvetica", "bold");
+  d.setFontSize(8.5);
+  d.text("Reference Books ( R )", M, y);
+  y += 8;
+  drawTable(
+    ["Sr No", "Title", "Author", "Publisher Name"],
+    c.references.map(rf => [rf.no, rf.title, rf.author, rf.publisher]),
+    [50, 235, 120, 118],
+    { rowHeight: 26, fontSize: 8 }
+  );
+
+  // 6. Other Reading ( OR )
+  checkPage(50);
+  d.setFont("helvetica", "bold");
+  d.setFontSize(8.5);
+  d.text("Other Reading ( OR )", M, y);
+  y += 8;
+  const orRows = [
+    ["OR-1", "The Lean Startup by Eric Ries ,"],
+    ["OR-2", "Extreme Programming Explained: Embrace Change by Kent Beck ,"],
+    ["OR-3", "Harvard Business Review:- Case studies on Agile in large-scale enterprises. ,"],
+    ["OR-4", "Comparative Study of Agile vs. Traditional Project Management ,"],
+    ["OR-5", "Optimizing Scrum Ceremonies: Insights from Industry Practices ,"],
+    ["OR-6", "Impact of Scrum Board Tools (Jira vs. Trello) on Agile Team Efficiency ,"]
+  ];
+  drawTable(
+    ["Sr No", "Journals articles as Compulsary reading (specific articles, complete reference)"],
+    orRows,
+    [50, 473],
+    { rowHeight: 18, fontSize: 8 }
+  );
+
+  // 7. Relevant Websites ( RW )
+  checkPage(50);
+  d.setFont("helvetica", "bold");
+  d.setFontSize(8.5);
+  d.text("Relevant Websites ( RW )", M, y);
+  y += 8;
+  const rwRows = [
+    ["RW-1", "https://www.scrumalliance.org/", "Online Courses related with Scrum"],
+    ["RW-2", "https://www.agilealliance.org/", "Online Courses related with Scrum related with Agile"],
+    ["RW-3", "https://www.atlassian.com/agile", "Information related to Agile"],
+    ["RW-4", "https://scaledagileframework.com/", "SAFe Framework"],
+    ["RW-5", "https://less.works/", "Less Framework"],
+    ["RW-6", "https://scaledagileframework.com/training/", "SAFe Training Resources"],
+    ["RW-7", "https://less.works/case-studies", "LeSS Case Studies"],
+    ["RW-8", "https://scaledagileframework.com/", "Cross-Functional Collaboration in Agile Teams"],
+    ["RW-9", "https://www.agilealliance.org/", "Comparative Study of Agile vs. Traditional Project Management"],
+    ["RW-10", "https://www.scrum.org/", "Optimizing Scrum Ceremonies: Insights from Industry Practices"],
+    ["RW-11", "https://www.atlassian.com/agile/tutorials", "Jira tutorials: Learn agile with Jira"],
+    ["RW-12", "https://www.romanpichler.com/blog/", "The Role of the Product Manager in Agile vs. Traditional Teams"],
+    ["RW-13", "https://www.optimizely.com/optimization-glossary/ab-testing/", "A/B Testing"],
+    ["RW-14", "https://www.altexsoft.com/blog/most-popular-prioritization-techniques/", "MoSCoW and WSJF"],
+    ["RW-15", "https://www.valuex2.com/5-inspiring-case-studies/", "Case studies on customer-centric development in Agile"]
+  ];
+  drawTable(
+    ["Sr No", "(Web address) (only if relevant to the course)", "Salient Features"],
+    rwRows,
+    [50, 240, 233],
+    { rowHeight: 18, fontSize: 8 }
+  );
+
+  // 8. Software/Equipments/Databases
+  checkPage(40);
+  d.setFont("helvetica", "bold");
+  d.setFontSize(8.5);
+  d.text("Software/Equipments/Databases", M, y);
+  y += 8;
+  drawTable(
+    ["Sr No", "(S/E/D) (only if relevant to the course)", "Salient Features"],
+    [
+      ["SW-1", "Burndown Charts in Jira", "Jira has built-in charts to track velocity and burndown"],
+      ["SW-2", "Cycle Time Analytics in GitHub", "GitHub Insights provides data for Agile metrics like cycle time"]
+    ],
+    [50, 240, 233],
+    { rowHeight: 18, fontSize: 8 }
+  );
+
+  // 9. LTP Week Distribution Table
+  checkPage(40);
+  d.setFont("helvetica", "bold");
+  d.setFontSize(8.5);
+  d.text("LTP week distribution: (LTP Weeks)", (W - 180) / 2, y);
+  y += 6;
+  const ltpTableW = 200;
+  const ltpStartX = (W - ltpTableW) / 2;
+  const drawSmallTable = (rows) => {
+    rows.forEach(r => {
+      d.rect(ltpStartX, y, ltpTableW, 16, "S");
+      d.setFont("helvetica", "normal");
+      d.text(r[0], ltpStartX + 6, y + 11);
+      d.line(ltpStartX + 140, y, ltpStartX + 140, y + 16);
+      d.setFont("helvetica", "bold");
+      d.text(String(r[1]), ltpStartX + 165, y + 11);
+      y += 16;
+    });
+    y += 12;
+  };
+  drawSmallTable([
+    ["Weeks before MTE", 7],
+    ["Weeks After MTE", 7],
+    ["Spill Over (Lecture)", 4]
+  ]);
+
+  // 10. Detailed Plan For Lectures (9 columns)
+  checkPage(60);
+  d.setFont("helvetica", "bold");
+  d.setFontSize(10);
+  d.text("Detailed Plan For Lectures", M, y);
+  y += 8;
+
+  const lecCols = [38, 42, 90, 65, 65, 75, 65, 50, 28];
+  const lecHeaders = [
+    "Week\nNumber", "Lecture\nNumber", "Broad Topic(Sub Topic)",
+    "Chapters/\nTextbooks", "Other Readings/\nWebsites",
+    "Lecture Description", "Learning Outcomes",
+    "Pedagogical\nTool Planned", "Live\nExamples"
+  ];
+
+  const lecRows = [];
+  let lecCount = 1;
+  const unitList = c.units || [];
+
+  for (let w = 1; w <= 14; w++) {
+    if (w === 7) {
+      lecRows.push([
+        `Week 7`, `Lecture 13`,
+        "Backlog management and prioritization techniques",
+        "T-1\nR-1", "RW-15",
+        "Understand Product roadmap and study case studies",
+        "Student will have better understanding of product",
+        "PPT & Talk\n(Case study)", "Case\nStudy"
+      ]);
+      lecRows.push(["SPILL_OVER_ROW", "Week 7 Lecture 14 Spill Over"]);
+      lecRows.push(["MID_TERM_ROW", "MID-TERM EXAMINATION"]);
+      lecCount = 15;
+      continue;
+    }
+    if (w === 14) {
+      lecRows.push([
+        `Week 14`, `Lecture 27`,
+        "Advanced Product Management in Agile",
+        "T-1\nR-3", "RW-2\nRW-5",
+        "Advanced product management techniques in Agile organizations",
+        "Learn from real-world applications of Agile",
+        "PPT & Talk\nClassroom lecture", "Case\nstudies"
+      ]);
+      lecRows.push(["SPILL_OVER_ROW", "Week 14 Lecture 28 Spill Over"]);
+      lecRows.push(["SPILL_OVER_ROW", "Week 15 Lecture 29 Spill Over"]);
+      lecRows.push(["SPILL_OVER_ROW", "Week 15 Lecture 30 Spill Over"]);
+      continue;
+    }
+
+    const u = unitList[w % unitList.length] || unitList[0];
+    lecRows.push([
+      `Week ${w}`, `Lecture ${lecCount++}`,
+      u.title || "Core Technical Concept",
+      (w % 2 === 0 ? "T-1\nR-1" : "T-1\nR-2"),
+      (w % 3 === 0 ? "RW-1\nRW-2" : "OR-2\nRW-3"),
+      "Detailed classroom instruction, principles and practical industry frameworks",
+      "Understand practical application and role mechanics in live sprints",
+      "PPT & Talk\nClassroom lecture",
+      (w % 2 === 0 ? "Live demo" : "Mock\nsprint")
+    ]);
+
+    lecRows.push([
+      `Week ${w}`, `Lecture ${lecCount++}`,
+      (u.topics ? u.topics.split(",")[0] : "Methodology execution"),
+      "T-1\nR-3", "RW-4\nSW-1",
+      "Hands-on exercises, sprint planning, and backlog breakdown",
+      "Demonstrate competency in Agile workflows and tools",
+      "Live Demo\n(Jira tool)",
+      "Jira\nBoard"
+    ]);
+  }
+
+  // Draw Lecture Table
+  const drawLectureTable = (headers, rows, colWidths) => {
+    const headerH = 24;
+    checkPage(headerH + 30);
+
+    d.rect(M, y, contentW, headerH, "S");
+    let hx = M;
+    d.setFont("helvetica", "bold");
+    d.setFontSize(7);
+    headers.forEach((h, ci) => {
+      const w = colWidths[ci];
+      if (ci > 0) d.line(hx, y, hx, y + headerH);
+      const lines = h.split("\n");
+      lines.forEach((l, li) => {
+        d.text(l, hx + 2, y + 10 + li * 9);
+      });
+      hx += w;
+    });
+    y += headerH;
+
+    rows.forEach(r => {
+      if (r[0] === "SPILL_OVER_ROW" || r[0] === "MID_TERM_ROW") {
+        checkPage(20);
+        d.setFillColor(245, 245, 245);
+        d.rect(M, y, contentW, 18, "FD");
+        d.setFont("helvetica", "bold");
+        d.setFontSize(9);
+        d.setTextColor(0, 0, 0);
+        const bannerText = r[0] === "MID_TERM_ROW" ? "MID-TERM" : "SPILL OVER";
+        d.text(bannerText, (W - d.getTextWidth(bannerText)) / 2, y + 12);
+        y += 18;
+        return;
+      }
+
+      d.setFont("helvetica", "normal");
+      d.setFontSize(7);
+      let maxLines = 1;
+      const cellLines = r.map((cellText, ci) => {
+        const lines = d.splitTextToSize(String(cellText || ""), colWidths[ci] - 4);
+        if (lines.length > maxLines) maxLines = lines.length;
+        return lines;
+      });
+
+      const rowH = Math.max(18, maxLines * 8.5 + 5);
+      checkPage(rowH);
+
+      d.rect(M, y, contentW, rowH, "S");
+      let rx = M;
+      cellLines.forEach((lines, ci) => {
+        const w = colWidths[ci];
+        if (ci > 0) d.line(rx, y, rx, y + rowH);
+        lines.forEach((line, li) => {
+          d.text(line, rx + 2, y + 9 + li * 8);
+        });
+        rx += w;
+      });
+      y += rowH;
+    });
+    y += 12;
+  };
+
+  drawLectureTable(lecHeaders, lecRows, lecCols);
+
+  // 11. Scheme for CA
+  checkPage(80);
+  d.setFont("helvetica", "bold");
+  d.setFontSize(9.5);
+  d.text("Scheme for CA:", M, y);
+  y += 10;
+  d.setFont("helvetica", "normal");
+  d.setFontSize(8);
+  d.text("CA Category of this Course Code is:A0203 (2 best out of 3)", M, y);
+  y += 6;
+
+  drawTable(
+    ["Component", "Weightage (%)", "Mapped CO(s)"],
+    [
+      ["Term paper", "50", "CO1, CO2, CO3, CO4, CO5, CO6"],
+      ["Test- Situation based problem solving", "50", "CO1, CO2"],
+      ["Test", "50", "CO1, CO2, CO3, CO4, CO5, CO6"]
+    ],
+    [150, 100, 273],
+    { rowHeight: 20, fontSize: 8 }
+  );
+
+  // 12. Details of Academic Task(s)
+  checkPage(90);
+  d.setFont("helvetica", "bold");
+  d.setFontSize(9.5);
+  d.text("Details of Academic Task(s)", M, y);
+  y += 8;
+
+  drawTable(
+    ["Academic Task", "Objective", "Detail of Academic Task", "Nature of Task", "Mode", "Marks", "Allotment / Submission"],
+    [
+      [
+        "Term paper",
+        "The objective of a term paper is to conduct in-depth research, critically analyze information, and present a structured argument.",
+        "The rubrics are applicable as follows: Abstract:20%, Literature Review:30%, Research Methodology:40%, Conclusion:10%.",
+        "Individual", "Online", "30", "2 / 12"
+      ],
+      [
+        "Test",
+        "To test the subject knowledge of the students and provide opportunity to improve their CA performance.",
+        "Subjective test covering syllabus from CA1 and CA2.",
+        "Individual", "Offline", "30", "11 / 12"
+      ],
+      [
+        "Test- Situation based problem solving",
+        "To test Knowledge of students based on principal and values and roles responsibilities in Agile.",
+        "Based on Agile methodologies and role management (4 scenario based questions).",
+        "Individual", "Offline", "30", "5 / 6"
+      ]
+    ],
+    [70, 95, 148, 55, 45, 35, 75],
+    { rowHeight: 28, fontSize: 7.5 }
+  );
+
+  // 13. Suggested Topics for Term Paper
+  checkPage(120);
+  d.setFont("helvetica", "bold");
+  d.setFontSize(9);
+  d.text("List of suggested topics for term paper[at least 15] (Student to spend about 15 hrs on any one specified term paper)", M, y);
+  y += 8;
+
+  const tpRows = [
+    ["1", "Comparative Study of Agile vs. Traditional Project Management: Impact on Team Dynamics and Project Success."],
+    ["2", "Optimizing Scrum Ceremonies: Insights from Industry Practices."],
+    ["3", "Impact of Scrum Board Tools (Jira vs. Trello) on Agile Team Efficiency"],
+    ["4", "Cross-Functional Collaboration in Agile Teams: Best Practices for Building and Sustaining Effective Teams"],
+    ["5", "The Role of the Product Manager in Agile vs. Traditional Teams: Bridging the Gap"],
+    ["6", "Conflict Resolution Techniques for Agile Teams: Enhancing Collaboration and Communication"],
+    ["7", "Effectiveness of Backlog Prioritization Techniques: A Case Study on MoSCoW and WSJF Models"],
+    ["8", "Customer-Centric Development in Agile Projects: Measuring the Impact on Product Success"],
+    ["9", "Designing Agile Product Roadmaps: Balancing Innovation and Customer Needs"],
+    ["10", "Assessing the Impact of Test-Driven Development (TDD) on Code Quality in Agile Projects"],
+    ["11", "Behavior-Driven Development (BDD) as a Collaborative Agile Practice: A Team Perspective"],
+    ["12", "Using Agile Metrics (Velocity, Burndown, Cycle Time) for Predictive Analytics in Project Management"],
+    ["13", "Challenges and Success Stories of Scaling Agile Frameworks: A Comparative Study of SAFe, LeSS, and Scrum@Scale"],
+    ["14", "Best Practices for Managing Distributed Agile Teams in Large-Scale Projects"],
+    ["15", "Data-Driven Product Decisions in Agile: The Role of A/B Testing and Market Fit Analysis"]
+  ];
+
+  drawTable(
+    ["Sr. No.", "Topic"],
+    tpRows,
+    [45, 478],
+    { rowHeight: 18, fontSize: 8 }
+  );
+
+  // 14. Detailed Plan For Practicals Table
+  checkPage(80);
+  d.setFont("helvetica", "bold");
+  d.setFontSize(9.5);
+  d.text("Detailed Plan For Practicals", M, y);
+  y += 8;
+
+  const prRows = [
+    ["Practical 1", "List of Practicals", "Setting Up a Scrum Board", "OR-1\nSW-1", "Student will learn how to Setup a Scrum Board in JIRA"],
+    ["Practical 2", "List of Practicals", "Conducting Daily Standups", "OR-5", "Student will learn about the format of a daily Scrum standup"],
+    ["Practical 3", "List of Practicals", "Role-Playing Agile Team Dynamics", "RW-2\nRW-3", "Simulate Agile team roles and responsibilities"],
+    ["Practical 4", "List of Practicals", "Backlog Prioritization Techniques", "RW-14", "Apply MoSCoW and WSJF techniques"],
+    ["Practical 5", "List of Practicals", "Test-Driven Development (TDD) Hands-On", "RW-5\nRW-6", "Implement TDD principles in a coding exercise"],
+    ["Practical 6", "List of Practicals", "Behavior-Driven Development (BDD) Workshop", "RW-13", "Student will learn how to write and implement BDD scenarios"],
+    ["Practical 7", "List of Practicals", "Sprint Retrospective Exercise", "OR-5", "Conduct a retrospective session to analyze a sprint"],
+    ["Practical 8", "List of Practicals", "Check and test different agile metrics", "SW-1\nSW-2", "Analyze velocity, burndown, and cycle time"],
+    ["Practical 9", "List of Practicals", "Pair Programming Practice", "OR-2", "Enhance collaboration and code quality"],
+    ["Practical 10", "List of Practicals", "Simulating Distributed Agile Teams", "OR-3\nRW-6", "Experience the challenges of distributed Agile"],
+    ["Practical 11", "List of Practicals", "Scaling Agile Frameworks Simulation", "RW-4\nRW-5", "Explore SAFe, LeSS, and Scrum@Scale"],
+    ["Practical 12", "List of Practicals", "A/B Testing Simulation", "OR-2\nRW-13", "Make data-driven product decisions"],
+    ["SPILL_OVER_ROW", "SPILL OVER"],
+    ["Practical 13", "Spill Over", "Spill Over", "", ""]
+  ];
+
+  drawTable(
+    ["Practical No", "Broad topic", "Subtopic", "Other Readings", "Learning Outcomes"],
+    prRows.map(r => {
+      if (r[0] === "SPILL_OVER_ROW") return ["SPILL OVER", "", "", "", ""];
+      return r;
+    }),
+    [65, 85, 130, 68, 175],
+    { rowHeight: 20, fontSize: 8 }
+  );
+
+  drawFooter();
+
+  const fn = "Instruction_Plan_" + c.code + ".pdf";
+  try {
+    d.save(fn);
+    toast("Final Instruction Plan downloaded successfully!");
+  } catch(e) {
+    toast("Could not save the Instruction Plan PDF");
+  }
+}
+
+async function dl(){
+  if(S.mode === "ip") { return dlIP(); }
+  else { return dlSyllabus(); }
+}
+async function dlReport(){const R=rep(),c=R.c;if(!window.jspdf){toast("PDF tool is still loading, try again");return}
 const d=new window.jspdf.jsPDF({unit:"pt",format:"a4"}),W=595,M=44;let y=0;
 const pg=n=>{if(y+n>800){d.addPage();y=56}};
 const T=(s,sz=10,b=0,col=[43,42,47],x=M,gap=5)=>{d.setFont("helvetica",b?"bold":"normal");d.setFontSize(sz);d.setTextColor(col[0],col[1],col[2]);d.splitTextToSize(String(LBL(s)),W-M-x).forEach(l=>{pg(sz+gap);d.text(l,x,y);y+=sz+gap})};
