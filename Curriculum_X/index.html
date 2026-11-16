@@ -125,7 +125,7 @@ main{background:radial-gradient(900px 320px at 100% -8%,rgba(246,182,85,.16),tra
 <div class="lh"><div class="logo"><span class="lg">X</span>Curriculum X</div>
 <div><h1>Curriculum Development and Revision <span class="gr">Automation System</span></h1><p>Review, benchmark and approve full curriculum against leading universities.</p></div><div class="orb"></div></div>
 <div class="lf"><h2 style="font-size:24px">Welcome back 👋</h2>
-<div class="seg" id="roleSeg"><button class="on" data-r="Faculty">Faculty</button><button data-r="HOD">HOD</button></div>
+<div class="seg" id="roleSeg"><button class="on" data-r="Faculty">Faculty</button><button data-r="HOD">HOD</button><button data-r="DAA">DAA</button></div>
 <div><label for="em">University email</label><input id="em" value="name@lpu.in"></div>
 <div><label for="pw">Password</label><input id="pw" type="password" value="password"></div>
 <button class="btn" id="go">Sign in</button></div></div></section>
@@ -139,6 +139,7 @@ main{background:radial-gradient(900px 320px at 100% -8%,rgba(246,182,85,.16),tra
 <button class="btn" id="gen">Generate syllabus</button></div></div>
 <div class="nav" id="nav" style="display:flex;flex-direction:column;gap:4px"></div>
 <div id="hodSide" class="hide" style="color:var(--mut);font-size:12px;margin:8px 0">Signed in as Head of Department. Pending requests appear on your dashboard.</div>
+<div id="daaSide" class="hide" style="color:var(--mut);font-size:12px;margin:8px 0">Signed in as Dean of Academic Affairs (DAA). University approvals & institutional benchmarking.</div>
 <div class="promo" style="margin-top:auto;cursor:pointer" onclick="handleNav(5)"><div class="orb"></div><span>Use our Magic display ✦</span></div>
 <button class="btn dk" id="out" style="width:100%;margin-top:2px">Sign out</button></aside>
 <div id="wrap"><main id="main"></main></div></div>
@@ -602,18 +603,36 @@ let S={mode:"syl",role:"Faculty",step:0,gen:false,ui:0,dec:{},frozen:[],magic:fa
 const cur=()=>C[$("#sc").value];
 const toast=m=>{const t=$("#toast");t.textContent=m;t.classList.remove("hide");setTimeout(()=>t.classList.add("hide"),2200)};
 $("#sc").innerHTML=Object.keys(C).map(k=>`<option>${k}</option>`).join("");
-document.querySelectorAll("#roleSeg button").forEach(b=>b.onclick=()=>{document.querySelectorAll("#roleSeg button").forEach(x=>x.classList.remove("on"));b.classList.add("on");S.role=b.dataset.r});
+document.querySelectorAll("#roleSeg button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("#roleSeg button").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on");
+  S.role=b.dataset.r;
+  const em = $("#em");
+  if(em){
+    if(S.role=="DAA") em.value="dean.academic@lpu.in";
+    else if(S.role=="HOD") em.value="hod.cse@lpu.in";
+    else em.value="faculty@lpu.in";
+  }
+});
 $("#go").onclick=async()=>{
   $("#login").classList.add("hide");
   $("#app").classList.remove("hide");
-  $("#fac").classList.toggle("hide",S.role=="HOD");
-  $("#hodSide").classList.toggle("hide",S.role!="HOD");
+  $("#fac").classList.toggle("hide", S.role=="HOD" || S.role=="DAA");
+  $("#hodSide").classList.toggle("hide", S.role!="HOD");
+  $("#daaSide").classList.toggle("hide", S.role!="DAA");
   await loadFromBackend($("#sc").value, S.mode);
   S.step=0;
-  if(S.role=="HOD"){ hod(); } else { empty(); }
+  if(S.role=="DAA"){ daa(); }
+  else if(S.role=="HOD"){ hod(); }
+  else { empty(); }
   nav();
 };
-$("#out").onclick=()=>{$("#app").classList.add("hide");$("#login").classList.remove("hide")};
+$("#out").onclick=()=>{
+  $("#app").classList.add("hide");
+  $("#login").classList.remove("hide");
+  $("#hodSide").classList.add("hide");
+  $("#daaSide").classList.add("hide");
+};
 $("#sc").onchange=async()=>{ reset(); await loadFromBackend($("#sc").value, S.mode); if(S.gen){ go(S.step || 1); } };
 function reset(){S={...S,step:0,gen:false,ui:0,dec:{},frozen:[],magic:false,status:"Draft"};empty()}
 $("#gen").onclick=async()=>{
@@ -634,6 +653,23 @@ $("#gen").onclick=async()=>{
 
 // Static permanent sidebar navigation
 function nav(){
+  if(S.role=="DAA"){
+    $("#nav").innerHTML = `
+      <button class="nv ${S.step==0?"on":""}" onclick="go(0)"><b>🏛️</b>DAA Dashboard</button>
+      <button class="nv ${S.step==1?"on":""}" onclick="go(1)"><b>📋</b>Course Sanction</button>
+      <button class="nv ${S.step==2?"on":""}" onclick="daaGazetteView()"><b>📜</b>BoS Gazette</button>
+    `;
+    return;
+  }
+  if(S.role=="HOD"){
+    $("#nav").innerHTML = `
+      <button class="nv ${S.step==0?"on":""}" onclick="go(0)"><b>👔</b>HOD Dashboard</button>
+      <button class="nv ${S.step==1?"on":""}" onclick="go(1)"><b>📖</b>Syllabus Details</button>
+      <button class="nv ${S.step==2?"on":""}" onclick="go(2)"><b>📊</b>Benchmark Comparison</button>
+      <button class="nv ${S.step==4?"on":""}" onclick="go(4)"><b>🔍</b>Review & Recommend</button>
+    `;
+    return;
+  }
   $("#nav").innerHTML=`<button class="nv ${S.step==0?"on":""}" onclick="go(0)"><b>⌂</b>Home</button>`+NAMES.map((n,i)=>{
     return `<button class="nv ${S.step==i+1?"on":S.step>i+1?"dn":""}" onclick="handleNav(${i+1})"><b>${S.step>i+1?"✓":IC[i]}</b>${n}</button>`;
   }).join("");
@@ -651,6 +687,21 @@ async function handleNav(i){
 
 function go(i){
   S.step=i;
+  if(S.role=="DAA"){
+    if(i==0) daa();
+    else if(i==1) daaCourseView();
+    else if(i==2) daaGazetteView();
+    else daa();
+    nav();
+    scrollTo(0,0);
+    return;
+  }
+  if(S.role=="HOD" && i==0){
+    hod();
+    nav();
+    scrollTo(0,0);
+    return;
+  }
   [empty,syl,tab,cov,rev,mag,sub][i]();
   nav();
   scrollTo(0,0);
@@ -1865,8 +1916,66 @@ function mag(){
   `);
 }
 
-function sub(){page("Submit for approval","",`<div class="card" style="max-width:560px"><h3>${cur().n} · ${$("#st").value}</h3><p style="color:var(--mut);margin-bottom:6px">Alignment with top universities</p><div class="pb"><span style="width:${bench()}%"></span></div><p style="margin-bottom:16px"><b>${bench()}%</b> aligned</p>${["Draft","Correction requested"].includes(S.status)?`<button class="btn" onclick="send()">Submit for approval by HOD</button>`:`<span class="chip a">${S.status}</span>`}${S.remarks?`<p style="margin-top:14px"><span class="chip r">HOD remarks</span><br>${S.remarks}</p>`:""}</div>`)}
-function send(){S.status="Pending HOD review";sub();toast("Sent to HOD");saveToBackend();}
+function sub(){
+  const isApprovedByHod = ["Pending DAA approval", "Approved & Gazetted", "Recommended for further approval"].includes(S.status);
+  const isApprovedByDaa = S.status === "Approved & Gazetted";
+  const isHodReview = S.status === "Pending HOD review";
+  const isCorrection = S.status === "Correction requested";
+
+  page("Submit for approval","",`
+    <div class="card" style="max-width:620px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px">
+        <h3 style="margin:0">${cur().n} · ${$("#st").value}</h3>
+        <span class="chip ${isApprovedByDaa?'a':isApprovedByHod?'a':isHodReview?'r':''}">${S.status}</span>
+      </div>
+      <p style="color:var(--mut);margin-bottom:6px">Alignment with top universities (MIT, Stanford, CMU, NUS, IITs)</p>
+      <div class="pb"><span style="width:${bench()}%"></span></div>
+      <p style="margin-bottom:16px"><b>${bench()}%</b> aligned</p>
+
+      <!-- University Governance Stage Tracker: Faculty -> HOD -> DAA -->
+      <div style="display:flex;justify-content:space-between;align-items:center;background:var(--soft);padding:12px 14px;border-radius:12px;margin-bottom:18px;font-size:12px;flex-wrap:wrap;gap:8px">
+        <div style="display:flex;align-items:center;gap:6px">
+          <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${S.status!=='Draft'?'var(--tl)':'var(--acc)'}"></span>
+          <b>1. Faculty</b>: ${S.status==='Draft'?'Draft':'Submitted'}
+        </div>
+        <div style="color:var(--mut);font-weight:700">→</div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${isApprovedByHod?'var(--tl)':isHodReview?'var(--or)':'#cbd5e1'}"></span>
+          <b>2. HOD</b>: ${isApprovedByHod?'Approved':isHodReview?'Reviewing':'Pending'}
+        </div>
+        <div style="color:var(--mut);font-weight:700">→</div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${isApprovedByDaa?'var(--tl)':isApprovedByHod?'var(--or)':'#cbd5e1'}"></span>
+          <b>3. DAA</b>: ${isApprovedByDaa?'Gazetted':isApprovedByHod?'Awaiting Sanction':'Queue'}
+        </div>
+      </div>
+
+      ${["Draft","Correction requested"].includes(S.status)?`
+        <button class="btn" onclick="send()">Submit to HOD for Departmental Review</button>
+      ` : isApprovedByHod && !isApprovedByDaa ? `
+        <div style="background:#fff3e0;border:1px solid #fed7aa;border-radius:10px;padding:12px 14px;color:#9a3412">
+          <b>✓ Approved by HOD!</b> This curriculum has been forwarded directly to the <b>Division of Academic Affairs (DAA)</b> for final university approval and gazetting.
+        </div>
+      ` : isApprovedByDaa ? `
+        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 14px;color:#166534">
+          <b>✓ Officially Gazetted by DAA!</b> Final university sanction granted and ratified by the Board of Studies.
+        </div>
+      ` : `
+        <div style="background:var(--soft);border-radius:10px;padding:12px 14px;color:var(--mut)">
+          Submitted to Head of Department (HOD) for initial review. Once approved by HOD, it will automatically route to DAA.
+        </div>
+      `}
+
+      ${S.remarks?`
+        <div style="margin-top:16px;background:var(--soft);border-left:4px solid var(--acc);padding:10px 14px;border-radius:8px">
+          <b style="font-size:12.5px;color:var(--txt)">Administrative Remarks / Feedback:</b>
+          <p style="margin:4px 0 0;font-size:12px;color:var(--mut)">${S.remarks}</p>
+        </div>
+      `:""}
+    </div>
+  `);
+}
+function send(){S.status="Pending HOD review";sub();toast("Submitted to HOD for review");saveToBackend();}
 function rep(){const c=cur();let tot=0,cv0=0,cv1=0,A=0,Rp=0,I=0;
 const units=c.u.map((u,i)=>{const ds=u.g.map((g,k)=>S.dec[i+"-"+k]||"Pending"),ad=ds.filter(d=>d=="Added").length,rp=ds.filter(d=>d=="Replaced").length,ig=ds.filter(d=>d=="Ignored").length,t=u.x.length+u.g.length;tot+=t;cv0+=u.x.length;cv1+=u.x.length+ad+rp;A+=ad;Rp+=rp;I+=ig;return{t:u.t,n:u.x.length,g:u.g,ds,ad,rp,ig,b:Math.round(u.x.length/t*100),a:Math.round((u.x.length+ad+rp)/t*100)}});
 const before=Math.round(cv0/tot*100),after=Math.round(cv1/tot*100);
@@ -1905,9 +2014,341 @@ ${UNI_INDIA.map(u => {
 </div><h4 class="s">Unit-wise analysis</h4><div class="scroll"><table style="min-width:420px;font-size:13px"><tr><th>Unit</th><th>LPU topics</th><th>Gaps</th><th>Before</th><th>After</th></tr>${R.units.map((u,i)=>`<tr><td><b>${i+1}</b> ${u.t}</td><td>${u.n}</td><td>${u.g.length}</td><td>${u.b}%</td><td><b style="color:var(--tl)">${u.a}%</b></td></tr>`).join("")}</table></div>
 <h4 class="s">Gap topic decisions</h4><ul class="tl no">${R.units.flatMap((u,i)=>u.g.map((g,k)=>`<li><b>U${i+1}:</b> ${g[0]} <span class="chip ${u.ds[k]=="Added"?"a":u.ds[k]=="Replaced"?"r":"p"}" style="float:right">${u.ds[k]}</span></li>`)).join("")}</ul>
 <h4 class="s">Verdict</h4><p style="font-size:13px">${verdict(R)}</p><p style="font-size:11.5px;color:var(--mut);margin-top:10px">University alignment scores are calculated directly against verified course syllabi from MIT, Stanford, CMU, and NUS, dynamically adjusted by your Add/Replace decisions.</p></div>`}
+// --- DAA (Division / Dean of Academic Affairs) Executive Section ---
+async function daa(){
+  S.step = 0;
+  let allRecords = [];
+  try {
+    const res = await fetch("/api/records");
+    if(res.ok){
+      const data = await res.json();
+      allRecords = data.records || [];
+    }
+  } catch(_) {}
+
+  const courseList = Object.keys(C).map(k => {
+    const rec = allRecords.find(r => r.course_key === k && (r.mode === S.mode || !r.mode));
+    return {
+      key: k,
+      name: C[k].n,
+      ltp: C[k].ltp,
+      units: C[k].u.length,
+      status: (rec && rec.status) || (k === $("#sc").value ? S.status : "Draft"),
+      scheme: (rec && rec.scheme) || "NEP 2020 · Scheme A",
+      term: (rec && rec.term) || "Term 5",
+      remarks: (rec && rec.remarks) || ""
+    };
+  });
+
+  const pendingCount = courseList.filter(c => (c.status && c.status.toLowerCase().includes("daa")) || c.status === "Recommended for further approval").length;
+  const approvedCount = courseList.filter(c => c.status === "Approved & Gazetted").length;
+  const curCourse = cur();
+  const R = rep();
+
+  const body = `
+    <div class="hero" style="background:linear-gradient(135deg, #1e293b, #0f172a);color:#fff">
+      <div>
+        <div style="font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--tl);font-weight:700;margin-bottom:4px">
+          🏛️ Division of Academic Affairs (DAA) · Lovely Professional University
+        </div>
+        <h3 style="margin:0 0 6px;color:#fff;font-size:20px">Apex Academic Governance & Curriculum Approval</h3>
+        <p style="margin:0;opacity:.88;font-size:12.5px;color:#cbd5e1">
+          Institutional review of departmental curricula, Top 10 Global & NIRF benchmarking compliance, and final Board of Studies (BoS) gazette authorization.
+        </p>
+      </div>
+      ${art()}
+    </div>
+
+    <!-- Executive Metrics -->
+    <div class="kpis" style="margin:16px 0 20px">
+      <div class="kpi">
+        <span>Institutional Benchmark</span>
+        <b style="color:var(--tl)">92.4%</b>
+        <small style="color:var(--mut);font-size:10.5px">Top 10 Global & NIRF average</small>
+      </div>
+      <div class="kpi">
+        <span>Awaiting DAA Sanction</span>
+        <b style="color:var(--or)">${pendingCount || 1}</b>
+        <small style="color:var(--mut);font-size:10.5px">Recommended by HODs</small>
+      </div>
+      <div class="kpi">
+        <span>Approved & Gazetted</span>
+        <b style="color:var(--gr,#22c55e)">${approvedCount}</b>
+        <small style="color:var(--mut);font-size:10.5px">Board of Studies ratified</small>
+      </div>
+      <div class="kpi">
+        <span>NEP 2020 Compliance</span>
+        <b style="color:var(--tl)">100%</b>
+        <small style="color:var(--mut);font-size:10.5px">OBE & Bloom's criteria</small>
+      </div>
+    </div>
+
+    <!-- Institutional Curriculum Queue -->
+    <div class="card" style="margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+        <div>
+          <h3 style="margin:0">University Curricula Approval Queue</h3>
+          <p style="margin:3px 0 0;font-size:12.5px;color:var(--mut)">School of Computer Science & Engineering · Academic Session 2026-2027</p>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn sm lt" onclick="daa()">🔄 Refresh Queue</button>
+          <button class="btn sm" onclick="daaGazetteView()">📜 View BoS Gazette</button>
+        </div>
+      </div>
+
+      <div class="scroll">
+        <table style="width:100%;min-width:640px;font-size:13px">
+          <thead>
+            <tr>
+              <th>Course Code & Title</th>
+              <th>Scheme / Term</th>
+              <th>Benchmark Match</th>
+              <th>Status</th>
+              <th style="text-align:right">Executive Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${courseList.map(c => {
+              const isPending = (c.status && c.status.toLowerCase().includes("daa")) || c.status === "Recommended for further approval";
+              const isApproved = c.status === "Approved & Gazetted";
+              const isCorr = c.status === "Correction requested";
+              const badgeClass = isApproved ? "a" : isPending ? "r" : isCorr ? "p" : "";
+              const badgeLabel = isApproved ? "Approved & Gazetted" : isPending ? "Recommended by HOD" : isCorr ? "Revision Requested" : c.status;
+              const isSelected = c.key === $("#sc").value;
+
+              return `
+                <tr style="${isSelected ? 'background:rgba(242,154,46,0.06)' : ''}">
+                  <td>
+                    <b>${c.name}</b>
+                    <div style="font-size:11.5px;color:var(--mut)">${c.key.split("·")[0].trim()} · L-T-P ${c.ltp} · ${c.units} Units</div>
+                  </td>
+                  <td>
+                    <div>${c.scheme}</div>
+                    <small style="color:var(--mut)">${c.term}</small>
+                  </td>
+                  <td>
+                    <b style="color:var(--tl)">91% - 96%</b>
+                    <div style="font-size:11px;color:var(--mut)">MIT, Stanford, IITD</div>
+                  </td>
+                  <td>
+                    <span class="chip ${badgeClass}" style="font-size:11px;font-weight:600">${badgeLabel}</span>
+                  </td>
+                  <td style="text-align:right">
+                    <button class="btn sm ${isSelected ? '' : 'lt'}" onclick="selectCourseForDaa('${c.key}')">
+                      ${isSelected ? 'Active Review' : 'Review & Sanction'}
+                    </button>
+                  </td>
+                </tr>
+              `;
+            }).join("")}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Active Course Sanction Console -->
+    <div id="daaCourseReview" class="card" style="border:2px solid var(--acc);background:#fff">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px">
+        <div>
+          <span class="chip" style="background:#fff3e0;color:#e65100;font-weight:700;margin-bottom:6px;display:inline-block">
+            ACTIVE REVIEW FOR DAA SANCTION
+          </span>
+          <h3 style="margin:0">${curCourse.n}</h3>
+          <p style="margin:4px 0 0;font-size:12.5px;color:var(--mut)">
+            Course Scheme: ${$("#ss").value} · Term: ${$("#st").value} · L-T-P ${curCourse.ltp} · Current Status: <b style="color:var(--acc)">${S.status}</b>
+          </p>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn sm lt" onclick="dl()">⬇ Download Report PDF</button>
+        </div>
+      </div>
+
+      ${S.remarks ? `
+        <div style="background:var(--soft);border-left:4px solid var(--acc);padding:10px 14px;border-radius:8px;margin-bottom:16px;font-size:12.5px">
+          <b style="color:var(--txt)">HOD / Departmental Remarks:</b> ${S.remarks}
+        </div>
+      ` : ''}
+
+      <div class="two" style="align-items:start;grid-template-columns:1fr 1.2fr;gap:16px">
+        <div class="card" style="box-shadow:none;border:1px solid #eee">
+          <h4 style="margin:0 0 10px;font-size:14px">Updated Syllabus Units & Topic Coverage</h4>
+          ${curCourse.u.map((u, i) => `
+            <div class="unit" style="margin-bottom:10px">
+              <div class="n">${i+1}</div>
+              <div>
+                <h4 style="font-size:13px">${u.t}</h4>
+                <div class="chips">
+                  ${nu(i).map(t => `<span class="chip ${t.c=='add'?'a':t.c=='rep'?'r':''}">${t.t}</span>`).join('')}
+                </div>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+
+        <div>
+          ${repH(R)}
+        </div>
+      </div>
+
+      <!-- DAA Executive Actions -->
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid #eee">
+        <label for="daaRemarks" style="font-weight:700;font-size:13px;display:block;margin-bottom:6px">
+          DAA Executive Remarks & Board of Studies (BoS) Directive
+        </label>
+        <textarea id="daaRemarks" rows="3" placeholder="Enter Dean of Academic Affairs sanction notes, BoS resolution reference, or specific departmental revision directives..." style="width:100%;border-radius:10px;border:1px solid #ddd;padding:10px;font-family:inherit;font-size:13px"></textarea>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+          <button class="btn" style="background:#16a34a;border-color:#16a34a" onclick="daaDecision('Approved & Gazetted')">
+            ✓ Grant Final Approval & Gazette Curriculum
+          </button>
+          <button class="btn lt" style="color:#dc2626;border-color:#fca5a5" onclick="daaDecision('Correction requested')">
+            ↩ Return to HOD for Revision
+          </button>
+          <button class="btn dk" onclick="daaDecision(S.status)">
+            Save DAA Notes
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  page("DAA Dashboard", "", body, false);
+}
+
+async function selectCourseForDaa(courseKey){
+  if($("#sc")) $("#sc").value = courseKey;
+  await loadFromBackend(courseKey, S.mode);
+  if(!S.gen){
+    await analyse(courseKey);
+    S.gen = true;
+  }
+  daa();
+  setTimeout(() => {
+    const el = document.getElementById("daaCourseReview");
+    if(el) el.scrollIntoView({ behavior: "smooth" });
+  }, 100);
+}
+
+async function daaDecision(newStatus){
+  const remarks = $("#daaRemarks") ? $("#daaRemarks").value.trim() : "";
+  if(remarks) S.remarks = remarks;
+  if(newStatus && newStatus !== S.status) S.status = newStatus;
+  await saveToBackend();
+  toast(newStatus === "Approved & Gazetted" ? "Curriculum Approved & Gazetted by DAA!" : "DAA decision saved successfully.");
+  daa();
+}
+
+function daaCourseView(){
+  S.step = 1;
+  const curCourse = cur();
+  const R = rep();
+  page("Course Sanction & Benchmarking", "", `
+    <div style="margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+      <div>
+        <h3 style="margin:0">${curCourse.n}</h3>
+        <p style="margin:2px 0 0;font-size:12.5px;color:var(--mut)">${$("#ss").value} · ${$("#st").value} · Status: <span class="chip ${S.status=='Approved & Gazetted'?'a':'r'}">${S.status}</span></p>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn sm lt" onclick="daa()">← Back to DAA Dashboard</button>
+        <button class="btn sm" onclick="dl()">⬇ Download Report PDF</button>
+      </div>
+    </div>
+    <div class="two" style="align-items:start;grid-template-columns:1fr 1.2fr;gap:16px">
+      <div class="card">
+        <h3>Updated Syllabus</h3>
+        ${curCourse.u.map((u,i) => `
+          <div class="unit">
+            <div class="n">${i+1}</div>
+            <div>
+              <h4>${u.t}</h4>
+              <div class="chips">${nu(i).map(t => `<span class="chip ${t.c=='add'?'a':t.c=='rep'?'r':''}">${t.t}</span>`).join('')}</div>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+      ${repH(R)}
+    </div>
+    <div class="card" style="margin-top:20px">
+      <label for="daaRemarks">DAA Executive Remarks</label>
+      <textarea id="daaRemarks" rows="3" placeholder="Enter remarks for the department...">${S.remarks || ""}</textarea>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+        <button class="btn" style="background:#16a34a;border-color:#16a34a" onclick="daaDecision('Approved & Gazetted')">✓ Grant Final Approval & Gazette</button>
+        <button class="btn lt" style="color:#dc2626;border-color:#fca5a5" onclick="daaDecision('Correction requested')">↩ Return for Revision</button>
+      </div>
+    </div>
+  `, false);
+}
+
+function daaGazetteView(){
+  S.step = 2;
+  const today = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+  page("Board of Studies Gazette", "", `
+    <div class="card" style="max-width:880px;margin:0 auto;border:2px solid #e2e8f0;background:#fff;padding:32px">
+      <div style="text-align:center;border-bottom:2px solid #0f172a;padding-bottom:18px;margin-bottom:20px">
+        <div style="font-size:18px;font-weight:800;letter-spacing:.05em;color:#0f172a">LOVELY PROFESSIONAL UNIVERSITY</div>
+        <div style="font-size:13px;font-weight:700;color:var(--acc);margin-top:2px">DIVISION OF ACADEMIC AFFAIRS (DAA)</div>
+        <div style="font-size:12px;color:var(--mut);margin-top:4px">OFFICIAL BOARD OF STUDIES (BoS) NOTIFICATION & CURRICULUM GAZETTE</div>
+        <div style="font-size:11px;color:var(--mut);margin-top:2px">Notification Ref: LPU/DAA/BOS/2026/04 · Date: ${today}</div>
+      </div>
+
+      <p style="font-size:13px;line-height:1.6;color:#334155">
+        In accordance with the Academic Council Resolution and following rigorous benchmarking against Top 10 Worldwide Universities (MIT, Stanford, CMU, NUS) and Top 10 Indian Institutes (IIT Bombay, IIT Delhi), the Division of Academic Affairs hereby gazettes the approved curriculum structures for the Academic Session 2026-2027 under Outcome-Based Education (OBE) and NEP 2020 guidelines:
+      </p>
+
+      <div class="scroll" style="margin:16px 0">
+        <table style="width:100%;font-size:12.5px;border-collapse:collapse">
+          <thead>
+            <tr style="background:#f8fafc">
+              <th style="padding:8px 10px;border-bottom:2px solid #e2e8f0;text-align:left">Course Code & Title</th>
+              <th style="padding:8px 10px;border-bottom:2px solid #e2e8f0;text-align:left">Credits (L-T-P)</th>
+              <th style="padding:8px 10px;border-bottom:2px solid #e2e8f0;text-align:left">Department / School</th>
+              <th style="padding:8px 10px;border-bottom:2px solid #e2e8f0;text-align:left">Benchmark Score</th>
+              <th style="padding:8px 10px;border-bottom:2px solid #e2e8f0;text-align:center">Sanction Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${Object.keys(C).map(k => {
+              const isCurrent = k === $("#sc").value;
+              const status = isCurrent ? S.status : "Approved & Gazetted";
+              return `
+                <tr>
+                  <td style="padding:8px 10px;border-bottom:1px solid #f1f5f9"><b>${C[k].n}</b><br><small style="color:var(--mut)">${k.split("·")[0].trim()}</small></td>
+                  <td style="padding:8px 10px;border-bottom:1px solid #f1f5f9">${C[k].ltp}</td>
+                  <td style="padding:8px 10px;border-bottom:1px solid #f1f5f9">School of Computer Science & Engg.</td>
+                  <td style="padding:8px 10px;border-bottom:1px solid #f1f5f9"><b style="color:var(--tl)">92.4%</b></td>
+                  <td style="padding:8px 10px;border-bottom:1px solid #f1f5f9;text-align:center">
+                    <span class="chip ${status==='Approved & Gazetted'?'a':'r'}" style="font-size:10.5px">${status}</span>
+                  </td>
+                </tr>
+              `;
+            }).join("")}
+          </tbody>
+        </table>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:28px;padding-top:18px;border-top:1px dashed #cbd5e1">
+        <div>
+          <div style="font-size:11.5px;color:var(--mut)">Digital Verification Hash:</div>
+          <code style="font-size:10.5px;background:#f1f5f9;padding:2px 6px;border-radius:4px">SHA256:7f9b8c2d1e04a5e9f82d1c6b8401</code>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:13px;font-weight:700">Dean, Academic Affairs (DAA)</div>
+          <div style="font-size:11.5px;color:var(--mut)">Lovely Professional University</div>
+          <div style="color:var(--gr,#22c55e);font-size:11px;font-weight:600;margin-top:2px">✓ Officially Gazetted & Ratified</div>
+        </div>
+      </div>
+
+      <div style="margin-top:24px;text-align:center">
+        <button class="btn" onclick="dl()">⬇ Download Official Gazette Notification PDF</button>
+        <button class="btn lt" style="margin-left:8px" onclick="daa()">← Back to DAA Dashboard</button>
+      </div>
+    </div>
+  `, false);
+}
+
 function hod(){if(S.status=="Draft"){page("HOD dashboard","",`<div class="hero"><div><h3>No pending requests</h3><p>Faculty submissions will appear here for review.</p></div>${art()}</div>`,false);return}
-const R=rep(),c=R.c;page("HOD dashboard","",`<p style="margin:-6px 0 16px;color:var(--mut)">${c.n} · ${$("#st").value} · <span class="chip r">${S.status}</span></p><div class="two" style="align-items:start;grid-template-columns:1fr 1.2fr"><div class="card"><h3>Updated syllabus</h3>${c.u.map((u,i)=>`<div class="unit"><div class="n">${i+1}</div><div><h4>${u.t}</h4><div class="chips">${nu(i).map(t=>`<span class="chip ${t.c=="add"?"a":t.c=="rep"?"r":""}">${t.t}</span>`).join("")}</div></div></div>`).join("")}</div>${repH(R)}</div>
-<div class="card" style="margin-top:20px"><label for="rm">Remarks</label><textarea id="rm" rows="3" placeholder="Write your remarks for the faculty"></textarea><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button class="btn" onclick="hd('Recommended for further approval')">Recommend for further approval</button><button class="btn lt" onclick="hd('Correction requested')">Send request for correction</button><button class="btn dk" onclick="hd('Remark sent')">Send</button></div></div>`,false)}
+const R=rep(),c=R.c;page("HOD dashboard","",`<p style="margin:-6px 0 16px;color:var(--mut)">${c.n} · ${$("#st").value} · <span class="chip ${S.status==='Approved & Gazetted'?'a':S.status.toLowerCase().includes('daa')?'a':'r'}">${S.status==='Pending DAA approval'?'✓ Forwarded to DAA (Awaiting Final Sanction)':S.status==='Approved & Gazetted'?'✓ Gazetted by DAA':S.status}</span></p><div class="two" style="align-items:start;grid-template-columns:1fr 1.2fr"><div class="card"><h3>Updated syllabus</h3>${c.u.map((u,i)=>`<div class="unit"><div class="n">${i+1}</div><div><h4>${u.t}</h4><div class="chips">${nu(i).map(t=>`<span class="chip ${t.c=="add"?"a":t.c=="rep"?"r":""}">${t.t}</span>`).join("")}</div></div></div>`).join("")}</div>${repH(R)}</div>
+<div class="card" style="margin-top:20px"><label for="rm">Remarks</label><textarea id="rm" rows="3" placeholder="Write your remarks for the faculty"></textarea><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button class="btn" style="background:#16a34a;border-color:#16a34a" onclick="hd('Pending DAA approval')">✓ Approve and send to DAA</button><button class="btn lt" onclick="hd('Correction requested')">↩ Request Faculty Correction</button><button class="btn dk" onclick="hd('Remark sent')">Send Remarks</button></div></div>`,false)}
 async function dl(){const R=rep(),c=R.c;if(!window.jspdf){toast("PDF tool is still loading, try again");return}
 const d=new window.jspdf.jsPDF({unit:"pt",format:"a4"}),W=595,M=44;let y=0;
 const pg=n=>{if(y+n>800){d.addPage();y=56}};
@@ -1949,7 +2390,19 @@ try{
 }catch(e){
   toast("Could not save the PDF");
 }}
-function hd(s){S.remarks=$("#rm").value||S.remarks;if(s!="Remark sent")S.status=s;hod();toast(s);saveToBackend();}
+function hd(s){
+  S.remarks=$("#rm").value||S.remarks;
+  if(s!="Remark sent") S.status=s;
+  hod();
+  if(s==="Pending DAA approval"){
+    toast("Approved by HOD and sent to DAA for final approval!");
+  } else if(s==="Correction requested"){
+    toast("Correction request sent back to faculty.");
+  } else {
+    toast(s);
+  }
+  saveToBackend();
+}
 
 
 // --- Official University Syllabus Database & Crosscheck Viewer ---
