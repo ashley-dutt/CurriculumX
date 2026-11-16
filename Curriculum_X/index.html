@@ -803,7 +803,7 @@ function railH(){const c=cur(),d=new Date(),y=d.getFullYear(),m=d.getMonth(),f=n
 let cells="MTWTFSS".split("").map(x=>`<i>${x}</i>`).join("")+"<span></span>".repeat((f+6)%7);for(let i=1;i<=n;i++)cells+=`<span class="${i==d.getDate()?"td":i==due?"du":""}">${i}</span>`;
 return`<div class="rail"><div class="card"><h3>${d.toLocaleString("en",{month:"long"})} ${y}</h3><div class="cal">${cells}</div><p style="margin-top:10px;font-size:12px;color:var(--mut)"><span class="dot" style="background:var(--or)"></span>Today <span class="dot" style="background:var(--pu);margin-left:8px"></span>HOD review due</p></div>
 <div class="card prof"><div class="big">${c.n[0]}</div><h3 style="margin-bottom:4px">${c.n}</h3><span class="chip p">${$("#st").value}</span><div style="margin-top:12px"><div class="kv"><span>Scheme</span><b>${$("#ss").value}</b></div><div class="kv"><span>L-T-P</span><b>${c.ltp}</b></div><div class="kv"><span>Units</span><b>${c.u.length}</b></div><div class="kv"><span>Status</span><b>${S.status}</b></div></div></div></div>`}
-function empty(){page("Home","",`<div class="hero"><div><h3>Hello, ${S.role=="HOD"?"Head":"Faculty"}!</h3><p>Pick a course, scheme and term below, then generate the syllabus to begin.</p></div>${art()}</div><div class="card"><h3>Choose course details</h3><div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:14px"><div class="seg" id="mseg" style="max-width:360px;flex:1;min-width:260px"><button data-m="syl">Syllabus</button><button data-m="ip">Instruction plan</button></div><button class="btn sm" id="addc" style="padding:6px 14px;font-size:12px">＋ Add new course</button></div><div id="ctl"></div></div>`);$("#ctl").appendChild($("#fac"));document.querySelectorAll("#mseg button").forEach(b=>{b.classList.toggle("on",b.dataset.m==S.mode);b.onclick=()=>setMode(b.dataset.m)});$("#addc").onclick=newCourse;nav()}
+function empty(){page("Home","",`<div class="hero" style="background:linear-gradient(120deg, #F29A2E, #F7B54F) !important;color:#ffffff !important"><div><h3>Hello, ${S.role=="HOD"?"Head":"Faculty"}!</h3><p>Pick a course, scheme and term below, then generate the syllabus to begin.</p></div>${art()}</div><div class="card"><h3>Choose course details</h3><div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:14px"><div class="seg" id="mseg" style="max-width:360px;flex:1;min-width:260px"><button data-m="syl">Syllabus</button><button data-m="ip">Instruction plan</button></div><button class="btn sm" id="addc" style="padding:6px 14px;font-size:12px">＋ Add new course</button></div><div id="ctl"></div></div>`);$("#ctl").appendChild($("#fac"));document.querySelectorAll("#mseg button").forEach(b=>{b.classList.toggle("on",b.dataset.m==S.mode);b.onclick=()=>setMode(b.dataset.m)});$("#addc").onclick=newCourse;nav()}
 function art(){return`<svg viewBox="0 0 150 110" aria-hidden="true"><rect x="20" y="62" width="100" height="14" rx="5" fill="#fff" opacity=".95"/><rect x="30" y="46" width="84" height="14" rx="5" fill="#FFE2B3"/><rect x="40" y="30" width="66" height="14" rx="5" fill="#fff" opacity=".85"/><circle cx="118" cy="22" r="10" fill="#fff"/><path d="M30 20l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#fff"/></svg>`}
 const nx=(l,i,c="")=>`<button class="btn ${c}" onclick="go(${i})">${l}</button>`;
 function stats(){const c=cur(),ex=c.u.reduce((a,u)=>a+u.x.length,0),g=c.u.reduce((a,u)=>a+u.g.length,0);return{ex,g,p:Math.round(ex/(ex+g)*100)}}
@@ -2063,7 +2063,7 @@ async function daa(){
     <div class="kpis" style="margin:16px 0 20px">
       <div class="kpi">
         <span>Institutional Benchmark</span>
-        <b style="color:var(--tl)">92.4%</b>
+        <b style="color:var(--or)">92.4%</b>
         <small style="color:var(--mut);font-size:10.5px">Top 10 Global & NIRF average</small>
       </div>
       <div class="kpi">
@@ -2078,7 +2078,7 @@ async function daa(){
       </div>
       <div class="kpi">
         <span>NEP 2020 Compliance</span>
-        <b style="color:var(--tl)">100%</b>
+        <b style="color:var(--or)">100%</b>
         <small style="color:var(--mut);font-size:10.5px">OBE & Bloom's criteria</small>
       </div>
     </div>
@@ -2127,7 +2127,7 @@ async function daa(){
                     <small style="color:var(--mut)">${c.term}</small>
                   </td>
                   <td>
-                    <b style="color:var(--tl)">91% - 96%</b>
+                    <b style="color:var(--or)">91% - 96%</b>
                     <div style="font-size:11px;color:var(--mut)">MIT, Stanford, IITD</div>
                   </td>
                   <td>
