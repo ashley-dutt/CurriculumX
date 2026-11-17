@@ -1685,16 +1685,11 @@ function rev(){
         ` : ''}
       </div>
 
-      <!-- Live preview window with edit button and instant download -->
+      <!-- Live preview window with edit button at the end -->
       <div class="card prev">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
           <h3 style="margin:0">Live preview</h3>
           <span class="chip a" style="font-size:11px">Real-time sync</span>
-        </div>
-        <!-- Direct download buttons for Faculty while editing -->
-        <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap">
-          <button type="button" class="btn sm" onclick="dlSyllabus()" title="Download updated syllabus in official LPU format">⬇ Download Syllabus (PDF)</button>
-          <button type="button" class="btn sm lt" onclick="dlIP()" title="Download updated 15-week instruction plan in official LPU format">⬇ Download IP (PDF)</button>
         </div>
         ${c.u.map((u, k) => `
           <div style="margin-bottom:12px;cursor:pointer" onclick="S.ui=${k};rev()" title="Click to review Unit ${k + 1}">
@@ -1709,16 +1704,12 @@ function rev(){
           </div>
         `).join("")}
 
-        <!-- Edit button & download actions at the end of Live Preview window -->
+        <!-- Edit button at the end of Live Preview window -->
         <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--line)">
           <div style="font-size:12px;color:var(--mut);margin-bottom:8px">Want to change decisions or ignore topics across any unit?</div>
-          <button type="button" class="btn lt sm" style="width:100%;font-weight:600;margin-bottom:10px" onclick="openEditModal(S.ui || 0)">
+          <button type="button" class="btn lt sm" style="width:100%;font-weight:600" onclick="openEditModal(S.ui || 0)">
             ✏️ Edit & ignore topics from any unit
           </button>
-          <div style="display:flex;gap:6px;flex-wrap:wrap">
-            <button type="button" class="btn sm" style="flex:1" onclick="dlSyllabus()">⬇ Download Syllabus (PDF)</button>
-            <button type="button" class="btn sm lt" style="flex:1" onclick="dlIP()">⬇ Download IP (PDF)</button>
-          </div>
         </div>
       </div>
     </div>
