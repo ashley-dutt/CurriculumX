@@ -1685,11 +1685,16 @@ function rev(){
         ` : ''}
       </div>
 
-      <!-- Live preview window with edit button at the end -->
+      <!-- Live preview window with edit button and instant download -->
       <div class="card prev">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
           <h3 style="margin:0">Live preview</h3>
           <span class="chip a" style="font-size:11px">Real-time sync</span>
+        </div>
+        <!-- Direct download buttons for Faculty while editing -->
+        <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap">
+          <button type="button" class="btn sm" onclick="dlSyllabus()" title="Download updated syllabus in official LPU format">⬇ Download Syllabus (PDF)</button>
+          <button type="button" class="btn sm lt" onclick="dlIP()" title="Download updated 15-week instruction plan in official LPU format">⬇ Download IP (PDF)</button>
         </div>
         ${c.u.map((u, k) => `
           <div style="margin-bottom:12px;cursor:pointer" onclick="S.ui=${k};rev()" title="Click to review Unit ${k + 1}">
@@ -1704,12 +1709,16 @@ function rev(){
           </div>
         `).join("")}
 
-        <!-- Edit button at the end of Live Preview window -->
+        <!-- Edit button & download actions at the end of Live Preview window -->
         <div style="margin-top:18px;padding-top:14px;border-top:1px solid var(--line)">
           <div style="font-size:12px;color:var(--mut);margin-bottom:8px">Want to change decisions or ignore topics across any unit?</div>
-          <button type="button" class="btn lt sm" style="width:100%;font-weight:600" onclick="openEditModal(S.ui || 0)">
+          <button type="button" class="btn lt sm" style="width:100%;font-weight:600;margin-bottom:10px" onclick="openEditModal(S.ui || 0)">
             ✏️ Edit & ignore topics from any unit
           </button>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button type="button" class="btn sm" style="flex:1" onclick="dlSyllabus()">⬇ Download Syllabus (PDF)</button>
+            <button type="button" class="btn sm lt" style="flex:1" onclick="dlIP()">⬇ Download IP (PDF)</button>
+          </div>
         </div>
       </div>
     </div>
@@ -1899,7 +1908,14 @@ function mag(){
       ${art()}
     </div>
     <div class="card">
-      <h3>${c.n} · updated syllabus</h3>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+        <h3 style="margin:0">${c.n} · updated syllabus</h3>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="btn sm" onclick="dlSyllabus()">⬇ Download Syllabus (PDF)</button>
+          <button class="btn sm lt" onclick="dlIP()">⬇ Download IP (PDF)</button>
+          <button class="btn sm lt" onclick="dlReport()">⬇ Benchmark Report (PDF)</button>
+        </div>
+      </div>
       ${c.u.map((u, i) => `
         <div class="unit">
           <div class="n">${i + 1}</div>
@@ -1971,6 +1987,19 @@ function sub(){
           <p style="margin:4px 0 0;font-size:12px;color:var(--mut)">${S.remarks}</p>
         </div>
       `:""}
+
+      <!-- Direct Download for Faculty after making changes -->
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--line)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+          <b style="font-size:13px;color:var(--txt)">Download Official Documents:</b>
+          <span style="font-size:11px;color:var(--mut)">Official LPU formats</span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn sm" onclick="dlSyllabus()">⬇ Download Final Syllabus (PDF)</button>
+          <button class="btn sm lt" onclick="dlIP()">⬇ Download Instruction Plan (PDF)</button>
+          <button class="btn sm lt" onclick="dlReport()">⬇ Benchmark Report (PDF)</button>
+        </div>
+      </div>
     </div>
   `);
 }
@@ -1982,7 +2011,7 @@ const TG=A+Rp+I+units.reduce((a,u)=>a+u.ds.filter(d=>d=="Pending").length,0),adr
 return{c,units,tot,before,after,A,Rp,I,unis,ok:after>=85}}
 function bench(){return rep().after}
 function verdict(R){return R.ok?"The updated syllabus is well aligned with the benchmark universities and is recommended for further approval.":"Alignment is below the 85% target. Consider adopting more of the pending or ignored gap topics before approval."}
-function repH(R){return`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h3 style="margin:0">Benchmarking report</h3><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn sm" onclick="dlReport()">⬇ Benchmark Report (PDF)</button><button class="btn sm lt" onclick="dlSyllabus()">⬇ Syllabus (PDF)</button><button class="btn sm lt" onclick="dlIP()">⬇ IP (PDF)</button></div></div>
+function repH(R){return`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h3 style="margin:0">Benchmarking report</h3><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn sm" onclick="dlReport()">⬇ Download Benchmark Report (PDF)</button></div></div>
 <div class="kpis"><div class="kpi"><span>Alignment before</span><b>${R.before}%</b></div><div class="kpi"><span>Alignment after</span><b style="color:var(--tl)">${R.after}%</b></div><div class="kpi"><span>Topics added / replaced</span><b>${R.A} / ${R.Rp}</b></div><div class="kpi"><span>Topics ignored</span><b>${R.I}</b></div></div>
 <h4 class="s">Top 10 Worldwide Universities Alignment</h4>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin-bottom:14px">
@@ -2046,7 +2075,13 @@ async function daa(){
     <!-- 2-Column Clean Review Layout: Syllabus + Benchmarking Report -->
     <div class="two" style="align-items:start;grid-template-columns:1fr 1.2fr;gap:18px">
       <div class="card">
-        <h3>Updated syllabus</h3>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+          <h3 style="margin:0">Updated syllabus</h3>
+          <div style="display:flex;gap:6px">
+            <button class="btn sm" onclick="dlSyllabus()">⬇ Download Syllabus (PDF)</button>
+            <button class="btn sm lt" onclick="dlIP()">⬇ Download IP (PDF)</button>
+          </div>
+        </div>
         ${c.u.map((u, i) => `
           <div class="unit">
             <div class="n">${i+1}</div>
@@ -2323,10 +2358,36 @@ async function dlGazette(){
   }
 }
 function hod(){if(S.status=="Draft"){page("HOD dashboard","",`<div class="hero"><div><h3>No pending requests</h3><p>Faculty submissions will appear here for review.</p></div>${art()}</div>`,false);return}
-const R=rep(),c=R.c;page("HOD dashboard","",`<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin:-6px 0 16px"><div><p style="margin:0;color:var(--mut)">${c.n} · ${$("#st").value} · <span class="chip ${S.status==='Approved & Gazetted'?'a':S.status.toLowerCase().includes('daa')?'a':'r'}">${S.status==='Pending DAA approval'?'✓ Forwarded to DAA (Awaiting Final Sanction)':S.status==='Approved & Gazetted'?'✓ Gazetted by DAA':S.status}</span></p></div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn sm" onclick="dlReport()">⬇ Benchmark Report (PDF)</button><button class="btn sm lt" onclick="dlSyllabus()">⬇ Final Syllabus (PDF)</button><button class="btn sm lt" onclick="dlIP()">⬇ Instruction Plan (PDF)</button></div></div> · <span class="chip ${S.status==='Approved & Gazetted'?'a':S.status.toLowerCase().includes('daa')?'a':'r'}">${S.status==='Pending DAA approval'?'✓ Forwarded to DAA (Awaiting Final Sanction)':S.status==='Approved & Gazetted'?'✓ Gazetted by DAA':S.status}</span></p><div class="two" style="align-items:start;grid-template-columns:1fr 1.2fr"><div class="card"><h3>Updated syllabus</h3>${c.u.map((u,i)=>`<div class="unit"><div class="n">${i+1}</div><div><h4>${u.t}</h4><div class="chips">${nu(i).map(t=>`<span class="chip ${t.c=="add"?"a":t.c=="rep"?"r":""}">${t.t}</span>`).join("")}</div></div></div>`).join("")}</div>${repH(R)}</div>
-<div class="card" style="margin-top:20px"><label for="rm">Remarks</label><textarea id="rm" rows="3" placeholder="Write your remarks for the faculty"></textarea><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button class="btn" style="background:#16a34a;border-color:#16a34a" onclick="hd('Pending DAA approval')">✓ Approve and send to DAA</button><button class="btn lt" onclick="hd('Correction requested')">↩ Request Faculty Correction</button><button class="btn dk" onclick="hd('Remark sent')">Send Remarks</button></div></div>`,false)}
+const R=rep(),c=R.c;page("HOD dashboard","",`<p style="margin:-6px 0 16px;color:var(--mut)">${c.n} · ${$("#st").value} · <span class="chip ${S.status==='Approved & Gazetted'?'a':S.status.toLowerCase().includes('daa')?'a':'r'}">${S.status==='Pending DAA approval'?'✓ Forwarded to DAA (Awaiting Final Sanction)':S.status==='Approved & Gazetted'?'✓ Gazetted by DAA':S.status}</span></p><div class="two" style="align-items:start;grid-template-columns:1fr 1.2fr"><div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px"><h3 style="margin:0">Updated syllabus</h3><div style="display:flex;gap:6px"><button class="btn sm" onclick="dlSyllabus()">⬇ Download Syllabus (PDF)</button><button class="btn sm lt" onclick="dlIP()">⬇ Download IP (PDF)</button></div></div>${c.u.map((u,i)=>`<div class="unit"><div class="n">${i+1}</div><div><h4>${u.t}</h4><div class="chips">${nu(i).map(t=>`<span class="chip ${t.c=="add"?"a":t.c=="rep"?"r":""}">${t.t}</span>`).join("")}</div></div></div>`).join("")}</div>${repH(R)}</div>
+<div class="card" style="margin-top:20px"><label for="rm">Remarks</label><textarea id="rm" rows="3" placeholder="Write your remarks for the faculty"></textarea><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;justify-content:space-between;align-items:center"><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" style="background:#16a34a;border-color:#16a34a" onclick="hd('Pending DAA approval')">✓ Approve and send to DAA</button><button class="btn lt" onclick="hd('Correction requested')">↩ Request Faculty Correction</button><button class="btn dk" onclick="hd('Remark sent')">Send Remarks</button></div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn sm lt" onclick="dlSyllabus()">⬇ Syllabus (PDF)</button><button class="btn sm lt" onclick="dlIP()">⬇ IP (PDF)</button><button class="btn sm lt" onclick="dlReport()">⬇ Benchmark Report (PDF)</button></div></div></div>`,false)}
 
 // --- Official University Syllabus & Instruction Plan PDF Generators ---
+
+
+function savePdfDoc(doc, filename, successMsg){
+  try {
+    const blob = doc.output("blob");
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 150);
+    toast(successMsg || "Download started!");
+    return;
+  } catch(e) {
+    try {
+      doc.save(filename);
+      toast(successMsg || "Download started!");
+    } catch(err) {
+      toast("Could not download PDF. Please check browser permissions.");
+    }
+  }
+}
 
 function getCourseFullMeta(){
   const courseKey = ($("#sc") ? $("#sc").value : "INT373 · Agile Driven Development and Project Management");
@@ -2420,10 +2481,16 @@ function getCourseFullMeta(){
 
   // Parse Units (with approved/updated topics from nu(i))
   const units = c.u.map((u, i) => {
-    const updatedTopics = nu(i).map(t => t.t).join(", ");
+    let updatedTopics = "";
+    try {
+      if (typeof nu === "function") {
+        const nut = nu(i);
+        if (Array.isArray(nut)) updatedTopics = nut.map(t => t.t).join(", ");
+      }
+    } catch(_) {}
     return {
       title: u.t,
-      topics: updatedTopics || u.x.join(", ")
+      topics: updatedTopics || (Array.isArray(u.x) ? u.x.join(", ") : String(u.x || ""))
     };
   });
 
@@ -2495,42 +2562,26 @@ async function dlSyllabus(){
 
   // Units (Unit I to Unit VI)
   const unitRomans = ["Unit I", "Unit II", "Unit III", "Unit IV", "Unit V", "Unit VI"];
-  const unitPairs = [];
-  for (let i = 0; i < c.units.length; i += 2) {
-    unitPairs.push([c.units[i], c.units[i + 1]]);
-  }
-
   unitRomans.forEach((uRom, idx) => {
-    checkPage(50);
+    checkPage(40);
     d.setFont("helvetica", "bold");
     d.setFontSize(10);
     d.text(uRom, M, y);
     y += 14;
 
-    const pair = unitPairs[idx] || (c.units[idx] ? [c.units[idx]] : []);
-    pair.filter(Boolean).forEach(u => {
-      d.setFont("helvetica", "bold");
-      d.setFontSize(9);
-      const titlePrefix = u.title + " : ";
-      const prefixW = d.getTextWidth(titlePrefix);
-      d.text(titlePrefix, M + 40, y);
+    const u = c.units[idx] || (c.units[0] ? { title: uRom, topics: c.units[0].topics } : null);
+    if (u) {
       d.setFont("helvetica", "normal");
-
-      const fullText = titlePrefix + u.topics;
-      const lines = d.splitTextToSize(fullText, contentW - 40);
+      d.setFontSize(9);
+      const fullText = (u.title ? u.title + " : " : "") + (u.topics || "");
+      const lines = d.splitTextToSize(fullText, contentW - 25);
       lines.forEach((line, li) => {
-        if (li === 0) {
-          const rest = line.slice(titlePrefix.length);
-          d.text(rest, M + 40 + prefixW, y);
-        } else {
-          y += 12;
-          checkPage(16);
-          d.text(line, M + 40, y);
-        }
+        checkPage(14);
+        d.text(line, M + 25, y);
+        y += 12;
       });
-      y += 16;
-    });
-    y += 6;
+      y += 4;
+    }
   });
 
   // Practicals
@@ -2604,12 +2655,7 @@ async function dlSyllabus(){
   }
 
   const fn = "Syllabus_" + c.code + ".pdf";
-  try {
-    d.save(fn);
-    toast("Final Syllabus downloaded successfully!");
-  } catch(e) {
-    toast("Could not save the Syllabus PDF");
-  }
+  savePdfDoc(d, fn, "Final Syllabus downloaded successfully!");
 }
 
 // 2. Download Final Official Instruction Plan (IP) PDF (Matching User Document 1)
@@ -3127,12 +3173,7 @@ async function dlIP(){
   drawFooter();
 
   const fn = "Instruction_Plan_" + c.code + ".pdf";
-  try {
-    d.save(fn);
-    toast("Final Instruction Plan downloaded successfully!");
-  } catch(e) {
-    toast("Could not save the Instruction Plan PDF");
-  }
+  savePdfDoc(d, fn, "Final Instruction Plan downloaded successfully!");
 }
 
 async function dl(){
@@ -3164,22 +3205,7 @@ T(ign.length?`Consider revisiting these topics not yet adopted: ${ign.join("; ")
 y+=8;T("Note: university alignment scores are calculated directly against verified full curriculum from Top 10 Worldwide Universities and Top 10 Indian Institutes (NIRF).",8.5,0,[140,136,150]);
 const n=d.getNumberOfPages();for(let i=1;i<=n;i++){d.setPage(i);d.setFont("helvetica","normal");d.setFontSize(8.5);d.setTextColor(140,136,150);d.text("Curriculum X  |  Page "+i+" of "+n,M,820)}
 const fn="Benchmarking_Report_"+c.n.replace(/[^a-zA-Z0-9]/g,"_")+".pdf";
-if(window.claude){
-  try{
-    const dls=await window.claude.use("downloads");
-    if(dls){
-      await dls.save({filename:fn,data:d.output("arraybuffer")});
-      toast("Report saved");
-      return;
-    }
-  }catch(_){}
-}
-try{
-  d.save(fn);
-  toast("Report saved");
-}catch(e){
-  toast("Could not save the PDF");
-}}
+savePdfDoc(d, fn, "Benchmarking Report downloaded successfully!");}
 function hd(s){
   S.remarks=$("#rm").value||S.remarks;
   if(s!="Remark sent") S.status=s;
