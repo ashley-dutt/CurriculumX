@@ -7,14 +7,31 @@ A secure, source-grounded curriculum development and benchmarking automation pla
 - **Interactive 1-2 Page Official Syllabus Viewer:** Click any university name to inspect its official accredited syllabus, prerequisites, textbooks, modules, and gap recommendations.
 - **Dynamic Course Drafting:** Add new courses dynamically (`＋ Add new course`) synthesized and validated against verified academic benchmarks.
 - **Department Review & HOD Workflow:** Unit-by-unit freeze, additions, replacements, ignore tracking, HOD approval submission, and PDF report export.
-- **Dual Runtime Support:**
-  - **Node.js (Default, Zero-dependency):** Run instantly with Node.js built-ins (`node:http`, `node:sqlite`).
+- **Backend Runtime Options:**
+  - **Java 17 & Spring Boot (Enterprise Backend):** Spring Web MVC, Spring JDBC, SQLite persistence, and REST APIs.
   - **Python / Flask (Secure Edition):** Multi-user authentication, salted scrypt password hashing, department isolation, audit logging, and anti-hallucination guardrails.
+  - **Node.js (Alternative):** Run with Node.js built-ins (`node:http`, `node:sqlite`).
 - **Offline & Bundled:** Works offline out of the box with bundled `static/jspdf.umd.min.js`.
 
 ---
 
-## 1. Quick Start (Node.js)
+## 1. Quick Start (Java & Spring Boot)
+
+Run instantly using the bundled runner (powered by Java 17 and Spring Boot):
+
+```bash
+# Double-click or run from terminal:
+.\run_spring.bat
+
+# Or using Maven wrapper:
+cd backend-spring
+mvn spring-boot:run
+```
+Open **[http://localhost:8080](http://localhost:8080)** in your browser.
+
+---
+
+## 2. Quick Start (Node.js Alternative)
 
 Zero dependencies needed (uses built-in Node.js v18+ & SQLite):
 

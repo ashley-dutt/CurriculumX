@@ -10,6 +10,12 @@ scratch/
 # Dependencies
 node_modules/
 
+# Java & Maven
+backend-spring/target/
+.tools/
+.maven/
+*.class
+
 # OS generated files
 .DS_Store
 Thumbs.db
