@@ -20,14 +20,20 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Point static resources to parent workspace directory
-        File parentDir = new File("..").getAbsoluteFile();
-        String parentPath = parentDir.toURI().toString();
+        File cur = new File(".").getAbsoluteFile();
+        File staticDir = new File(cur, "static");
+        if (!staticDir.exists() && cur.getParentFile() != null) {
+            staticDir = new File(cur.getParentFile(), "static");
+        }
+        File dataDir = new File(cur, "data");
+        if (!dataDir.exists() && cur.getParentFile() != null) {
+            dataDir = new File(cur.getParentFile(), "data");
+        }
 
         registry.addResourceHandler("/static/**")
-                .addResourceLocations(parentPath + "static/");
+                .addResourceLocations(staticDir.toURI().toString());
 
         registry.addResourceHandler("/data/**")
-                .addResourceLocations(parentPath + "data/");
+                .addResourceLocations(dataDir.toURI().toString());
     }
 }

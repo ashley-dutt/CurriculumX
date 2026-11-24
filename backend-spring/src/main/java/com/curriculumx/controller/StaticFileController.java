@@ -15,9 +15,12 @@ public class StaticFileController {
 
     @GetMapping(value = {"/", "/index.html"}, produces = MediaType.TEXT_HTML_VALUE)
     public ResponseEntity<Resource> serveIndex() {
-        File file = new File("../index.html");
+        File file = new File("index.html");
         if (!file.exists()) {
-            file = new File("index.html");
+            file = new File("../index.html");
+        }
+        if (!file.exists()) {
+            file = new File("Curriculum_X/index.html");
         }
         if (file.exists()) {
             return ResponseEntity.ok()

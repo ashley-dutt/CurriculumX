@@ -622,10 +622,21 @@ $("#go").onclick=async()=>{
   $("#daaSide").classList.toggle("hide", S.role!="DAA");
   if($("#magicPromo")) $("#magicPromo").classList.toggle("hide", S.role=="HOD" || S.role=="DAA");
   await loadFromBackend($("#sc").value, S.mode);
-  S.step=0;
-  if(S.role=="DAA"){ daa(); }
-  else if(S.role=="HOD"){ hod(); }
-  else { empty(); }
+
+  if(S.role=="DAA"){
+    S.step = 0;
+    daa();
+  } else if(S.role=="HOD"){
+    S.step = 0;
+    hod();
+  } else {
+    // For Faculty: Automatically initialize syllabus and open the Benchmark Syllabus Dashboard directly
+    if(!S.gen){
+      await analyse($("#sc").value);
+      S.gen = true;
+    }
+    go(S.step || 1);
+  }
   nav();
 };
 $("#out").onclick=()=>{
@@ -2348,9 +2359,70 @@ async function dlGazette(){
     toast("Could not save the Gazette PDF");
   }
 }
-function hod(){if(S.status=="Draft"){page("HOD dashboard","",`<div class="hero"><div><h3>No pending requests</h3><p>Faculty submissions will appear here for review.</p></div>${art()}</div>`,false);return}
-const R=rep(),c=R.c;page("HOD dashboard","",`<p style="margin:-6px 0 16px;color:var(--mut)">${c.n} · ${$("#st").value} · <span class="chip ${S.status==='Approved & Gazetted'?'a':S.status.toLowerCase().includes('daa')?'a':'r'}">${S.status==='Pending DAA approval'?'✓ Forwarded to DAA (Awaiting Final Sanction)':S.status==='Approved & Gazetted'?'✓ Gazetted by DAA':S.status}</span></p><div class="two" style="align-items:start;grid-template-columns:1fr 1.2fr"><div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px"><h3 style="margin:0">Updated syllabus</h3><div style="display:flex;gap:6px"><button class="btn sm" onclick="dlSyllabus()">⬇ Download Syllabus (PDF)</button><button class="btn sm lt" onclick="dlIP()">⬇ Download IP (PDF)</button></div></div>${c.u.map((u,i)=>`<div class="unit"><div class="n">${i+1}</div><div><h4>${u.t}</h4><div class="chips">${nu(i).map(t=>`<span class="chip ${t.c=="add"?"a":t.c=="rep"?"r":""}">${t.t}</span>`).join("")}</div></div></div>`).join("")}</div>${repH(R)}</div>
-<div class="card" style="margin-top:20px"><label for="rm">Remarks</label><textarea id="rm" rows="3" placeholder="Write your remarks for the faculty"></textarea><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;justify-content:space-between;align-items:center"><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" style="background:#16a34a;border-color:#16a34a" onclick="hd('Pending DAA approval')">✓ Approve and send to DAA</button><button class="btn lt" onclick="hd('Correction requested')">↩ Request Faculty Correction</button><button class="btn dk" onclick="hd('Remark sent')">Send Remarks</button></div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn sm lt" onclick="dlSyllabus()">⬇ Syllabus (PDF)</button><button class="btn sm lt" onclick="dlIP()">⬇ IP (PDF)</button><button class="btn sm lt" onclick="dlReport()">⬇ Benchmark Report (PDF)</button></div></div></div>`,false)}
+async function switchHodCourse(courseKey){
+  if($("#sc")) $("#sc").value = courseKey;
+  await loadFromBackend(courseKey, S.mode);
+  if(!S.gen){
+    await analyse(courseKey);
+    S.gen = true;
+  }
+  hod();
+}
+
+function hod(){
+  S.step = 0;
+  const R = rep(), c = R.c;
+  const statusLabel = S.status === 'Approved & Gazetted' ? '✓ Gazetted by DAA' : 
+                      S.status === 'Pending DAA approval' ? '✓ Forwarded to DAA (Awaiting Final Sanction)' : 
+                      S.status === 'Pending HOD review' ? '● Pending HOD Review' : 
+                      S.status === 'Correction requested' ? '↩ Correction Requested' : '● Draft (Faculty Workspace)';
+  const statusClass = S.status === 'Approved & Gazetted' || S.status === 'Pending DAA approval' ? 'a' : 'r';
+
+  page("HOD dashboard", "", `
+    <!-- Clean Sub-bar with Course Switcher & Status -->
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin:-6px 0 16px">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <label for="hodCourseSel" style="font-size:12.5px;font-weight:700;color:var(--mut)">Select Course:</label>
+        <select id="hodCourseSel" style="padding:5px 12px;border-radius:10px;border:1px solid var(--line);background:#fff;font-family:inherit;font-size:13px;font-weight:600" onchange="switchHodCourse(this.value)">
+          ${Object.keys(C).map(k => `<option value="${k}" ${k===$("#sc").value?'selected':''}>${k}</option>`).join("")}
+        </select>
+        <span style="color:var(--mut);font-size:12px">· ${$("#st").value} · ${$("#ss").value}</span>
+      </div>
+      <span class="chip ${statusClass}" style="font-size:12px;font-weight:700">${statusLabel}</span>
+    </div>
+
+    <div class="two" style="align-items:start;grid-template-columns:1fr 1.2fr">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+          <h3 style="margin:0">Updated syllabus</h3>
+          <div style="display:flex;gap:6px">
+            <button class="btn sm" onclick="dlSyllabus()">⬇ Download Syllabus (PDF)</button>
+            <button class="btn sm lt" onclick="dlIP()">⬇ Download IP (PDF)</button>
+          </div>
+        </div>
+        ${c.u.map((u,i)=>`<div class="unit"><div class="n">${i+1}</div><div><h4>${u.t}</h4><div class="chips">${nu(i).map(t=>`<span class="chip ${t.c=="add"?"a":t.c=="rep"?"r":""}">${t.t}</span>`).join("")}</div></div></div>`).join("")}
+      </div>
+      ${repH(R)}
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <label for="rm">Departmental Remarks &amp; Directive</label>
+      <textarea id="rm" rows="3" placeholder="Write your departmental remarks or directives for the faculty...">${S.remarks || ""}</textarea>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;justify-content:space-between;align-items:center">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn" style="background:#16a34a;border-color:#16a34a" onclick="hd('Pending DAA approval')">✓ Approve and send to DAA</button>
+          <button class="btn lt" onclick="hd('Correction requested')">↩ Request Faculty Correction</button>
+          <button class="btn dk" onclick="hd('Remark sent')">Send Remarks</button>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="btn sm lt" onclick="dlSyllabus()">⬇ Syllabus (PDF)</button>
+          <button class="btn sm lt" onclick="dlIP()">⬇ IP (PDF)</button>
+          <button class="btn sm lt" onclick="dlReport()">⬇ Benchmark Report (PDF)</button>
+        </div>
+      </div>
+    </div>
+  `, false);
+}
 
 // --- Official University Syllabus & Instruction Plan PDF Generators ---
 
