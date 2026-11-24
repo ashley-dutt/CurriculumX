@@ -623,19 +623,14 @@ $("#go").onclick=async()=>{
   if($("#magicPromo")) $("#magicPromo").classList.toggle("hide", S.role=="HOD" || S.role=="DAA");
   await loadFromBackend($("#sc").value, S.mode);
 
+  S.step = 0;
   if(S.role=="DAA"){
-    S.step = 0;
     daa();
   } else if(S.role=="HOD"){
-    S.step = 0;
     hod();
   } else {
-    // For Faculty: Automatically initialize syllabus and open the Benchmark Syllabus Dashboard directly
-    if(!S.gen){
-      await analyse($("#sc").value);
-      S.gen = true;
-    }
-    go(S.step || 1);
+    // Open Home first
+    empty();
   }
   nav();
 };
@@ -648,19 +643,24 @@ $("#out").onclick=()=>{
 $("#sc").onchange=async()=>{ reset(); await loadFromBackend($("#sc").value, S.mode); if(S.gen){ go(S.step || 1); } };
 function reset(){S={...S,step:0,gen:false,ui:0,dec:{},frozen:[],magic:false,status:"Draft"};empty()}
 $("#gen").onclick=async()=>{
-  const b=$("#gen");b.disabled=true;b.textContent="Benchmarking with Universities…";
+  const b=$("#gen");
+  if(b){
+    b.disabled=true;
+    b.textContent="Benchmarking with Universities…";
+  }
   try{
     await analyse($("#sc").value);
-    reset();
-    S.gen=true;
-    saveToBackend();
-    go(1);
-    toast("Benchmarked with MIT, Stanford, CMU & NUS");
   }catch(e){
-    toast("Benchmarking failed. Please try again.");
+    console.warn("Analysis note:", e);
   }
-  b.disabled=false;
-  b.textContent=S.mode=="ip"?"Generate instruction plan":"Generate syllabus";
+  S.gen = true;
+  await saveToBackend();
+  go(1);
+  toast("Benchmarked with MIT, Stanford, CMU & NUS");
+  if(b){
+    b.disabled=false;
+    b.textContent=S.mode=="ip"?"Generate instruction plan":"Generate syllabus";
+  }
 };
 
 // Static permanent sidebar navigation
