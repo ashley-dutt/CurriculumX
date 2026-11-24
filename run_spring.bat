@@ -1,14 +1,26 @@
 @echo off
 setlocal
-cd /d "%~dp0"
+set "ROOT=%~dp0"
+if not exist "%ROOT%backend-spring" (
+    if exist "%ROOT%..\backend-spring" (
+        set "ROOT=%ROOT%..\"
+    )
+)
+cd /d "%ROOT%"
+
 set "JAVA_HOME=C:\Program Files\Java\jdk-17"
-set "PATH=%JAVA_HOME%\bin;%~dp0\.tools\apache-maven-3.9.9\bin;%PATH%"
+if not exist "%JAVA_HOME%\bin\java.exe" (
+    set "JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-25.0.1.8-hotspot"
+)
+set "PATH=%JAVA_HOME%\bin;%ROOT%.tools\apache-maven-3.9.9\bin;%PATH%"
 
 echo ======================================================================
 echo  Starting CurriculumX on Java & Spring Boot...
-echo  Java Version:
-java -version
 echo ======================================================================
 
-cd backend-spring
-call "%~dp0\.tools\apache-maven-3.9.9\bin\mvn.cmd" spring-boot:run
+if exist "%ROOT%backend-spring\target\curriculumx-backend-1.0.0.jar" (
+    "%JAVA_HOME%\bin\java.exe" -jar "%ROOT%backend-spring\target\curriculumx-backend-1.0.0.jar"
+) else (
+    cd "%ROOT%backend-spring"
+    call "%ROOT%.tools\apache-maven-3.9.9\bin\mvn.cmd" spring-boot:run
+)
