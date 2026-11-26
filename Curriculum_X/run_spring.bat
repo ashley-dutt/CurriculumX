@@ -10,7 +10,7 @@ if not exist "%JAVA_HOME%\bin\java.exe" (
 set "PATH=%JAVA_HOME%\bin;%ROOT%.tools\apache-maven-3.9.9\bin;%PATH%"
 
 echo ======================================================================
-echo  Starting CurriculumX on Java & Spring Boot...
+echo  Starting CurriculumX on Java and Spring Boot...
 echo ======================================================================
 
 if exist "%ROOT%backend-spring\target\curriculumx-backend-1.0.0.jar" (
