@@ -51,7 +51,7 @@ main{background:var(--bg);border-radius:32px;padding:26px clamp(16px,2.6vw,34px)
 .ring{width:180px;height:180px;border-radius:50%;display:grid;place-items:center;margin:4px auto 14px}.ring div{width:132px;height:132px;border-radius:50%;background:var(--bg);display:grid;place-items:center;text-align:center;line-height:1.2}.ring b{font-size:32px;font-family:Poppins,sans-serif;font-weight:700;display:block}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .tl{list-style:none;padding:0;display:flex;flex-direction:column;gap:7px}.tl li{padding:9px 13px;border-radius:12px;font-size:13px}.tl.ok li{background:var(--tl2)}.tl.no li{background:var(--or2)}
-.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px;border-radius:16px;background:var(--soft);margin-bottom:8px;flex-wrap:wrap}.row.done{opacity:.55}.acts{display:flex;gap:6px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px;border-radius:16px;background:var(--soft);margin-bottom:8px;flex-wrap:wrap}.row.done{opacity:1 !important}.acts{display:flex;gap:6px}
 .prev{position:sticky;top:14px}.prev h4{margin:12px 0 4px;font-size:14px}.prev li{margin-left:18px;font-size:13px}.add{color:var(--tl);font-weight:600}.rep{color:#C77A10;font-weight:600}
 .pb{height:8px;border-radius:8px;background:var(--soft);overflow:hidden;margin:4px 0 12px}.pb span{display:block;height:100%;background:var(--or);border-radius:8px}
 /* rail */
@@ -90,7 +90,10 @@ main{background:radial-gradient(900px 320px at 100% -8%,rgba(246,182,85,.16),tra
 .nv.on::before{left:-20px}
 .tl{gap:9px}.tl li{position:relative;border-left:4px solid transparent;box-shadow:0 8px 18px -16px rgba(60,30,0,.5);transition:transform .18s}.tl li:hover{transform:translateX(4px)}
 .tl.ok li{border-left-color:var(--tl);background:linear-gradient(90deg,var(--tl2),#fff 120%)}.tl.no li{border-left-color:var(--or);background:linear-gradient(90deg,var(--or2),#fff 120%)}
-.row{border-left:4px solid var(--or);background:linear-gradient(90deg,var(--or2),var(--soft) 45%);padding:14px 16px}.row:hover{transform:translateX(3px)}
+.row{border-left:4px solid var(--or);background:#ffffff;padding:14px 16px;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,0.05);opacity:1 !important}.row:hover{transform:translateX(3px)}
+.row.done-added{border-left:5px solid #0d9488 !important;background:#ffffff !important;box-shadow:0 4px 14px -4px rgba(13,148,136,.25) !important}
+.row.done-replaced{border-left:5px solid #ea580c !important;background:#ffffff !important;box-shadow:0 4px 14px -4px rgba(234,88,12,.25) !important}
+.row.done-ignored{border-left:5px solid #94a3b8 !important;background:#f8fafc !important;box-shadow:0 2px 6px rgba(0,0,0,0.03) !important}
 .prev ul{padding-left:6px}.prev li::marker{color:var(--or);font-size:1.1em}.prev li{margin-bottom:4px}
 .chips .chip{transition:transform .15s,background .15s,color .15s}.chips .chip:hover{transform:translateY(-2px);background:var(--or2);color:#C77A10}
 @media(prefers-reduced-motion:no-preference){main>*{animation:rise .55s both}@keyframes rise{from{opacity:0;transform:translateY(12px)}}}
@@ -1657,20 +1660,20 @@ function rev(){
         ${u.g.map((g, k) => {
           const d = S.dec[i + "-" + k];
           return `
-            <div class="row ${d ? 'done' : ''}" style="margin-bottom:10px">
-              <div>
-                <b>${g[0]}</b><br>
-                <small style="color:var(--mut)">Replaces: ${g[1]}</small><br>
-                <small style="color:var(--pu)">${g[2]}${g[3] ? ' · ' + g[3] : ''}${g[4] ? ' · ' + g[4] : ''}</small>
+            <div class="row ${d ? 'done done-' + d.toLowerCase() : ''}" style="margin-bottom:12px;opacity:1 !important">
+              <div style="flex:1;min-width:240px">
+                <div style="font-size:15px;font-weight:700;color:#0f172a;line-height:1.35;margin-bottom:4px">${g[0]}</div>
+                <div style="font-size:12.5px;color:#475569;font-weight:500;margin-bottom:4px"><span style="color:#64748b;font-weight:600">Replaces:</span> ${g[1]}</div>
+                <div style="font-size:12.5px;color:#4338ca;font-weight:600;line-height:1.4">${g[2]}${g[3] ? ' · ' + g[3] : ''}${g[4] ? ' · ' + g[4] : ''}</div>
               </div>
-              <div class="acts" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-                <button type="button" class="btn sm tl ${d === 'Added' ? 'on' : ''}" style="${d === 'Added' ? 'background:var(--tl);color:#fff;font-weight:700' : ''}" onclick="dec(${i},${k},'Added')">
+              <div class="acts" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                <button type="button" class="btn sm" style="${d === 'Added' ? 'background:#0d9488 !important;color:#ffffff !important;border:1.5px solid #0f766e !important;font-weight:700;box-shadow:0 2px 6px rgba(13,148,136,.35);padding:6px 14px;border-radius:8px' : 'background:#ffffff;color:#0f766e;border:1.5px solid #99f6e4;font-weight:600;padding:6px 14px;border-radius:8px'}" onclick="dec(${i},${k},'Added')">
                   ${d === 'Added' ? '✓ Added' : 'Add'}
                 </button>
-                <button type="button" class="btn sm lt ${d === 'Replaced' ? 'on' : ''}" style="${d === 'Replaced' ? 'background:var(--or);color:#fff;font-weight:700' : ''}" onclick="dec(${i},${k},'Replaced')">
+                <button type="button" class="btn sm" style="${d === 'Replaced' ? 'background:#ea580c !important;color:#ffffff !important;border:1.5px solid #c2410c !important;font-weight:700;box-shadow:0 2px 6px rgba(234,88,12,.35);padding:6px 14px;border-radius:8px' : 'background:#ffffff;color:#c2410c;border:1.5px solid #fed7aa;font-weight:600;padding:6px 14px;border-radius:8px'}" onclick="dec(${i},${k},'Replaced')">
                   ${d === 'Replaced' ? '✓ Replaced' : 'Replace'}
                 </button>
-                <button type="button" class="btn sm dk ${d === 'Ignored' ? 'on' : ''}" style="${d === 'Ignored' ? 'background:var(--rd2);color:var(--rd);font-weight:700' : 'background:var(--soft);color:var(--mut)'}" onclick="dec(${i},${k},'Ignored')">
+                <button type="button" class="btn sm" style="${d === 'Ignored' ? 'background:#fef2f2 !important;color:#dc2626 !important;border:1.5px solid #f87171 !important;font-weight:700;padding:6px 14px;border-radius:8px' : 'background:#ffffff;color:#64748b;border:1.5px solid #e2e8f0;font-weight:600;padding:6px 14px;border-radius:8px'}" onclick="dec(${i},${k},'Ignored')">
                   ${d === 'Ignored' ? '✕ Ignored' : 'Ignore'}
                 </button>
               </div>
